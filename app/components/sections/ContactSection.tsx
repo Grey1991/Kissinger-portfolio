@@ -25,22 +25,22 @@ export const ContactSection = ({ email, linkedin, website }: ContactSectionProps
         <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
           <a 
             href={`mailto:${email}`}
-            className="px-8 py-4 bg-white text-slate-950 font-bold rounded-full hover:bg-pink-50 transition-colors flex items-center justify-center gap-2 cursor-none"
+            className="px-8 py-4 bg-white text-slate-950 font-bold rounded-full hover:bg-pink-50 transition-colors flex items-center justify-center gap-2"
           >
             <Mail size={18} /> Contact Me
           </a>
           <a 
             href="/Kissinger_Hu_Resume.pdf" 
             download
-            className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2 cursor-none"
+            className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2"
           >
             <Download size={18} /> Download CV
           </a>
         </div>
 
         <div className="pt-16 flex justify-center gap-8 text-slate-500">
-          <a href={linkedin} className="hover:text-pink-400 transition-colors cursor-none"><Linkedin size={24}/></a>
-          <a href={website} className="hover:text-pink-400 transition-colors cursor-none"><Globe size={24}/></a>
+          <a href={linkedin} className="hover:text-pink-400 transition-colors"><Linkedin size={24}/></a>
+          <a href={website} className="hover:text-pink-400 transition-colors"><Globe size={24}/></a>
         </div>
         
         <footer className="pt-12 text-xs text-slate-600">

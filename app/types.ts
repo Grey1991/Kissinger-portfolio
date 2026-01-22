@@ -27,20 +27,113 @@ export interface Education {
 // 内容区块类型
 export interface ContentSection {
   id: string;
-  type: 'text-block' | 'image' | 'video' | 'gallery' | 'stats-grid' | 'feature-list' | 'impact' | 'scrollytelling';
+  type: 'text-block' | 'image' | 'video' | 'gallery' | 'stats-grid' | 'feature-list' | 'impact' | 'scrollytelling' | 'carousel-3d' | 'process-steps' | 'product-users' | 'survey-tabs' | 'chat-interview' | 'dual-image' | 'needs-list' | 'flow-images' | 'features-interactive' | 'next-steps-cards' | 'wrapup-section' | 'flip-cards' | 'strategy-roadmap' | 'interactive-flow' | 'testing-refinement' | 'context-panel' | 'requirements-list' | 'structure-cards' | 'react-component' | 'reflection-dual' | 'feature-showcase';
   title?: string;
   content?: string;
   highlight?: string;
   src?: string;
   alt?: string;
+  component?: string;
   caption?: string;
   imageClass?: string;
   wrapperClass?: string;
-  images?: string[];
+  images?: string[] | Array<{title: string; src: string; caption: string}>;
+  captions?: string[];
   intro?: string;
   features?: Feature[];
   stats?: Stat[];
   steps?: ScrollyStep[];
+  processSteps?: Array<{label: string; icon: string}>;
+  productUsers?: {
+    description: string;
+    users: Array<{name: string; image: string}>;
+  };
+  surveyTabs?: Array<{
+    label: string;
+    images: string[];
+  }>;
+  date?: string;
+  interviewee?: {
+    name: string;
+    role: string;
+    avatar: string;
+  };
+  messages?: Array<{
+    type: 'sent' | 'received' | 'system';
+    text: string;
+  }>;
+  needs?: Array<{
+    number: string;
+    title: string;
+    description: string;
+  }>;
+  flows?: Array<{
+    part: string;
+    title: string;
+    description: string;
+    src: string;
+  }>;
+  interactiveFeatures?: Array<{
+    icon: string;
+    title: string;
+    description: string;
+    image: string;
+  }>;
+  nextSteps?: Array<{
+    icon: string;
+    title: string;
+  }>;
+  wrapup?: {
+    roadmap: Array<{ icon: string; title: string }>;
+    learnings: Array<{ icon: string; title: string; description: string }>;
+    improvements: Array<{ icon: string; title: string; description: string }>;
+  };
+  flipCards?: Array<{
+    problemIcon: string;
+    problemTitle: string;
+    problemDesc: string;
+    goalIcon: string;
+    goalTitle: string;
+    goals: string[];
+  }>;
+  roadmapChallenge?: string;
+  roadmapSteps?: Array<{
+    step: string;
+    title: string;
+    description: string;
+  }>;
+  flowDiagrams?: Array<{
+    id: string;
+    label: string;
+    caption: string;
+    nodes: Array<{
+      label: string;
+      x: number;
+      y: number;
+      type?: 'start' | 'end' | 'normal';
+    }>;
+  }>;
+  reflectionData?: {
+    successes: Array<{
+      title: string;
+      description: string;
+    }>;
+    improvements: Array<{
+      title: string;
+      description: string;
+    }>;
+  };
+  featureShowcase?: {
+    badge: string;
+    heroTitle: string;
+    description: string;
+    features: Array<{
+      index: string;
+      title: string;
+      icon: string;
+      description: string;
+    }>;
+  };
 }
 
 // 功能特性类型
@@ -55,6 +148,7 @@ export interface Stat {
   value: string;
   label: string;
   sub?: string;
+  icon?: string;
 }
 
 // Scrollytelling步骤类型

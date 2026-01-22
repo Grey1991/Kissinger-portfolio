@@ -6,6 +6,7 @@ export const ParticleDonut = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [opacity, setOpacity] = useState(1);
 
+  // Handle scroll opacity
   useEffect(() => {
     const handleScroll = () => {
       const scrolled = window.scrollY;

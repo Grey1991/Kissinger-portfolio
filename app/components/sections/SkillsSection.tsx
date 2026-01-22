@@ -22,7 +22,7 @@ export const SkillsSection = ({ skills, tools, education }: SkillsSectionProps) 
             <h4 className="text-lg uppercase tracking-widest text-slate-500 font-semibold mb-6">Core Competencies</h4>
             <div className="flex flex-wrap gap-3">
               {skills.map((skill) => (
-                <div key={skill} className="bg-slate-800/50 border border-slate-700 hover:border-pink-500/50 text-slate-200 px-4 py-3 rounded-xl transition-all hover:scale-105 cursor-none">
+                <div key={skill} className="bg-slate-800/50 border border-slate-700 hover:border-pink-500/50 text-slate-200 px-4 py-3 rounded-xl transition-all hover:scale-105">
                   {skill}
                 </div>
               ))}

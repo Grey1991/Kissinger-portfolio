@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Database, Users, Shield, Clock, Layers, Smartphone, 
-  PenTool, Utensils, Search, MousePointer, CheckSquare 
+  PenTool, Utensils, Search, MousePointer, CheckSquare, Monitor 
 } from 'lucide-react';
 import { ResumeData } from '../types';
 
@@ -223,55 +223,688 @@ export const RESUME_DATA: ResumeData = {
     {
       id: "courtcanva",
       title: "CourtCanva",
-      subtitle: "E-commerce Custom Ordering",
-      category: "Mobile",
-      summary: "Interactive court design tool allowing users to customize sports surfaces with real-time preview.",
-      tags: ["Responsive UI", "Prototyping", "Conversion Flow"],
+      subtitle: "Custom Court Design & Quoting Platform",
+      category: "Desktop",
+      summary: "A web platform enabling users to create custom court designs and obtain quotes from builders and suppliers.",
+      tags: ["Redesign", "Design System", "Stakeholder Collaboration"],
       gradient: "from-pink-600 to-purple-600",
-      icon: <Smartphone />,
+      image: "/courtcanva/hero2.0.png",
+      icon: <Monitor />,
+      isCaseStudy: true,
       details: {
         role: "UI/UX Designer",
         year: "2022",
-        platform: "Responsive Web",
+        platform: "Desktop",
         tools: "Figma",
-        type: "E-commerce",
-        overview: "Users wanted to design custom basketball/tennis courts. The previous process was manual and offline. We digitized it into a web configurator.",
-        myRole: "Optimized the purchase flow and designed the mobile experience for the configurator.",
-        constraints: "Technical limitations of the canvas rendering, complex pricing logic.",
-        approach: "Focused on 'What You See Is What You Get'. ensured the price updated in real-time as users added logos or changed colors.",
-        keyDecisions: [
-          "Moved complex options to a side panel on desktop and a bottom sheet on mobile.",
-          "Added 'Preset Designs' to solve the blank canvas paralysis problem.",
-          "Simplified the checkout process to 3 steps."
+        type: "E-commerce Platform",
+        
+        toc: [
+          { id: "overview", label: "Overview" },
+          { id: "responsibilities", label: "My Responsibilities" },
+          { id: "requirements", label: "User Requirements" },
+          { id: "product-structure", label: "Product Structure" },
+          { id: "prototypes", label: "Prototype Outcomes" },
+          { id: "testing", label: "Testing & Iterative Improvements" },
+          { id: "courtcanva2-intro", label: "CourtCanva 2.0 — Redesigned Experience" },
+          { id: "reflection", label: "Reflection" }
         ],
-        outcome: "Improved discoverability and user engagement time on the design tool."
+
+        overview: "CourtCanva is a startup platform where users can create custom court designs and receive quotes for their creations. The web application allows court owners, sports facility managers, and individuals to visualize designs through an intuitive interface and connect with builders.",
+        myRole: "Designed responsive layouts for all pages, developed style guidelines in collaboration with BAs and developers, and continuously refined the design through stakeholder feedback cycles.",
+        constraints: "Ensuring seamless responsive experience across desktop, iPad, and iPhone while maintaining design consistency and accessibility standards.",
+        approach: "",
+        keyDecisions: [],
+        outcome: "",
+        
+        contentSections: [
+          {
+            id: "overview",
+            type: "context-panel",
+            title: "Background & Target Users",
+          },
+          {
+            id: "responsibilities",
+            type: "feature-list",
+            title: "My Responsibilities",
+            intro: "Four core pillars guided my work on CourtCanva:",
+            features: [
+              {
+                title: "Style Guidelines Development",
+                desc: "Collaborated with BA and developers to create comprehensive guidelines for theme colours, fonts, font sizes, and icon designs.",
+                icon: <PenTool size={20} />
+              },
+              {
+                title: "Responsive Layout Design",
+                desc: "Designed layouts for all pages and landing pages, ensuring seamless experience across desktop and iPad devices.",
+                icon: <Layers size={20} />
+              },
+              {
+                title: "Stakeholder Feedback Integration",
+                desc: "Participated in fortnightly showcases to collect and incorporate feedback from stakeholders.",
+                icon: <Users size={20} />
+              },
+              {
+                title: "Continuous Design Refinement",
+                desc: "Engaged in ongoing design improvement, working closely with the project team to deliver a polished final product.",
+                icon: <CheckSquare size={20} />
+              }
+            ]
+          },
+          {
+            id: "requirements",
+            type: "requirements-list",
+            title: "User Requirements",
+          },
+          {
+            id: "product-structure",
+            type: "structure-cards",
+            title: "Product Structure",
+          },
+          {
+            id: "prototypes",
+            type: "text-block",
+            title: "Prototype Outcomes",
+            content: "Version 1.0 high-fidelity prototypes completed by continuing the design style established by the previous designer who had left the company. The prototypes showcase the complete user journey from landing to order placement, maintaining visual consistency with the original design direction."
+          },
+          {
+            id: "prototypes-gallery",
+            type: "gallery",
+            images: [
+              "/courtcanva/landing webpage.png",
+              "/courtcanva/ProTennis Court.png",
+              "/courtcanva/3D Preview Access Button.png",
+              "/courtcanva/3D Preview popup.png",
+              "/courtcanva/Template List.png",
+              "/courtcanva/Template List-1.png",
+              "/courtcanva/My Template Page.png",
+              "/courtcanva/Folder Design Preview.png",
+              "/courtcanva/Folder Design Preview (Delete Pop up).png",
+              "/courtcanva/Shopping Cart.png",
+              "/courtcanva/Order Generation Page.png",
+              "/courtcanva/Deposit Display.png",
+              "/courtcanva/Order Placed Successful Page.png",
+              "/courtcanva/Order Placed Failed Page.png",
+              "/courtcanva/My Order Page.png",
+              "/courtcanva/My Account.png",
+              "/courtcanva/Edit Profile Image Popup.png"
+            ],
+            caption: "Complete interface designs across all user flows"
+          },
+          {
+            id: "testing",
+            type: "text-block",
+            title: "Testing & Iterative Improvements",
+            content: "Through user testing, we identified three critical areas for refinement:"
+          },
+          {
+            id: "testing-improvements",
+            type: "flip-cards",
+            flipCards: [
+              {
+                problemIcon: "alert-circle",
+                problemTitle: "Fragmented Course Design Tools",
+                problemDesc: "Users found it difficult to locate tools in the design interface, causing frustration during creation.",
+                goalIcon: "layout",
+                goalTitle: "Reorganised Tool Palette",
+                goals: [
+                  "Grouped related tools logically",
+                  "Added clear labels to all tools",
+                  "Improved visual hierarchy"
+                ]
+              },
+              {
+                problemIcon: "help-circle",
+                problemTitle: "3D Preview Button Enhancement",
+                problemDesc: "Confusion about 3D preview quality and access point. Users weren't confident the preview represented final output.",
+                goalIcon: "eye",
+                goalTitle: "Improved Clarity & Affordance",
+                goals: [
+                  "Enhanced button visibility and labeling",
+                  "Added preview quality indicator",
+                  "Improved interaction feedback"
+                ]
+              },
+              {
+                problemIcon: "eye-off",
+                problemTitle: "Toolbar Background & Contrast",
+                problemDesc: "Low contrast between toolbar and canvas caused visual fatigue during extended design sessions.",
+                goalIcon: "sun",
+                goalTitle: "Accessibility Compliance",
+                goals: [
+                  "Increased contrast ratios",
+                  "Met WCAG accessibility guidelines",
+                  "Reduced eye strain for users"
+                ]
+              }
+            ]
+          },
+          {
+            id: "courtcanva2-intro",
+            type: "feature-showcase",
+            title: "CourtCanva 2.0 — Redesigned Experience",
+            featureShowcase: {
+              badge: "Version 2.0",
+              heroTitle: "The Complete Reimagination",
+              description: "CourtCanva 2.0 isn't just an update; it's a new standard. We rebuilt the core engine to deliver precision, speed, and a seamless commerce experience.",
+              features: [
+                {
+                  index: "01",
+                  title: "Intelligent Design Studio",
+                  icon: "lightbulb",
+                  description: "Enhanced with a collapsible property panel, dynamic dimension sliders, and a real-time pricing engine that instantly calculates costs based on surface area."
+                },
+                {
+                  index: "02",
+                  title: "High-Performance Visualisation",
+                  icon: "eye",
+                  description: "SVG-based rendering supporting multi-sport layouts (Tennis, Basketball, Pickleball) with instant, lightweight 2D-to-3D perspective switching."
+                },
+                {
+                  index: "03",
+                  title: "Deep Customisation",
+                  icon: "edit",
+                  description: "Granular control over surface textures, custom text branding, and a suite of 3D accessories including LED lighting, fencing, and scoreboards."
+                },
+                {
+                  index: "04",
+                  title: "E-commerce Ecosystem",
+                  icon: "shopping-cart",
+                  description: "A seamless user journey from smart template selection to customisation, cart management, and a simulated secure checkout process."
+                },
+                {
+                  index: "05",
+                  title: "Comprehensive User Hub",
+                  icon: "user",
+                  description: "A fully functional dashboard for managing saved designs and orders, integrated with a robust settings suite covering Profile, Security, and Help Centre."
+                }
+              ]
+            }
+          },
+          {
+            id: "courtcanva2-cta",
+            type: "text-block",
+            content: "💡 <strong>Try the interactive prototype below</strong> to explore the complete user journey."
+          },
+          {
+            id: "courtcanva2",
+            type: "react-component",
+            component: "CourtCanva2"
+          },
+          {
+            id: "reflection",
+            type: "reflection-dual",
+            title: "Reflection",
+            reflectionData: {
+              successes: [
+                {
+                  title: "Stakeholder Showcases",
+                  description: "Regular alignment sessions significantly reduced late-stage revisions, keeping the dev timeline on track."
+                },
+                {
+                  title: "Style Guide Sync",
+                  description: "Co-creating the library with developers prevented implementation inconsistencies during handoff."
+                }
+              ],
+              improvements: [
+                {
+                  title: "Earlier User Testing",
+                  description: "Testing low-fi wireframes would have surfaced the tool palette navigation issues much sooner."
+                },
+                {
+                  title: "Structured A11y",
+                  description: "Integrating accessibility checks (contrast, focus states) throughout the process, not just at the end."
+                },
+                {
+                  title: "Mobile-First Strategy",
+                  description: "Starting with smaller viewports to ensure core features are prioritized before scaling up."
+                },
+                {
+                  title: "iPad Gestures",
+                  description: "Exploring advanced interactions like pinch-to-zoom to utilize the canvas fully."
+                }
+              ]
+            }
+          }
+        ]
       }
     },
     {
       id: "nootee",
-      title: "NooTee (Freelance)",
-      subtitle: "Note-taking App Concept",
-      category: "Research",
-      summary: "A research-driven note-taking application addressing specific pain points in information retrieval.",
-      tags: ["UX Research", "IA", "UI"],
+      title: "NooTee — Note-Taking App",
+      subtitle: "Concept Project",
+      category: "Desktop",
+      summary: "A note-taking app designed to solve collaboration gaps, media limitations, and organisation challenges in existing tools.",
+      tags: ["Product Design", "UX Research", "Desktop App"],
       gradient: "from-violet-600 to-fuchsia-600",
+      image: "/nootee/hero-1.png",
       icon: <PenTool />,
+      isCaseStudy: true,
       details: {
         role: "Product Designer",
         year: "2021",
-        platform: "Mobile App",
+        platform: "Desktop App",
         tools: "Figma, Miro",
-        type: "Concept / MVP",
-        overview: "Market research showed users struggled to find notes after creating them. NooTee focused on tagging and retrieval.",
-        myRole: "Ran user surveys, mapped journeys, and performed competitive analysis.",
-        constraints: "Crowded market, need for differentiation.",
-        approach: "Focused on 'Auto-Tagging' and context-aware organization.",
-        keyDecisions: [
-          "Prioritized search over folder structure.",
-          "Designed a minimal writing interface to support 'flow state'.",
-          "Created a unique visual tag system."
+        type: "Concept",
+        
+        toc: [
+          { id: "overview", label: "Overview" },
+          { id: "research", label: "Research" },
+          { id: "product-users", label: "Product Users" },
+          { id: "empathy-map", label: "Empathy Map" },
+          { id: "survey", label: "Survey Results" },
+          { id: "observations", label: "Key Observations" },
+          { id: "interview", label: "User Interview" },
+          { id: "personas-journey", label: "Personas & Journey" },
+          { id: "swot", label: "Competitor Analysis" },
+          { id: "user-needs", label: "User Needs" },
+          { id: "flow", label: "Flow & IA" },
+          { id: "features", label: "Features & Functionalities" },
+          { id: "final-ui", label: "Final UI" },
+          { id: "whats-next", label: "Next Steps & Learnings" }
         ],
-        outcome: "Validated concept through user interviews and prototype testing."
+
+        overview: "Most note-taking apps lack collaboration features and robust media support. When users accumulate many notes, poor organisation makes retrieval difficult.",
+        myRole: "Led end-to-end product design—research, personas, journey mapping, competitive analysis, wireframes, and high-fidelity UI.",
+        constraints: "Crowded market with established players. Need clear differentiation and intuitive organisation.",
+        approach: "",
+        keyDecisions: [],
+        outcome: "",
+        
+        contentSections: [
+          {
+            id: "overview",
+            type: "flip-cards",
+            title: "Turning Problems into Solutions",
+            content: "Hover over the cards to see how we address user pain points.",
+            flipCards: [
+              {
+                problemIcon: "user-x",
+                problemTitle: "Isolation",
+                problemDesc: "Most note-taking apps lack collaboration, isolating users and limiting teamwork potential.",
+                goalIcon: "users",
+                goalTitle: "Unified Platform",
+                goals: [
+                  "Combine study, work, and life notes.",
+                  "Enable real-time team collaboration."
+                ]
+              },
+              {
+                problemIcon: "layout",
+                problemTitle: "Rigidity",
+                problemDesc: "Apps often focus solely on text, with limited media support and clunky interfaces.",
+                goalIcon: "zap",
+                goalTitle: "Efficiency",
+                goals: [
+                  "Concise, media-rich interface.",
+                  "Quick-open for capturing fleeting ideas."
+                ]
+              },
+              {
+                problemIcon: "activity",
+                problemTitle: "Chaos",
+                problemDesc: "Managing a large volume of notes becomes difficult without powerful organization tools.",
+                goalIcon: "search",
+                goalTitle: "Structure",
+                goals: [
+                  "Smart categorisation system.",
+                  "Instant search functionality."
+                ]
+              }
+            ]
+          },
+          {
+            id: "research",
+            type: "text-block",
+            title: "Research",
+            content: "I conducted an online survey with <strong>16 users</strong> and performed qualitative interviews to understand note-taking behaviors, pain points, and feature preferences."
+          },
+          {
+            id: "product-users",
+            type: "product-users",
+            title: "Product Users",
+            productUsers: {
+              description: "Our target demographic is primarily between the ages of 19 and 54.",
+              users: [
+                {
+                  name: "Office Workers",
+                  image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=300&q=80"
+                },
+                {
+                  name: "Students",
+                  image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=300&q=80"
+                },
+                {
+                  name: "Homemakers",
+                  image: "https://images.sbs.com.au/dims4/default/91eed36/2147483647/strip/true/crop/5122x2881+0+179/resize/1280x720!/quality/90/?url=http%3A%2F%2Fsbs-au-brightspot.s3.amazonaws.com%2Fc5%2Fcd%2F0d4b016e45d3a285a8f95a07e4d4%2Fgettyimages-135205222.jpg&imwidth=1280"
+                }
+              ]
+            }
+          },
+          {
+            id: "empathy-map",
+            type: "image",
+            src: "/nootee/empathy-map.png",
+            caption: "Empathy map synthesizing user thoughts, feelings, and behaviors",
+            imageClass: "max-w-2xl mx-auto"
+          },
+          {
+            id: "survey",
+            type: "survey-tabs",
+            title: "Survey Results",
+            caption: "Survey results revealing key usage patterns across different user segments",
+            surveyTabs: [
+              {
+                label: "Study",
+                images: [
+                  "/nootee/nootee survey/study/Statistics--Study.png",
+                  "/nootee/nootee survey/study/Study 1.png",
+                  "/nootee/nootee survey/study/Study 2.png",
+                  "/nootee/nootee survey/study/Study3.png",
+                  "/nootee/nootee survey/study/Study 4.png",
+                  "/nootee/nootee survey/study/Study 5.png",
+                  "/nootee/nootee survey/study/Study 6.png",
+                  "/nootee/nootee survey/study/Study 7.png"
+                ]
+              },
+              {
+                label: "Work",
+                images: [
+                  "/nootee/nootee survey/work/Statistics--Work.png",
+                  "/nootee/nootee survey/work/Work 1.png",
+                  "/nootee/nootee survey/work/Work 2.png",
+                  "/nootee/nootee survey/work/Work 3.png",
+                  "/nootee/nootee survey/work/Work 4.png"
+                ]
+              },
+              {
+                label: "Personal Use",
+                images: [
+                  "/nootee/nootee survey/personal use/Statistics-- Personal use.png",
+                  "/nootee/nootee survey/personal use/Personal use 1.png",
+                  "/nootee/nootee survey/personal use/Personal use 2.png",
+                  "/nootee/nootee survey/personal use/Personal use 3.png",
+                  "/nootee/nootee survey/personal use/Personal use 4.png"
+                ]
+              }
+            ]
+          },
+          {
+            id: "observations",
+            type: "stats-grid",
+            title: "Key Observations",
+            stats: [
+              { value: "50%", label: "Regularly review their notes", icon: "📊" },
+              { value: "37.5%", label: "Take notes a few times a week", icon: "✍️" },
+              { value: "50%", label: "Use notes primarily to manage knowledge", icon: "🧠" },
+              { value: "62.5%", label: "Target users aged 25-34", icon: "👥" },
+              { value: "56.2%", label: "Full-time employed", icon: "💼" }
+            ]
+          },
+          {
+            id: "interview",
+            type: "chat-interview",
+            title: "User Interview",
+            content: "We conducted an in-depth interview with Grey, a developer who falls within our target demographic, to gain qualitative insights into note-taking habits and pain points.",
+            date: "13/12/2021",
+            interviewee: {
+              name: "Grey",
+              role: "Developer",
+              avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Grey"
+            },
+            messages: [
+              { type: "sent", text: "I'm Kissinger! I'm here to interview you today, would you like to tell me about yourself?" },
+              { type: "received", text: "Sure, my name is Grey, I am 31 years old and I am a developer." },
+              { type: "sent", text: "Hi, Grey! Thank you for joining us for an interview on the development of our new note-taking app." },
+              { type: "received", text: "Hi, it's a pleasure for me too." },
+              { type: "sent", text: "Do you think it is important to take notes?" },
+              { type: "received", text: "Yes, it is very important." },
+              { type: "sent", text: "In what situations do you usually use note-taking?" },
+              { type: "received", text: "When I have something new to learn, when I have a long list of things to do at work, when I need to write something down that isn't an emergency but needs to be remembered, or when I need to make a shopping list." },
+              { type: "sent", text: "How often do you review your notes?" },
+              { type: "received", text: "In my personal life, I have maybe recheck them once. When I'm working, I look through my notes as I'm doing the work. And I frequently review them for study purposes." },
+              { type: "sent", text: "What devices do you usually use to record your notes?" },
+              { type: "received", text: "I usually use my laptop and in my life I use my phone." },
+              { type: "sent", text: "Are you used to taking detailed notes or just the key points?" },
+              { type: "received", text: "When it comes to studies or works, I prefer the basics first and fill in the details later, but when it comes to personal matters, I prefer to recall the more simple aspects." },
+              { type: "sent", text: "What problems have you encountered so far?" },
+              { type: "received", text: "I often have trouble with fragmented notes that I don't know how to organise and search." },
+              { type: "sent", text: "Do you encounter urgent situations that you need to record and often fail to capture the content?" },
+              { type: "received", text: "In my daily life, I frequently find instances in which I need to precisely capture the substance of a phone call but am unable to do so due to language differences. I frequently see this at work in meetings where it is too late to take notes or the notes are not detailed, which usually causes me to miss critical things." },
+              { type: "sent", text: "If you're having trouble keeping up, do you record videos to watch and review at a later time?" },
+              { type: "received", text: "I don't use extra tools to record or tape. I may use software for meetings or classes if it has a recording function." },
+              { type: "sent", text: "Do you make typos or misspell words when taking notes, resulting in unclear sections of your notes?" },
+              { type: "received", text: "No, I hardly ever encounter this situation." },
+              { type: "sent", text: "Do you have difficulty drawing diagrams when taking notes on the computer?" },
+              { type: "received", text: "No. I don't usually draw pictures, but if I need a picture or a drawing I usually take a photo or screenshot of the drawing." },
+              { type: "sent", text: "What is the latest note taking software you are using?" },
+              { type: "received", text: "Typora" },
+              { type: "sent", text: "Are there any other features you look forward to when taking notes?" },
+              { type: "received", text: "I am looking forward to an application that can help me organise fragmented information and build a network of knowledge." },
+              { type: "sent", text: "We appreciate your responses, and that's the end of our interview. Have a wonderful day and I'll see you soon, Grey!" },
+              { type: "received", text: "You're very welcome! Have a good day!" },
+              { type: "system", text: "Interview Concluded" }
+            ]
+          },
+          {
+            id: "personas-journey",
+            type: "dual-image",
+            images: [
+              {
+                title: "User Persona",
+                src: "/nootee/Persona.png",
+                caption: "User persona representing primary user segments"
+              },
+              {
+                title: "User Journey Map",
+                src: "/nootee/journey-map.png",
+                caption: "User journey map highlighting key touchpoints and pain points"
+              }
+            ]
+          },
+          {
+            id: "swot",
+            type: "image",
+            title: "Competitor Analysis",
+            src: "/nootee/swot.png",
+            caption: "SWOT analysis of competitor note-taking apps"
+          },
+          {
+            id: "user-needs",
+            type: "needs-list",
+            title: "User Needs",
+            needs: [
+              {
+                number: "01",
+                title: "Ease of Use",
+                description: "Users require a simple, clutter-free interface that is intuitive to navigate from the first use."
+              },
+              {
+                number: "02",
+                title: "Multi-format Flexibility",
+                description: "Users want the freedom to capture ideas in various formats, including rich text, images, audio recordings, and video clips."
+              },
+              {
+                number: "03",
+                title: "Seamless Synchronization",
+                description: "Users need their notes to sync instantly across all devices—desktop, laptop, iPad, and mobile—ensuring data is always accessible."
+              },
+              {
+                number: "04",
+                title: "Advanced Search Ability",
+                description: "Users want powerful retrieval tools to find notes instantly by specific keywords, custom tags, creation dates, or other criteria."
+              },
+              {
+                number: "05",
+                title: "Sharing & Collaboration",
+                description: "Users seek features that allow them to easily share notes with others or collaborate on documents in real-time."
+              },
+              {
+                number: "06",
+                title: "Productivity Templates",
+                description: "Users look for pre-built frameworks to kickstart their work, such as templates for meeting minutes, project plans, and class notes."
+              }
+            ]
+          },
+          {
+            id: "flow",
+            type: "flow-images",
+            title: "Flow & IA",
+            flows: [
+              {
+                part: "Part 1",
+                title: "Main Navigation (Overview)",
+                description: "This chart covers the user journey from the app launch to the Home page and lists the main entry points.",
+                src: "/nootee/Task Flow-Main Navigation (Overview).png"
+              },
+              {
+                part: "Part 2",
+                title: "Note Creation & Editing (Core Flow)",
+                description: "This is the detailed flow for creating content. It organizes the complex \"Tool Bar\" features into logical groups (Editing, Files, Output).",
+                src: "/nootee/Task Flow-Note Creation & Editing (Core Flow).png"
+              },
+              {
+                part: "Part 3",
+                title: "Management & Settings",
+                description: "Handles the auxiliary flows: searching, recovering deleted items, and user profile settings.",
+                src: "/nootee/Task Flow-Management & Settings.png"
+              }
+            ]
+          },
+          {
+            id: "features",
+            type: "features-interactive",
+            title: "Features & Functionalities",
+            content: "To resolve user needs",
+            interactiveFeatures: [
+              {
+                icon: "smile",
+                title: "Ease of Use",
+                description: "Visual hierarchical structure, drag-and-drop organisation, and intuitive shortcuts.",
+                image: "/nootee/Ease of Use.png"
+              },
+              {
+                icon: "edit",
+                title: "Flexibility",
+                description: "Switch freely between writing, drawing, and recording. Format notes with bold, italic, and underlining.",
+                image: "/nootee/Flexibility.png"
+              },
+              {
+                icon: "cloud",
+                title: "Synchronisation",
+                description: "Cloud storage lets users sync their notes instantly across multiple devices.",
+                image: "/nootee/Synchronisation.png"
+              },
+              {
+                icon: "search",
+                title: "Search Ability",
+                description: "Filter notes by times, keywords, tags, or other criteria to find them quickly.",
+                image: "/nootee/Search ability.png"
+              },
+              {
+                icon: "users",
+                title: "Sharing & Collaboration",
+                description: "Real-time collaboration, commenting, and comprehensive version history.",
+                image: "/nootee/Sharing.png"
+              },
+              {
+                icon: "layout",
+                title: "Templates",
+                description: "Choose a template from the list, customise it, or upload your own.",
+                image: "/nootee/Templets.png"
+              },
+              {
+                icon: "wifi-off",
+                title: "Offline Functionality",
+                description: "Let users edit notes seamlessly without an internet connection.",
+                image: "/nootee/offline functionality.png"
+              }
+            ]
+          },
+          {
+            id: "final-ui",
+            type: "text-block",
+            title: "Final UI",
+            content: "The final design features a clean, dark-mode-first interface with generous spacing, clear typography, and intuitive gestures. Media uploads are seamlessly integrated, and collaboration features are accessible without cluttering the core experience."
+          },
+          {
+            id: "final-gallery",
+            type: "gallery",
+            images: [
+              "/nootee/nootee hi-fi/HomePage.png",
+              "/nootee/nootee hi-fi/Dashboard.png",
+              "/nootee/nootee hi-fi/Sign in.png",
+              "/nootee/nootee hi-fi/Sign up.png",
+              "/nootee/nootee hi-fi/Lecture Notes.png",
+              "/nootee/nootee hi-fi/Lecture Notes--Profile.png",
+              "/nootee/nootee hi-fi/Lecture Notes--Setting.png",
+              "/nootee/nootee hi-fi/Lecture Notes--Save.png",
+              "/nootee/nootee hi-fi/Lecture Notes--Share.png",
+              "/nootee/nootee hi-fi/Lecture Notes--Invite User.png",
+              "/nootee/nootee hi-fi/Lecture Notes--Templet List.png",
+              "/nootee/nootee hi-fi/Quick Notes.png",
+              "/nootee/nootee hi-fi/To do List.png",
+              "/nootee/nootee hi-fi/Search.png",
+              "/nootee/nootee hi-fi/filter.png",
+              "/nootee/nootee hi-fi/Study.png",
+              "/nootee/nootee hi-fi/Study--Selected.png",
+              "/nootee/nootee hi-fi/Study-- Deselected.png"
+            ]
+          },
+          {
+            id: "whats-next",
+            type: "wrapup-section",
+            title: "Next Steps & Learnings",
+            content: "A roadmap for future iterations and reflections on the design process.",
+            wrapup: {
+              roadmap: [
+                { icon: "users", title: "Conduct Usability Testing" },
+                { icon: "edit", title: "Refine Collaboration Features" },
+                { icon: "trending-up", title: "Explore AI Auto-tagging" },
+                { icon: "smartphone", title: "Build Mobile & Tablet Versions" }
+              ],
+              learnings: [
+                {
+                  icon: "check",
+                  title: "Research Validates Assumptions",
+                  description: "Survey data confirmed that search and organisation were top pain points, validating my initial intuition."
+                },
+                {
+                  icon: "minus",
+                  title: "Less is More",
+                  description: "Users clearly preferred minimal interfaces over feature-heavy designs, emphasizing clarity."
+                },
+                {
+                  icon: "users",
+                  title: "Context Matters",
+                  description: "Students vs. Professionals have distinct needs; one solution doesn't fit all segments perfectly."
+                }
+              ],
+              improvements: [
+                {
+                  icon: "code",
+                  title: "Workflows Exploration",
+                  description: "Deeper dive into real-time editing and commenting systems for better collaboration."
+                },
+                {
+                  icon: "shield",
+                  title: "Robust Testing",
+                  description: "Testing the tagging system with more diverse content types to ensure scalability."
+                },
+                {
+                  icon: "target",
+                  title: "Accessibility",
+                  description: "Refining color-based tags to ensure they are accessible to color-blind users."
+                }
+              ]
+            }
+          },
+          {
+            id: "nda-note",
+            type: "text-block",
+            title: "",
+            content: "<small style='opacity: 0.6;'>Note: Screens shown are simplified for portfolio sharing.</small>"
+          }
+        ]
       }
     },
     {
@@ -286,7 +919,7 @@ export const RESUME_DATA: ResumeData = {
       icon: <Utensils />,
       isCaseStudy: true,
       details: {
-        role: "Lead UI/UX Designer",
+        role: "UI/UX Designer",
         year: "2021",
         platform: "iOS & Android App",
         tools: "Adobe XD, Illustrator",
@@ -297,12 +930,14 @@ export const RESUME_DATA: ResumeData = {
           { id: "role", label: "My Role" },
           { id: "research", label: "Research & Insights" },
           { id: "define", label: "Define Phase" },
-          { id: "flow", label: "Task Flow" },
-          { id: "logo", label: "Logo Design" },
+          { id: "define-solutions", label: "Strategy Roadmap" },
+          { id: "flow", label: "User Task Flow" },
+          { id: "logo", label: "Logo Design Process" },
           { id: "iterations", label: "Design Iterations" },
+          { id: "final-polish", label: "Final Polish" },
+          { id: "hifi-section", label: "From Wireframes to Reality" },
           { id: "testing", label: "Testing & Refinement" },
-          { id: "final-ui", label: "Final UI" },
-          { id: "outcomes", label: "Outcomes" }
+          { id: "final-ui", label: "Final UI & Outcomes" }
         ],
 
         overview: "JR Academy's new office needed a food court solution. The challenge was to manage the lunch rush efficiency for staff.",
@@ -317,7 +952,7 @@ export const RESUME_DATA: ResumeData = {
             id: "overview",
             type: "text-block",
             title: "Background & Challenge",
-            content: "JR Academy is a growing educational institution that recently announced plans to open a new office in Sydney. To facilitate their staff's lunchtime needs, the office will feature a food court with 10 food vendors and a common dining room.\n\n**The Problem:** The lunchtime rush often leads to overcrowding, causing a shortage of available tables. Employees waste valuable break time queuing or searching for seats, leading to 'Lunch Rush Anxiety'.",
+            content: "JR Academy is a growing educational institution that recently announced plans to open a new office in Sydney. To facilitate their staff's lunchtime needs, the office will feature a food court with 10 food vendors and a common dining room.\n\n<strong style='color: #f472b6;'>The Problem:</strong> The lunchtime rush often leads to overcrowding, causing a shortage of available tables. Employees waste valuable break time queuing or searching for seats, leading to 'Lunch Rush Anxiety'.",
             highlight: "Goal: Simplify the lunch ordering process for both desk-side delivery and dine-in experiences, ensuring employees can eat stress-free."
           },
           {
@@ -347,16 +982,23 @@ export const RESUME_DATA: ResumeData = {
             id: "research",
             type: "text-block",
             title: "Research & Insights",
-            content: "I conducted background checks on competitor O2O apps and surveyed JR Academy staff. Key insights revealed that **speed** and **certainty** (knowing a table is available) were valued higher than menu variety."
+            content: "I conducted background checks on competitor O2O apps and surveyed JR Academy staff. Key insights revealed that <strong>speed</strong> and <strong>certainty</strong> (knowing a table is available) were valued higher than menu variety."
           },
           {
             id: "research-personas",
-            type: "gallery",
+            type: "dual-image",
             images: [
-              "https://i.postimg.cc/D0MXMxXg/Persona-Zoe.avif",
-              "https://i.postimg.cc/1XtFBk47/Persona-Adam.avif"
-            ],
-            caption: "User Personas: Zoe (HR) & Adam (Product Manager)"
+              {
+                title: "Zoe - HR Manager",
+                src: "https://i.postimg.cc/D0MXMxXg/Persona-Zoe.avif",
+                caption: "User Persona: Zoe focuses on efficiency and team coordination"
+              },
+              {
+                title: "Adam - Product Manager",
+                src: "https://i.postimg.cc/1XtFBk47/Persona-Adam.avif",
+                caption: "User Persona: Adam values speed and certainty in his lunch routine"
+              }
+            ]
           },
           {
             id: "define",
@@ -366,32 +1008,74 @@ export const RESUME_DATA: ResumeData = {
           },
           {
             id: "define-solutions",
-            type: "text-block",
-            title: "Strategy & Solutions",
-            content: "Key Pain Point:\nThe lunchtime rush at the canteen often leads to overcrowding, causing a shortage of available tables for the employees.\n\nPlan Solutions:\n• Creating a user flow to streamline the ordering process and reduce wait times\n• Implementing a reservation system to ensure that employees can secure their preferred seating options in advance\n• Developing a notification system to alert employees when their orders are ready for pickup\n• Providing clear signage and way finding to guide employees through the food court\n• Regularly monitoring and analysing user feedback to continuously improve the solution and address any new pain points that may arise.",
-            highlight: "Strategic Focus: Reducing wait times and securing seating."
+            type: "strategy-roadmap",
+            title: "Strategy Roadmap",
+            roadmapChallenge: "Lunchtime overcrowding & shortage of tables.",
+            roadmapSteps: [
+              {
+                step: "01",
+                title: "Streamline Ordering",
+                description: "Creating a user flow to streamline the ordering process and reduce wait times."
+              },
+              {
+                step: "02",
+                title: "Seat Reservation",
+                description: "Implementing a reservation system so employees can secure seating in advance."
+              },
+              {
+                step: "03",
+                title: "Smart Notification",
+                description: "Developing a notification system to alert employees when orders are ready."
+              },
+              {
+                step: "04",
+                title: "Wayfinding System",
+                description: "Providing clear signage to guide employees through the food court effortlessly."
+              },
+              {
+                step: "05",
+                title: "Feedback Loop",
+                description: "Analysing user feedback to continuously improve the solution."
+              }
+            ]
           },
           {
             id: "flow",
-            type: "text-block",
+            type: "interactive-flow",
             title: "User Task Flow",
-            content: "To address the diverse needs, I mapped out two distinct flows: one for users who want to **order food** in the canteen, and another for users who **bring their own lunch** but still need to book a seat."
-          },
-          {
-            id: "flow-img-1",
-            type: "image",
-            src: "https://i.postimg.cc/6pRvML5f/User-Task-Flow-1.avif",
-            alt: "User Flow - Ordering Food",
-            caption: "Flow 1: For users ordering food in the canteen",
-            imageClass: "filter invert opacity-80"
-          },
-          {
-            id: "flow-img-2",
-            type: "image",
-            src: "https://i.postimg.cc/RFGfcSCy/User-Task-Flow-2.avif",
-            alt: "User Flow - Seat Booking Only",
-            caption: "Flow 2: For users who bring their own lunch and need a seat only",
-            imageClass: "filter invert opacity-80"
+            content: "Interactive visualization of the ordering process.",
+            flowDiagrams: [
+              {
+                id: "flow-1",
+                label: "🍔 Canteen Ordering",
+                caption: "Flow 1: Ordering Food in Canteen",
+                nodes: [
+                  { label: "Discover", x: 7, y: 22, type: "start" },
+                  { label: "Search", x: 7, y: 68, type: "start" },
+                  { label: "Select", x: 20, y: 45 },
+                  { label: "Take Away", x: 34, y: 22 },
+                  { label: "Dine In", x: 34, y: 68 },
+                  { label: "Select Table", x: 48, y: 68 },
+                  { label: "Check Out", x: 58, y: 45 },
+                  { label: "Place Order", x: 71, y: 45 },
+                  { label: "Finish", x: 83, y: 45, type: "end" },
+                  { label: "Review", x: 93, y: 45 }
+                ]
+              },
+              {
+                id: "flow-2",
+                label: "🍱 Bringing Lunch",
+                caption: "Flow 2: Bringing Own Lunch",
+                nodes: [
+                  { label: "Dine In", x: 7, y: 50, type: "start" },
+                  { label: "Select Table", x: 23, y: 50 },
+                  { label: "Check Out", x: 41, y: 50 },
+                  { label: "Confirm", x: 57, y: 50 },
+                  { label: "Finish", x: 72, y: 50, type: "end" },
+                  { label: "Review", x: 88, y: 50 }
+                ]
+              }
+            ]
           },
           {
             id: "logo",
@@ -410,12 +1094,11 @@ export const RESUME_DATA: ResumeData = {
             id: "iterations",
             type: "text-block",
             title: "Design Iterations (Low-Fi to Hi-Fi)",
-            content: "I employed a three-step development process to iterate quickly. The Scrollytelling format below demonstrates the evolution from initial wireframes to polished designs."
+            content: "I employed a three-step development process to iterate quickly. Below is an interactive 3D carousel showcasing the evolution from initial wireframes to polished designs."
           },
           {
-            id: "iterations-scrolly",
-            type: "scrollytelling",
-            title: "From Wireframes to Reality",
+            id: "lowfi-carousel",
+            type: "carousel-3d",
             steps: [
                 { title: "Low-Fi 1: Log in Page", text: "Initial concept for the login screen, focusing on quick access for busy employees.", image: "https://i.postimg.cc/pX3jQ1xM/Low-Fi1.avif", caption: "Wireframe 1/16" },
                 { title: "Low-Fi 2: Initial page", text: "Entry point options for Delivery or Pickup modes.", image: "https://i.postimg.cc/Hsr5y1q6/Low-Fi2.avif", caption: "Wireframe 2/16" },
@@ -432,41 +1115,64 @@ export const RESUME_DATA: ResumeData = {
                 { title: "Low-Fi 13: My Orders Page", text: "Tracking active orders and viewing history.", image: "https://i.postimg.cc/T3mDtqYm/Low-Fi13.avif", caption: "Wireframe 13/16" },
                 { title: "Low-Fi 14: Book a table Page", text: "Standalone flow for booking a table without ordering food.", image: "https://i.postimg.cc/CL98C60v/Low-Fi14.avif", caption: "Wireframe 14/16" },
                 { title: "Low-Fi 15: Select Seats Page", text: "Visual seat map for choosing specific tables.", image: "https://i.postimg.cc/HsFM0PHg/Low-Fi15.avif", caption: "Wireframe 15/16" },
-                { title: "Low-Fi 16: My Account Page", text: "User profile, payment methods, and settings.", image: "https://i.postimg.cc/yYD9ZCM9/Low-Fi16.avif", caption: "Wireframe 16/16" },
+                { title: "Low-Fi 16: My Account Page", text: "User profile, payment methods, and settings.", image: "https://i.postimg.cc/yYD9ZCM9/Low-Fi16.avif", caption: "Wireframe 16/16" }
+            ]
+          },
+          {
+            id: "final-polish",
+            type: "text-block",
+            title: "Final Polish",
+            content: "The final UI incorporates feedback from user testing, featuring larger touch targets and clearer status indicators for 'Live Queue'. Below are all the polished high-fidelity screens ready for development handoff."
+          },
+          {
+            id: "final-polish-gallery",
+            type: "gallery",
+            images: [
+              "/jr food court/jr hi-fis/Log in Page.png",
+              "/jr food court/jr hi-fis/Log in Page-1.png",
+              "/jr food court/jr hi-fis/Initial page.png",
+              "/jr food court/jr hi-fis/Home Page.png",
+              "/jr food court/jr hi-fis/Search Page.png",
+              "/jr food court/jr hi-fis/Searched Places.png",
+              "/jr food court/jr hi-fis/Searched Places-1.png",
+              "/jr food court/jr hi-fis/Searched Items.png",
+              "/jr food court/jr hi-fis/Store's Review Page.png",
+              "/jr food court/jr hi-fis/Item Detail Select page.png",
+              "/jr food court/jr hi-fis/Item Detail Select page (Dropdown).png",
+              "/jr food court/jr hi-fis/Item Detail Select page (Dropdown)-1.png",
+              "/jr food court/jr hi-fis/Item Detail Select page (Dropdown)-2.png",
+              "/jr food court/jr hi-fis/Item Detail Select page (Dropdown)-3.png",
+              "/jr food court/jr hi-fis/My Shopping Cart Page -- Take away.png",
+              "/jr food court/jr hi-fis/My Shopping Cart Page -- Dine in.png",
+              "/jr food court/jr hi-fis/My Shopping Cart Page -- Dine in 3.png",
+              "/jr food court/jr hi-fis/Check Out page.png",
+              "/jr food court/jr hi-fis/Choose a Payment.png",
+              "/jr food court/jr hi-fis/Order Placed.png",
+              "/jr food court/jr hi-fis/My Orders.png",
+              "/jr food court/jr hi-fis/My Account Page.png"
+            ],
+            caption: "Complete High-Fidelity UI Screens (Ordered by User Flow)"
+          },
+          {
+            id: "hifi-section",
+            type: "scrollytelling",
+            title: "From Wireframes to Reality",
+            steps: [
                 {
                     title: "High Fidelity Design",
                     text: "Applying the visual identity. We used a clean, appetizing color palette (Warm Orange & Deep Blue) to stimulate appetite while maintaining readability.",
-                    image: "https://i.postimg.cc/jSN7MQdv/Low-Hi-Fi.avif",
-                    caption: "High Fidelity: Visual Design Applied"
-                },
-                {
-                    title: "Final Polish",
-                    text: "The final UI incorporates feedback from user testing, featuring larger touch targets and clearer status indicators for 'Live Queue'.",
-                    image: "https://i.postimg.cc/4NjcvFGB/Hifis.png",
-                    caption: "Final Production Design"
+                    image: "https://i.postimg.cc/jSN7MQdv/Low-Hi-Fi.avif"
                 },
                 {
                     title: "Deliver",
                     text: "Real-world application and final handoff deliverables.",
-                    image: "https://i.postimg.cc/28gWdXmf/Real-life-use.avif",
-                    caption: "Real-life Use Case"
+                    image: "https://i.postimg.cc/28gWdXmf/Real-life-use.avif"
                 }
             ]
           },
           {
             id: "testing",
-            type: "text-block",
-            title: "Testing & Refinement",
-            content: "During usability testing, we discovered that the initial table booking function was confusing. Users were unable to select a specific dining period, leading to anxiety about seat availability.\n\n**Improvement Strategy:**\n• **Specific Dining Periods:** Added a time-slot selector (e.g., 12:00 PM - 12:30 PM).\n• **Visual Seat Map:** Enabled users to select a specific table number via a visual layout, similar to cinema booking."
-          },
-          {
-             id: "testing-comparison",
-             type: "gallery",
-             images: [
-                 "https://i.postimg.cc/L6Jf1Fc1/Select-Seats-Page-1.avif",
-                 "https://i.postimg.cc/8PxvdnDP/Select-Seat-Page-2.avif"
-             ],
-             caption: "Comparison: Initial Seat Selection (Left) vs Refined Visual Seat Map (Right)"
+            type: "testing-refinement"
           },
           {
             id: "final-ui",
@@ -477,7 +1183,7 @@ export const RESUME_DATA: ResumeData = {
           {
             id: "outcomes-video",
             type: "video",
-            src: "https://video.wixstatic.com/video/dc438f_2a303de3a77e41e2a7f5a98d844566df/720p/mp4/file.mp4",
+            src: "/jr food court/video/JR Demo.mp4",
             caption: "High Fidelity Prototype Walkthrough"
           }
         ]

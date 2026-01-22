@@ -5,7 +5,6 @@ import { RESUME_DATA } from './data/resume-data';
 import { Project } from './types';
 
 // UI Components
-import { CustomCursor } from './components/ui/CustomCursor';
 import { ParticleDonut } from './components/ui/ParticleDonut';
 
 // Section Components
@@ -27,9 +26,8 @@ export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-pink-500/30 cursor-none">
+    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-pink-500/30">
       
-      <CustomCursor />
       <ParticleDonut />
 
       {/* Navigation */}
@@ -51,8 +49,11 @@ export default function Portfolio() {
           email={RESUME_DATA.contact.email}
         />
 
-        {/* Experience Section */}
-        <ExperienceSection experience={RESUME_DATA.experience} />
+        {/* Works Section */}
+        <WorksSection 
+          projects={RESUME_DATA.projects}
+          onProjectClick={setSelectedProject}
+        />
 
         {/* Skills Section */}
         <SkillsSection 
@@ -61,11 +62,8 @@ export default function Portfolio() {
           education={RESUME_DATA.education}
         />
 
-        {/* Works Section */}
-        <WorksSection 
-          projects={RESUME_DATA.projects}
-          onProjectClick={setSelectedProject}
-        />
+        {/* Experience Section */}
+        <ExperienceSection experience={RESUME_DATA.experience} />
 
         {/* Contact Section */}
         <ContactSection 

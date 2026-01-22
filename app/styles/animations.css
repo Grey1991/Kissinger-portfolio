@@ -64,7 +64,23 @@
   background-color: rgba(236, 72, 153, 0.5);
 }
 
-/* Hide default cursor */
-body {
-  cursor: none;
+/* Chat Interview Animations */
+@keyframes messagePopIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

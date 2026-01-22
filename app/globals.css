@@ -24,3 +24,38 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Flip Card 3D Transform Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.group:hover .group-hover\:rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Flow Diagram Animation */
+@keyframes flowLine {
+  to { 
+    stroke-dashoffset: 0; 
+  }
+}
+
+.flow-layer.active {
+  opacity: 1 !important;
+  pointer-events: all !important;
+  transform: scale(1) !important;
+}
