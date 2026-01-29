@@ -1,7 +1,8 @@
 import React from 'react';
 import { 
   Database, Users, Shield, Clock, Layers, Smartphone, 
-  PenTool, Utensils, Search, MousePointer, CheckSquare, Monitor 
+  PenTool, Utensils, Search, MousePointer, CheckSquare, Monitor,
+  Layout, Activity, Target, Code, FileText, Eye, TrendingUp, Zap, Lightbulb, RefreshCw, MessageCircle, AlertCircle, HelpCircle, Check
 } from 'lucide-react';
 import { ResumeData } from '../types';
 
@@ -168,56 +169,452 @@ export const RESUME_DATA: ResumeData = {
     },
     {
       id: "surfcom",
-      title: "SurfCom ICEMS (SLSA)",
+      title: "SurfCom ICEMS — Incident Logging & Manager Refresh",
       subtitle: "Emergency / Incident Mgmt",
       category: "Regulated",
-      summary: "Enhancing time-critical notification and incident communication workflows for operations centers.",
-      tags: ["Time-critical UX", "Operational Workflows", "Clarity"],
+      summary: "Refreshing incident workflows and message-centre patterns to improve speed, clarity, and coordination in operational contexts.",
+      tags: ["Emergency Ops", "Incident Logging", "Messaging", "Maps & Location", "Prototype", "QA"],
       gradient: "from-red-600 to-rose-600",
       icon: <Clock />,
+      image: "/surfcom%20icems/hero.png",
+      isCaseStudy: true,
       details: {
         role: "UI/UX Designer",
         year: "2023",
         platform: "Desktop Operational Console",
         tools: "Figma, Adobe XD",
         type: "Mission Critical",
-        overview: "SurfCom operators manage incidents in real-time. Speed and clarity are matters of life and safety. The UI needed to support high-stress decision making.",
-        myRole: "Designed improvements to notification systems and incident logging workflows.",
-        constraints: "High contrast requirements, information density, zero-latency interaction expectations.",
-        approach: "Focused on cognitive load reduction. Used color coding strictly for status (Red = Danger/Active, Green = Resolved).",
-        keyDecisions: [
-          "Designed a 'Ticker' style notification stream that doesn't block the main map view.",
-          "Created keyboard shortcuts for common actions to reduce mouse travel.",
-          "Used distinct visual hierarchy for 'Active' vs 'Pending' incidents."
+        
+        toc: [
+          { id: "overview", label: "Overview" },
+          { id: "goals", label: "Goals" },
+          { id: "journey", label: "End-to-End Journey" },
+          { id: "design-highlights", label: "Design Highlights" },
+          { id: "safety-rails", label: "Safety Rails" }
         ],
-        outcome: "Streamlined communication between dispatchers and patrols, reducing time to log critical incidents."
+
+        overview: "SurfCom ICEMS is an incident management system supporting operators, supervisors, and responders during live emergency operations. The system handles incident logging, real-time messaging, location tracking, and coordination workflows where speed and clarity directly impact safety outcomes.\n\nSurfCom is part of Surf Life Saving's operational communications ecosystem and is described as a radio communications centre supporting coordination and operational data collection. It also provides communication and coordination support across lifesaving services and can liaise with external emergency services as required—making clear status visibility and message traceability critical in practice.",
+        myRole: "Interaction design, prototyping, design specifications, and continuous UX optimisation.",
+        constraints: "High-contrast requirements for operational environments, information density, zero-latency interaction expectations, and strict data capture consistency for compliance.",
+        approach: "Focused on reducing friction in time-critical workflows through keyboard-first patterns, clear status hierarchy, and consolidated message-centre design that keeps incident context and communications unified.",
+        keyDecisions: [
+          "Adopted keyboard-first navigation and high-contrast UI for operational speed and accessibility.",
+          "Unified incident context, messaging, and coordination into a single, persistent workspace.",
+          "Validated design patterns with real operators to ensure practical usability."
+        ],
+        outcome: "Delivered a streamlined, high-clarity interface that improved incident response speed and reduced operator error, now in use by Surf Life Saving's operations team.",
+        contentSections: [
+          {
+            id: "demo-video",
+            type: "video",
+            src: "/surfcom%20icems/ICEMS%20draft%20demo%201.mp4",
+            alt: "SurfCom ICEMS Demo Walkthrough",
+            caption: "System walkthrough showing incident logging, message centre, and coordination workflows"
+          },
+          {
+            id: "overview",
+            type: "text-block",
+            title: "Overview",
+            content: "SurfCom ICEMS is an incident management system supporting operators, supervisors, and responders during live emergency operations. The system handles incident logging, real-time messaging, location tracking, and coordination workflows where speed and clarity directly impact safety outcomes.\n\nSurfCom is part of Surf Life Saving's operational communications ecosystem and is described as a radio communications centre supporting coordination and operational data collection. It also provides communication and coordination support across lifesaving services and can liaise with external emergency services as required—making clear status visibility and message traceability critical in practice."
+          },
+          {
+            id: "incident-scenario",
+            type: "incident-scenario"
+          },
+          {
+            id: "journey",
+            type: "image",
+            src: "/surfcom%20icems/Service%20journey.png",
+            alt: "End-to-End Service Journey",
+            caption: "Incident lifecycle: log → manage/orchestrate → close/report. Journey mapping informed prioritisation and interaction patterns."
+          },
+          {
+            id: "goals",
+            type: "goals-interactive"
+          },
+          {
+            id: "design-highlights",
+            type: "pattern-cards"
+          },
+          {
+            id: "safety-rails",
+            type: "safety-rails",
+            safetyRails: [
+              {
+                risk: "Acknowledgement is delayed or missing, leading to false assumptions.",
+                guardrail: "Persist \"awaiting acknowledgement\" state and keep the last confirmed update visibly pinned.",
+                image: "/surfcom%20icems/last%20confirmed%20update.png",
+                caption: "Pinned 'last confirmed update' and recency cues make acknowledgement uncertainty explicit.",
+                chips: ["Clarity", "Status tracking"]
+              },
+              {
+                risk: "Updates arrive out of order, causing confusion about what's current.",
+                guardrail: "Chronological log with latest-state emphasis to prevent stale decisions.",
+                image: "/surfcom%20icems/Key%20events%20+%20latest%20status.png",
+                caption: "Key events + latest status reduce reliance on reading the full message history.",
+                chips: ["Clarity", "Handover"]
+              },
+              {
+                risk: "Non-standard callers or channels create inconsistent data capture.",
+                guardrail: "Provide fast structured entry paths and prevent \"free text everywhere\" drift.",
+                image: "/surfcom%20icems/Caller%20modes.png",
+                caption: "Caller modes (Radio/Public/Agency) guide structured capture while keeping entry fast.",
+                chips: ["Data consistency", "Speed"]
+              },
+              {
+                risk: "High-stress actions lead to accidental clicks (ack/close).",
+                guardrail: "Single primary action + clear confirmation hierarchy for critical moments.",
+                image: "/surfcom%20icems/Close%20Incident%20Confirm.png",
+                caption: "Destructive action separated and confirmed to reduce accidental closure.",
+                chips: ["Error prevention", "Safety"]
+              },
+              {
+                risk: "Context switching between incident details and comms causes missed information.",
+                guardrail: "Keep coordination history attached to the incident context, with clear recency cues.",
+                image: "/surfcom%20icems/Split%20view.png",
+                caption: "Split view keeps incident context and communication trail visible together.",
+                chips: ["Context preservation", "Coordination"]
+              },
+              {
+                risk: "Handovers happen mid-incident; missing context slows continuity.",
+                guardrail: "Preserve an audit-like trail of key actions and messages for rapid re-orientation.",
+                image: "/surfcom%20icems/Incident%20recap.png",
+                caption: "Incident recap + key events support rapid re-orientation during handover.",
+                chips: ["Handover", "Continuity"]
+              }
+            ]
+          },
+          // Removed Prototype & Prioritisation and Final UI sections as requested
+        ]
       }
     },
     {
       id: "hubx",
-      title: "HubX (Life Byte)",
-      subtitle: "B2B Trading & Risk Platform",
-      category: "Enterprise",
-      summary: "Fintech dashboard focused on information density, data clarity, and rapid decision-making.",
-      tags: ["B2B", "Data-heavy UI", "Documentation", "Interaction"],
+      title: "HubX — Trading Management Platform",
+      subtitle: "Enterprise Fintech Solution",
+      category: "Desktop",
+      summary: "HubX is a portfolio management system for fund managers and clients. It supports managed funds, asset management, and forex copy trading on one platform.",
+      tags: ["Trading Platform", "Fintech", "Data-heavy UI"],
       gradient: "from-slate-700 to-indigo-900",
+      image: "/hubx/hero.png",
       icon: <Layers />,
+      isCaseStudy: true,
       details: {
         role: "UI/UX Designer",
         year: "2023",
-        platform: "Desktop Web",
-        tools: "Figma",
-        type: "Fintech B2B",
-        overview: "A professional trading platform for risk managers. Users need to monitor thousands of data points simultaneously.",
-        myRole: "Conducted UX audits, defined component patterns for data grids, and built high-fidelity prototypes.",
-        constraints: "Dense data requirements, need for real-time updates without UI flickering.",
-        approach: "Utilized a strict grid system. Designed 'Dark Mode' by default to reduce eye strain for long sessions.",
-        keyDecisions: [
-          "Implemented customizable dashboard widgets allowing users to build their own workspace.",
-          "Designed 'Sparklines' for quick trend analysis within data tables.",
-          "Created a consistent colour semantic for financial data (Gain/Loss)."
+        platform: "Desktop",
+        tools: "Figma, Ant Design",
+        type: "Trading Platform",
+        
+        toc: [
+          { id: "overview", label: "Overview" },
+          { id: "context", label: "Context & Constraints" },
+          { id: "role", label: "My Role" },
+          { id: "decisions", label: "Key Design Decisions" },
+          { id: "before-after", label: "Before → After" },
+          { id: "requirements", label: "Requirements & Specifications" },
+          { id: "outcome", label: "Outcome" },
+          { id: "reflection", label: "Reflection" }
         ],
-        outcome: "Delivered a scalable design system that developers used to build the MVP."
+
+        overview: "HubX is a portfolio management system for fund managers and clients, consolidating features from multiple forex trading platforms (MetaTrader 4/5) into a unified web-based platform. It supports managed funds, asset management, and forex copy trading, enabling centralized risk allocation and portfolio management.",
+        myRole: "Led end-to-end UX research, interface design, requirements documentation, and quality assurance across the product lifecycle.",
+        constraints: "Enterprise-grade data density, accuracy requirements, complex multi-user workflows, and integration with legacy trading systems.",
+        approach: "",
+        keyDecisions: [],
+        outcome: "",
+        
+        contentSections: [
+          {
+            id: "overview",
+            type: "hud-ribbon",
+            title: "Project Overview",
+            stats: [
+              {
+                label: "Purpose",
+                value: "Unified Platform",
+                icon: "archive"
+              },
+              {
+                label: "Target Users",
+                value: "Fund Managers",
+                icon: "users"
+              },
+              {
+                label: "Core Goals",
+                value: "Risk & Portfolio",
+                icon: "trending-up"
+              },
+              {
+                label: "Tools",
+                value: "Figma + Ant Design",
+                icon: "layout"
+              }
+            ]
+          },
+          {
+            id: "ecosystem",
+            type: "ecosystem-diagram"
+          },
+          {
+            id: "context",
+            type: "feature-list",
+            title: "Context & Constraints",
+            intro: "Operating within the realities of enterprise fintech:",
+            features: [
+              {
+                title: "Data-Dense Interface Requirements",
+                desc: "Users need to monitor hundreds of positions, transactions, and risk metrics simultaneously without losing clarity.",
+                icon: <Layout size={20} />
+              },
+              {
+                title: "Complex Multi-Step Workflows",
+                desc: "Trading operations involve intricate sequences spanning multiple screens, requiring seamless navigation and state management.",
+                icon: <Activity size={20} />
+              },
+              {
+                title: "Accuracy & Precision",
+                desc: "Financial data demands pixel-perfect alignment, consistent formatting, and zero tolerance for ambiguity or error.",
+                icon: <Target size={20} />
+              },
+              {
+                title: "Cross-Platform Consistency",
+                desc: "Migrating users from legacy systems (MT4/MT5) requires familiar patterns while introducing modern improvements.",
+                icon: <Layers size={20} />
+              }
+            ]
+          },
+          {
+            id: "role",
+            type: "flip-cards",
+            title: "My Role & Responsibilities",
+            flipCards: [
+              {
+                problemIcon: "search",
+                problemTitle: "Research & Analysis",
+                problemDesc: "Understanding the existing landscape",
+                goalIcon: "target",
+                goalTitle: "Discovery Process",
+                goals: [
+                  "Examined previous platform versions to identify feature gaps",
+                  "Analyzed user experience issues in legacy MetaTrader interfaces",
+                  "Documented improvement opportunities across core workflows"
+                ]
+              },
+              {
+                problemIcon: "edit",
+                problemTitle: "UX/UI Design",
+                problemDesc: "Translating requirements into interfaces",
+                goalIcon: "layout",
+                goalTitle: "Design Execution",
+                goals: [
+                  "Created high-fidelity mockups using Ant Design components",
+                  "Developed clickable prototypes for stakeholder validation",
+                  "Maintained visual consistency across 40+ screens"
+                ]
+              },
+              {
+                problemIcon: "users",
+                problemTitle: "Collaboration",
+                problemDesc: "Aligning cross-functional teams",
+                goalIcon: "check",
+                goalTitle: "Stakeholder Alignment",
+                goals: [
+                  "Partnered with PM to define objectives and functional requirements",
+                  "Collaborated with developers on implementation specifications",
+                  "Facilitated design reviews to maintain project momentum"
+                ]
+              },
+              {
+                problemIcon: "file-text",
+                problemTitle: "Documentation & QA",
+                problemDesc: "Ensuring implementation accuracy",
+                goalIcon: "shield",
+                goalTitle: "Quality Assurance",
+                goals: [
+                  "Authored comprehensive requirements docs combining PM and prototype insights",
+                  "Tested front-end builds, documenting discrepancies for resolution",
+                  "Iterated designs based on feedback, constraints, and testing results"
+                ]
+              },
+              {
+                problemIcon: "activity",
+                problemTitle: "Usability Testing",
+                problemDesc: "Validating design decisions",
+                goalIcon: "trending-up",
+                goalTitle: "User Validation",
+                goals: [
+                  "Identified behavioral patterns revealing confusion or inefficiency",
+                  "Applied testing insights to refine interactions and resolve pain points",
+                  "Conducted iterative testing cycles to validate improvements"
+                ]
+              }
+            ]
+          },
+          {
+            id: "decisions",
+            type: "console-nav",
+            title: "Key Design Decisions",
+            intro: "Strategic choices that shaped the platform:",
+            consoleNav: {
+              items: [
+                {
+                  navTitle: "Ant Design as Foundation",
+                  tag: "LIBRARY",
+                  displayTitle: "Enterprise-Grade Consistency",
+                  description: "Leveraged Ant Design to ensure consistency, accessibility, and developer efficiency across the entire platform ecosystem."
+                },
+                {
+                  navTitle: "Component-Driven Arch",
+                  tag: "MODULARITY",
+                  displayTitle: "Rapid Page Assembly",
+                  description: "Built reusable UI modules (data grids, forms, cards) enabling rapid development while maintaining strict visual coherence."
+                },
+                {
+                  navTitle: "Documentation Standards",
+                  tag: "HANDOFF",
+                  displayTitle: "Reducing Ambiguity",
+                  description: "Established detailed requirements documents translating designs into technical specifications for seamless implementation."
+                },
+                {
+                  navTitle: "Iterative QA Integration",
+                  tag: "QUALITY",
+                  displayTitle: "Design Fidelity Assurance",
+                  description: "Embedded continuous testing throughout development cycles, catching discrepancies early to maintain pixel-perfect fidelity."
+                },
+                {
+                  navTitle: "Workflow Simplification",
+                  tag: "UX OPTIMIZATION",
+                  displayTitle: "Frictionless Workflows",
+                  description: "Analysed user journeys to identify and eliminate friction points, streamlining multi-step processes without sacrificing functionality."
+                }
+              ]
+            }
+          },
+          {
+            id: "before-after",
+            type: "before-after-slider",
+            title: "Platform Evolution",
+            content: "Migrating from legacy interfaces to a unified modern platform required balancing familiarity with innovation.",
+            beforeAfterSlider: {
+              badge: "TRANSFORMATION",
+              beforeImages: ["/hubx/MetaTrader%204%20before.png", "/hubx/MetaTrader%205%20before.png"],
+              afterImages: ["/hubx/MetaTrader%204%20After.png", "/hubx/MetaTrader%205%20after.png"],
+              beforeLabel: "Before: Tool-Centric",
+              afterLabel: "After: Task-Focused",
+              comparisons: [
+                {
+                  label: "MetaTrader 4",
+                  beforeImage: "/hubx/MetaTrader%204%20before.png",
+                  afterImage: "/hubx/MetaTrader%204%20After.png"
+                },
+                {
+                  label: "MetaTrader 5",
+                  beforeImage: "/hubx/MetaTrader%205%20before.png",
+                  afterImage: "/hubx/MetaTrader%205%20after.png"
+                }
+              ],
+              improvements: [
+                {
+                  title: "Unified Information Architecture",
+                  description: "Consolidated scattered features from multiple platforms into a coherent navigation structure, reducing cognitive load.",
+                  icon: <Layout size={18} />
+                },
+                {
+                  title: "Consistent Visual Language",
+                  description: "Replaced fragmented UI patterns with standardised Ant Design components, improving scanability and reducing the learning curve.",
+                  icon: <Eye size={18} />
+                },
+                {
+                  title: "Enhanced Data Clarity",
+                  description: "Redesigned tables, charts, and dashboards with improved typography, spacing, and colour coding for faster comprehension.",
+                  icon: <TrendingUp size={18} />
+                },
+                {
+                  title: "Streamlined Workflows",
+                  description: "Simplified multi-step operations by removing unnecessary screens and optimising task sequences based on user testing.",
+                  icon: <Zap size={18} />
+                }
+              ]
+            }
+          },
+          {
+            id: "requirements",
+            type: "hotspot-doc",
+            title: "Requirements & Specifications",
+            content: "Hover over the interactive markers to see how documentation bridges design and engineering.",
+            hotspotDoc: {
+              imageSrc: "/hubx/BA%20Document.png",
+              hotspots: [
+                {
+                  position: { top: "35%", left: "55%" },
+                  title: "Reduced Ambiguity",
+                  description: "Explicitly linking Ant Design components (e.g., Input, Select) ensures developers use the exact library assets, eliminating UI inconsistencies."
+                },
+                {
+                  position: { top: "60%", left: "70%" },
+                  title: "QA Foundation",
+                  description: "Defining field-level logic (e.g., \"Digits set to 2 for fiat currency\") provides QA with testable criteria for automated validation.",
+                  tooltipAlign: "right"
+                },
+                {
+                  position: { top: "80%", left: "90%" },
+                  title: "Stakeholder Alignment",
+                  description: "Documenting data structures (JSON values) acts as a contract between Backend and Frontend, preventing API mismatches.",
+                  tooltipAlign: "right"
+                }
+              ]
+            }
+          },
+          {
+            id: "outcome",
+            type: "text-block",
+            title: "Outcome",
+            content: "The redesigned platform delivered measurable improvements in user experience and development efficiency, though specific adoption metrics remain confidential."
+          },
+          {
+            id: "design-outcome-video",
+            type: "video",
+            src: "/hubx/hubx demo video.mp4",
+            alt: "HubX Final Design Outcome",
+            caption: "Final platform design demonstrating unified interface and consistent component usage"
+          },
+          {
+            id: "reflection",
+            type: "reflection-dual",
+            title: "Reflection",
+            reflectionData: {
+              successes: [
+                {
+                  title: "Documentation-First Approach",
+                  description: "Comprehensive requirements docs significantly reduced implementation questions and rework, accelerating development velocity."
+                },
+                {
+                  title: "Component Library Foundation",
+                  description: "Building on Ant Design provided immediate consistency and enabled focus on complex workflow problems rather than basic UI patterns."
+                },
+                {
+                  title: "Continuous QA Integration",
+                  description: "Embedded testing throughout development caught discrepancies early, maintaining design fidelity and reducing last-minute fixes."
+                }
+              ],
+              improvements: [
+                {
+                  title: "Earlier User Testing",
+                  description: "Conducting usability sessions during wireframe phase would have surfaced workflow issues before high-fidelity design investment."
+                },
+                {
+                  title: "Design System Governance",
+                  description: "Formalized contribution guidelines and version control for component library would improve scalability as the team grows."
+                },
+                {
+                  title: "Accessibility Audit Process",
+                  description: "Integrating WCAG compliance checks earlier in design would prevent retrofitting accessibility features post-development."
+                }
+              ]
+            }
+          }
+        ]
       }
     },
     {

@@ -27,7 +27,7 @@ export interface Education {
 // 内容区块类型
 export interface ContentSection {
   id: string;
-  type: 'text-block' | 'image' | 'video' | 'gallery' | 'stats-grid' | 'feature-list' | 'impact' | 'scrollytelling' | 'carousel-3d' | 'process-steps' | 'product-users' | 'survey-tabs' | 'chat-interview' | 'dual-image' | 'needs-list' | 'flow-images' | 'features-interactive' | 'next-steps-cards' | 'wrapup-section' | 'flip-cards' | 'strategy-roadmap' | 'interactive-flow' | 'testing-refinement' | 'context-panel' | 'requirements-list' | 'structure-cards' | 'react-component' | 'reflection-dual' | 'feature-showcase';
+  type: 'text-block' | 'image' | 'video' | 'gallery' | 'stats-grid' | 'feature-list' | 'impact' | 'scrollytelling' | 'carousel-3d' | 'process-steps' | 'product-users' | 'survey-tabs' | 'chat-interview' | 'dual-image' | 'needs-list' | 'flow-images' | 'features-interactive' | 'next-steps-cards' | 'wrapup-section' | 'flip-cards' | 'strategy-roadmap' | 'interactive-flow' | 'testing-refinement' | 'context-panel' | 'requirements-list' | 'structure-cards' | 'react-component' | 'reflection-dual' | 'feature-showcase' | 'hud-ribbon' | 'ecosystem-diagram' | 'console-nav' | 'before-after-slider' | 'hotspot-doc' | 'incident-scenario' | 'goals-interactive' | 'pattern-cards' | 'safety-rails';
   title?: string;
   content?: string;
   highlight?: string;
@@ -134,6 +134,47 @@ export interface ContentSection {
       description: string;
     }>;
   };
+  consoleNav?: {
+    items: Array<{
+      navTitle: string;
+      tag: string;
+      displayTitle: string;
+      description: string;
+    }>;
+  };
+  beforeAfterSlider?: {
+    badge: string;
+    beforeImages: string[];
+    afterImages: string[];
+    beforeLabel: string;
+    afterLabel: string;
+    comparisons?: Array<{
+      label: string;
+      beforeImage: string;
+      afterImage: string;
+    }>;
+    improvements: Array<{
+      title: string;
+      description: string;
+      icon: React.ReactNode;
+    }>;
+  };
+  hotspotDoc?: {
+    imageSrc: string;
+    hotspots: Array<{
+      position: { top: string; left: string };
+      title: string;
+      description: string;
+      tooltipAlign?: 'left' | 'right';
+    }>;
+  };
+  safetyRails?: Array<{
+    risk: string;
+    guardrail: string;
+    image: string;
+    caption: string;
+    chips?: string[];
+  }>;
 }
 
 // 功能特性类型
@@ -141,6 +182,7 @@ export interface Feature {
   title: string;
   desc: string;
   icon: ReactNode;
+  images?: string[];
 }
 
 // 统计数据类型

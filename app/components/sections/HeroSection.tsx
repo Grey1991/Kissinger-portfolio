@@ -16,7 +16,7 @@ export const HeroSection = ({ name }: HeroSectionProps) => {
         </h2>
         <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] leading-tight">
           PORTFOLIO FOR<br/>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-fuchsia-400 to-purple-400 animate-pulse-slow">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-fuchsia-400 to-purple-400">
             {name.toUpperCase()}
           </span>
         </h1>

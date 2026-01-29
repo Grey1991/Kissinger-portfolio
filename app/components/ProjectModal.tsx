@@ -1,15 +1,35 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus } from 'lucide-react';
+import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive } from 'lucide-react';
 import { Project } from '../types';
 import { ScrollytellingBlock } from './ScrollytellingBlock';
 import { Carousel3D } from './Carousel3D';
 import { TestingRefinement } from './TestingRefinement';
+import { IncidentScenario } from './IncidentScenario';
+import GoalsInteractive from './GoalsInteractive';
+import PatternCards from './PatternCards';
+import SafetyRails from './SafetyRails';
 import dynamic from 'next/dynamic';
 
 // Dynamically import CourtCanva2 component
 const CourtCanva2 = dynamic(() => import('./CourtCanva2'), { ssr: false });
+
+// Add keyframes for pulse animation
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+      70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(0,0,0,0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+    }
+  `;
+  if (!document.querySelector('style[data-pulse-animation]')) {
+    style.setAttribute('data-pulse-animation', 'true');
+    document.head.appendChild(style);
+  }
+}
 
 // Icon mapping for features
 const iconMap: Record<string, LucideIcon> = {
@@ -41,6 +61,7 @@ const iconMap: Record<string, LucideIcon> = {
   'lightbulb': Lightbulb,
   'shopping-cart': ShoppingCart,
   'user': User,
+  'archive': Archive,
 };
 
 // Features Interactive Component
@@ -637,6 +658,215 @@ const GalleryComponent = ({ images, caption, onLightboxChange }: { images: strin
   );
 };
 
+// Before/After Slider Component
+const BeforeAfterSlider: React.FC<{ section: any }> = ({ section }) => {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const [activeComparison, setActiveComparison] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const comparisons = section.beforeAfterSlider.comparisons || [];
+
+  const handleMove = (clientX: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    let position = ((clientX - rect.left) / rect.width) * 100;
+    position = Math.max(0, Math.min(100, position));
+    setSliderPosition(position);
+  };
+
+  const handleMouseDown = () => setIsDragging(true);
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) handleMove(e.clientX);
+  };
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDragging) handleMove(e.touches[0].clientX);
+  };
+  const handleClick = (e: React.MouseEvent) => handleMove(e.clientX);
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => setIsDragging(false);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    window.addEventListener('touchend', handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
+      window.removeEventListener('touchend', handleGlobalMouseUp);
+    };
+  }, []);
+
+  const currentComparison = comparisons[activeComparison];
+
+  if (!currentComparison) {
+    return <div className="text-white">Loading comparison images...</div>;
+  }
+
+  return (
+    <div className="w-full max-w-5xl mx-auto">
+      <div className="text-center max-w-3xl mx-auto mb-10">
+        <span className="inline-block px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-wider mb-4 uppercase text-cyan-400">
+          {section.beforeAfterSlider.badge}
+        </span>
+        <h3 className="text-4xl font-extrabold text-white mb-4 tracking-tight">
+          {section.title}
+        </h3>
+        <p className="text-lg leading-relaxed text-slate-400">
+          {section.content}
+        </p>
+      </div>
+
+      {comparisons.length > 1 && (
+        <div className="flex justify-center gap-4 mb-6">
+          {comparisons.map((comp: any, idx: number) => (
+            <button
+              key={idx}
+              onClick={() => setActiveComparison(idx)}
+              className={`px-6 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+                activeComparison === idx
+                  ? 'bg-cyan-400 text-slate-900'
+                  : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/10'
+              }`}
+            >
+              {comp.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div 
+        ref={containerRef}
+        className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-2xl cursor-col-resize select-none mb-12"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleTouchMove}
+        onClick={handleClick}
+      >
+        {/* After Image (Base Layer) */}
+        <div 
+          className="absolute inset-0 bg-slate-900 bg-cover bg-center"
+          style={{ backgroundImage: `url(${currentComparison.afterImage})` }}
+        />
+        
+        {/* Before Image (Clipped Layer) */}
+        <div 
+          className="absolute top-0 left-0 h-full border-r-2 border-cyan-400"
+          style={{ 
+            backgroundColor: '#0f172a',
+            backgroundImage: `url(${currentComparison.beforeImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'left center',
+            width: `${sliderPosition}%`,
+            filter: 'grayscale(0.8) contrast(1.2)'
+          }}
+        />
+
+        {/* Slider Handle */}
+        <div 
+          className="absolute top-1/2 w-11 h-11 -translate-x-1/2 -translate-y-1/2 bg-cyan-400 rounded-full flex items-center justify-center pointer-events-none z-20"
+          style={{ 
+            left: `${sliderPosition}%`,
+            boxShadow: '0 0 25px rgba(34, 211, 238, 0.6)'
+          }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 16L22 12L18 8"/><path d="M6 8L2 12L6 16"/>
+          </svg>
+        </div>
+        <div 
+          className={`absolute bottom-5 left-5 px-4 py-2 bg-black/80 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-rose-400 border border-rose-400/30 transition-opacity duration-300 pointer-events-none ${
+            sliderPosition < 20 ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {section.beforeAfterSlider.beforeLabel}
+        </div>
+        <div 
+          className={`absolute bottom-5 right-5 px-4 py-2 bg-black/80 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-emerald-400 border border-emerald-400/30 transition-opacity duration-300 pointer-events-none ${
+            sliderPosition > 80 ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {section.beforeAfterSlider.afterLabel}
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8 pt-8 border-t border-white/10">
+        {section.beforeAfterSlider.improvements.map((item: any, idx: number) => (
+          <div key={idx} className="p-6 rounded-xl bg-white/[0.02] border border-transparent hover:border-white/10 hover:bg-white/[0.04] transition-all hover:-translate-y-0.5">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                {item.icon}
+              </div>
+              <h4 className="text-lg font-bold text-white">{item.title}</h4>
+            </div>
+            <p className="text-[15px] leading-relaxed text-slate-400 pl-11">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Console Navigation Component  
+const ConsoleNavigation: React.FC<{ section: any }> = ({ section }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const navRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  return (
+    <div className="w-full max-w-5xl mx-auto">
+      <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+        <span className="w-8 h-[2px] bg-purple-500 inline-block"/> {section.title}
+      </h3>
+      <p className="text-slate-400 mb-12 text-lg">{section.intro}</p>
+
+      <div className="grid md:grid-cols-[350px_1fr] gap-10 md:gap-20 border-t border-b border-white/10 py-12 relative">
+        <div className="relative flex flex-col gap-6">
+          <div className="hidden md:block absolute right-[-2.5rem] top-0 bottom-0 w-px bg-white/10" />
+          <div 
+            className="hidden md:block absolute right-[-2.5rem] w-0.5 h-6 bg-cyan-400 transition-all duration-300 ease-out"
+            style={{ boxShadow: '0 0 10px rgb(34 211 238)', top: navRefs.current[activeIndex]?.offsetTop || 0 }}
+          />
+          {section.consoleNav.items.map((item: any, idx: number) => (
+            <div
+              key={idx}
+              ref={el => { navRefs.current[idx] = el; }}
+              className={`flex items-center justify-between text-base font-semibold cursor-pointer transition-colors duration-300 ${
+                idx === activeIndex ? 'text-white' : 'text-slate-500'
+              } hover:text-slate-300`}
+              onMouseEnter={() => setActiveIndex(idx)}
+            >
+              <span>{item.navTitle}</span>
+              <span className={`font-mono text-xs text-cyan-400 transition-all duration-300 ${
+                idx === activeIndex ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
+              }`}>
+                {String(idx + 1).padStart(2, '0')}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="relative min-h-[220px] flex items-center">
+          {section.consoleNav.items.map((item: any, idx: number) => (
+            <div
+              key={idx}
+              className={`absolute top-1/2 left-0 w-full transition-all duration-400 ease-out ${
+                idx === activeIndex ? 'opacity-100 -translate-y-1/2 translate-x-0' : 'opacity-0 -translate-y-1/2 translate-x-5 pointer-events-none'
+              }`}
+            >
+              <div className="inline-block font-mono text-[11px] text-cyan-400 border border-cyan-400/30 px-2 py-1 rounded mb-3 uppercase tracking-wider">
+                {item.tag}
+              </div>
+              <h3 className="text-3xl font-extrabold text-white mb-5 bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent leading-tight">
+                {item.displayTitle}
+              </h3>
+              <p className="text-base leading-relaxed text-slate-400 max-w-lg">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
@@ -716,6 +946,66 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
               <div className="absolute inset-0 bg-black/20" />
             )}
             
+            {/* Ecosystem Diagram Overlay (only for HubX) */}
+            {project.id === 'hubx' && (
+              <div className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 w-64 h-64 opacity-60 hover:opacity-100 transition-opacity duration-500">
+                <div className="relative w-full h-full flex flex-col items-center justify-between">
+                  {/* Master Trader (Top) */}
+                  <div className="relative bg-slate-900/80 border border-white/20 backdrop-blur-md rounded-xl p-2 w-24 flex flex-col items-center gap-1 z-10 border-t-2 border-t-blue-500">
+                    <div className="relative w-8 h-8 rounded-full bg-white/10 border border-blue-500/40 flex items-center justify-center text-blue-400">
+                      <User size={16} />
+                    </div>
+                    <div className="text-[3px] font-bold uppercase tracking-wider text-blue-400 whitespace-nowrap">Master Trader</div>
+                  </div>
+
+                  {/* HubX Core (Center) */}
+                  <div className="relative w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center z-10">
+                    <Grid size={24} className="text-emerald-500" />
+                    <div className="absolute inset-[-5px] rounded-full border border-emerald-500 opacity-0 animate-[ripple_2s_infinite]" />
+                  </div>
+
+                  {/* Investors (Bottom) */}
+                  <div className="flex gap-2 z-10">
+                    {['A', 'B', 'C'].map((label, idx) => (
+                      <div key={idx} className="relative bg-slate-900/80 border border-white/20 backdrop-blur-md rounded-xl p-2 w-20 flex flex-col items-center gap-1 border-b-2 border-b-cyan-500">
+                        <div className="w-6 h-6 rounded-full bg-white/10 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+                          <User size={12} />
+                        </div>
+                        <div className="text-[2px] font-bold uppercase tracking-wider text-cyan-400 whitespace-nowrap">Investor {label}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* SVG Connections */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+                    <defs>
+                      <path id="hubx-path-down" d="M 128,48 L 128,105" />
+                      <path id="hubx-path-left" d="M 128,145 C 128,170 55,170 55,195" />
+                      <path id="hubx-path-mid" d="M 128,145 L 128,205" />
+                      <path id="hubx-path-right" d="M 128,145 C 128,170 201,170 201,195" />
+                    </defs>
+                    <use href="#hubx-path-down" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
+                    <use href="#hubx-path-left" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
+                    <use href="#hubx-path-mid" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
+                    <use href="#hubx-path-right" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
+                    
+                    <circle r="2" fill="#3B82F6">
+                      <animateMotion dur="2s" repeatCount="indefinite"><mpath href="#hubx-path-down"/></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#10B981">
+                      <animateMotion dur="2s" begin="0.5s" repeatCount="indefinite"><mpath href="#hubx-path-left"/></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#10B981">
+                      <animateMotion dur="2s" begin="0.7s" repeatCount="indefinite"><mpath href="#hubx-path-mid"/></animateMotion>
+                    </circle>
+                    <circle r="2" fill="#10B981">
+                      <animateMotion dur="2s" begin="0.5s" repeatCount="indefinite"><mpath href="#hubx-path-right"/></animateMotion>
+                    </circle>
+                  </svg>
+                </div>
+              </div>
+            )}
+            
             <div className="relative z-10 space-y-4">
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 bg-black/40 backdrop-blur rounded-full text-xs font-medium text-white/90 border border-white/10">
@@ -783,9 +1073,9 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 <div className="flex items-end">
                   <button 
                     onClick={() => {
-                      const courtcanva2Section = document.getElementById('courtcanva2-intro');
-                      if (courtcanva2Section) {
-                        courtcanva2Section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      const outcomeSection = document.getElementById('outcome');
+                      if (outcomeSection) {
+                        outcomeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }
                     }}
                     className="w-full py-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-pink-900/30 hover:shadow-pink-900/50 hover:scale-[1.02]"
@@ -839,10 +1129,10 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
                                     {/* Back - Goal */}
                                     <div className="flip-card-face absolute w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 flex flex-col items-center justify-center shadow-2xl shadow-blue-900/50">
-                                      <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center mb-5">
+                                      <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center mb-4">
                                         <GoalIcon size={28} className="text-white" strokeWidth={2} />
                                       </div>
-                                      <h4 className="text-lg font-bold text-white mb-5 uppercase tracking-wide opacity-90">{card.goalTitle}</h4>
+                                      <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wide opacity-90">{card.goalTitle}</h4>
                                       <div className="w-full space-y-2.5">
                                         {card.goals.map((goal, gIdx) => (
                                           <div key={gIdx} className="flex items-start gap-2.5 text-white/90">
@@ -982,6 +1272,151 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     ))}
                   </div>
                 </div>
+              )}
+
+              {/* HUD Ribbon */}
+              {section.type === 'hud-ribbon' && section.stats && (
+                <div className="w-full my-12">
+                  {section.title && (
+                    <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                      {section.title}
+                    </h3>
+                  )}
+                  
+                  {/* Horizontal HUD Ribbon */}
+                  <div className="relative w-full max-w-5xl mx-auto bg-slate-900/60 border border-white/[0.08] rounded-2xl backdrop-blur-xl overflow-hidden">
+                    {/* Top highlight line */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    
+                    <div className="flex flex-col lg:flex-row items-stretch justify-between h-auto lg:h-28">
+                      {section.stats.map((stat, idx) => {
+                        const IconComponent = stat.icon ? iconMap[stat.icon] : null;
+                        
+                        return (
+                          <div
+                            key={idx}
+                            className="group relative flex-1 flex flex-col justify-center px-6 py-5 lg:py-0 transition-all duration-300 hover:bg-white/[0.03] cursor-default border-b lg:border-b-0 lg:border-r border-white/[0.08] last:border-0"
+                          >
+                            {/* Label with icon */}
+                            <div className="flex items-center gap-2 mb-2">
+                              {IconComponent && (
+                                <IconComponent size={14} className="text-pink-500 opacity-80" />
+                              )}
+                              <span className="text-[11px] uppercase tracking-[1.5px] text-slate-400 font-semibold">
+                                {stat.label}
+                              </span>
+                            </div>
+                            
+                            {/* Value */}
+                            <span className="text-lg font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-pink-500 group-hover:to-purple-500 group-hover:translate-x-1">
+                              {stat.value}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Before/After Slider - Interactive comparison */}
+              {section.type === 'before-after-slider' && section.beforeAfterSlider && (
+                <BeforeAfterSlider section={section} />
+              )}
+
+              {/* Console Navigation - Interactive decision showcase */}
+              {section.type === 'console-nav' && section.consoleNav && (
+                <ConsoleNavigation section={section} />
+              )}
+
+              {/* Hotspot Doc - Interactive requirements documentation */}
+              {section.type === 'hotspot-doc' && section.hotspotDoc && (
+                <div className="w-full my-8">
+                  {/* Header */}
+                  {section.title && (
+                    <h3 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                      {section.title}
+                    </h3>
+                  )}
+                  {section.content && (
+                    <p className="text-slate-300 leading-relaxed mb-6">{section.content}</p>
+                  )}
+
+                  {/* Interactive Document with Hotspots */}
+                  <div className="relative w-full rounded-2xl bg-slate-900 border border-white/10 shadow-2xl overflow-hidden group">
+                    {/* Background Image */}
+                    <img 
+                      src={section.hotspotDoc.imageSrc}
+                      alt="Documentation"
+                      className="w-full h-auto transition-all duration-500"
+                      style={{
+                        filter: 'brightness(0.4) grayscale(0.3)'
+                      }}
+                    />
+
+                    {/* Hover enhancement overlay */}
+                    <img 
+                      src={section.hotspotDoc.imageSrc}
+                      alt="Documentation"
+                      className="absolute inset-0 w-full h-full object-contain transition-all duration-500 opacity-0 group-hover:opacity-100 pointer-events-none"
+                      style={{
+                        filter: 'brightness(0.6) grayscale(0.1)',
+                        transform: 'scale(1.02)'
+                      }}
+                    />
+
+                    {/* Hotspots */}
+                    {section.hotspotDoc.hotspots.map((hotspot, index) => (
+                      <div
+                        key={index}
+                        className="absolute w-4 h-4 rounded-full bg-cyan-400 cursor-pointer z-10 flex items-center justify-center transition-all duration-300 hover:scale-125 hover:bg-white group/hotspot"
+                        style={{
+                          top: hotspot.position.top,
+                          left: hotspot.position.left,
+                          animation: 'pulse 2s infinite',
+                          boxShadow: '0 0 0 0 rgba(56, 189, 248, 0.4)'
+                        }}
+                      >
+                        {/* Plus icon */}
+                        <span className="text-black font-bold text-[10px]">+</span>
+
+                        {/* Tooltip */}
+                        <div 
+                          className={`absolute top-1/2 -translate-y-1/2 w-48 bg-slate-900/90 backdrop-blur-xl border border-white/20 border-l-[2px] border-l-cyan-400 p-2.5 rounded-md opacity-0 pointer-events-none transition-all duration-300 group-hover/hotspot:opacity-100 z-20 shadow-xl ${
+                            hotspot.tooltipAlign === 'right' 
+                              ? 'right-6 translate-x-2 group-hover/hotspot:translate-x-0' 
+                              : 'left-6 -translate-x-2 group-hover/hotspot:translate-x-0'
+                          }`}
+                        >
+                          <h4 className="text-cyan-400 text-[10px] font-bold uppercase tracking-wide mb-1">
+                            {hotspot.title}
+                          </h4>
+                          <p className="text-slate-200 text-[10px] leading-relaxed">
+                            {hotspot.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Bottom hint */}
+                  <div className="flex items-center justify-center gap-2 mt-5 text-slate-500 text-sm opacity-60">
+                    <div className="w-2 h-2 rounded-full bg-cyan-400" />
+                    Interactive Spec Preview
+                  </div>
+                </div>
+              )}
+
+              {/* Ecosystem Diagram - Now integrated into hero, this section can be removed from data */}
+              {section.type === 'ecosystem-diagram' && (
+                <div className="hidden" />
+              )}
+
+              {/* Incident Scenario - Interactive multi-agency response simulation */}
+              {section.type === 'incident-scenario' && (
+                <IncidentScenario />
               )}
 
               {/* Chat Interview Block */}
@@ -1851,7 +2286,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                       {/* Video Block */}
                       {section.type === 'video' && (
                         <div className="w-full my-12 flex flex-col items-center">
-                          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl max-w-xs w-full">
+                          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block">
                             {section.src?.includes('youtube.com') || section.src?.includes('youtu.be') ? (
                               <iframe
                                 src={section.src}
@@ -1886,14 +2321,15 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                 loop
                                 muted
                                 playsInline
-                                className="w-full h-auto"
+                                className="h-auto"
+                                style={{ maxWidth: '100%' }}
                               >
                                 Your browser does not support the video tag.
                               </video>
                             )}
                           </div>
                           {section.caption && (
-                            <p className="text-center text-slate-500 text-sm mt-4 italic max-w-xs">
+                            <p className="text-center text-slate-500 text-sm mt-4 italic">
                               {section.caption}
                             </p>
                           )}
@@ -1918,6 +2354,21 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         />
                       )}
 
+                      {/* Goals Interactive */}
+                      {section.type === 'goals-interactive' && (
+                        <GoalsInteractive onLightboxChange={setIsAnyLightboxOpen} />
+                      )}
+
+                      {/* Pattern Cards */}
+                      {section.type === 'pattern-cards' && (
+                        <PatternCards onLightboxChange={setIsAnyLightboxOpen} />
+                      )}
+
+                      {/* Safety Rails */}
+                      {section.type === 'safety-rails' && section.safetyRails && (
+                        <SafetyRails cards={section.safetyRails} onLightboxChange={setIsAnyLightboxOpen} />
+                      )}
+
                       {/* Feature List */}
                       {section.type === 'feature-list' && section.features && (
                         <div>
@@ -1925,17 +2376,63 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                             <span className="w-8 h-[2px] bg-purple-500 inline-block"/> {section.title}
                           </h3>
                           <p className="text-slate-400 mb-8 max-w-3xl text-lg">{section.intro}</p>
-                          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {section.features.map((feature, idx) => (
-                              <div key={idx} className="p-6 bg-slate-900 border border-white/10 rounded-xl hover:border-pink-500/30 transition-colors group">
-                                <div className="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
-                                  {feature.icon}
+                          {/* Blueprint-style list for Context Section */}
+                          {section.id === 'context' ? (
+                            <div className="max-w-4xl">
+                              
+                              {/* Blueprint Rows */}
+                              {section.features.map((feature, idx) => (
+                                <div 
+                                  key={idx}
+                                  className="bp-row group relative py-4 grid grid-cols-1 md:grid-cols-[260px_1fr] gap-3 md:gap-4 items-start cursor-default"
+                                >
+                                  {/* Title */}
+                                  <h3 className="text-base font-bold text-white m-0 leading-snug transition-all duration-400 group-hover:translate-x-2 group-hover:text-white">
+                                    {feature.title.replace(/\s+/g, '\n').split('\n').map((line, i) => (
+                                      <span key={i}>
+                                        {line}
+                                        {i < feature.title.replace(/\s+/g, '\n').split('\n').length - 1 && <br />}
+                                      </span>
+                                    ))}
+                                  </h3>
+                                  
+                                  {/* Description */}
+                                  <p className="text-base leading-relaxed text-slate-500 m-0 transition-colors duration-300 group-hover:text-slate-300">
+                                    {feature.desc}
+                                  </p>
+                                  
+                                  {/* Bottom Line with Progress Effect */}
+                                  <div className="absolute bottom-0 left-0 w-full h-px bg-white/15">
+                                    <div className="h-full w-0 bg-indigo-500 transition-all duration-[600ms] ease-out group-hover:w-full shadow-[0_0_15px_currentColor]" />
+                                  </div>
                                 </div>
-                                <h4 className="text-xl font-bold text-white mb-3">{feature.title}</h4>
-                                <p className="text-slate-400 text-sm leading-relaxed">{feature.desc}</p>
-                              </div>
-                            ))}
-                          </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                              {section.features.map((feature, idx) => (
+                                <div key={idx} className="p-6 bg-slate-900 border border-white/10 rounded-xl hover:border-pink-500/30 transition-colors group">
+                                  <div className="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
+                                    {feature.icon}
+                                  </div>
+                                  <h4 className="text-xl font-bold text-white mb-3">{feature.title}</h4>
+                                  <p className="text-slate-400 text-sm leading-relaxed">{feature.desc}</p>
+                                  {feature.images && feature.images.length > 0 && (
+                                    <div className="mt-4 grid grid-cols-2 gap-3">
+                                      {feature.images.map((imgSrc, imgIdx) => (
+                                        <img
+                                          key={imgIdx}
+                                          src={imgSrc}
+                                          alt={`${feature.title} - Image ${imgIdx + 1}`}
+                                          className="w-full h-auto rounded-lg border border-white/10"
+                                        />
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       )}
 
