@@ -1,16 +1,15 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
 import { Project } from '../../types';
 import { GlassCard } from '../ui/GlassCard';
 
 interface WorksSectionProps {
   projects: Project[];
+  onProjectClick: (project: Project) => void;
 }
 
-export const WorksSection = ({ projects }: WorksSectionProps) => {
-  const router = useRouter();
+export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) => {
   const [activeFilter, setActiveFilter] = useState('All');
   
   const filters = ['All', 'Enterprise', 'Regulated', 'Forms', 'Design System', 'Mobile', 'Research'];
@@ -57,7 +56,7 @@ export const WorksSection = ({ projects }: WorksSectionProps) => {
           {filteredProjects.map((project) => (
             <GlassCard 
               key={project.id} 
-              onClick={() => router.push(`/projects/${project.id}`)}
+              onClick={() => onProjectClick(project)}
               className="flex flex-col h-full group cursor-pointer hover:-translate-y-2 transition-transform duration-500 overflow-hidden"
             >
               {/* Card Header (Gradient + Icon) */}

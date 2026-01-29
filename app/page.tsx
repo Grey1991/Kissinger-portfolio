@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { RESUME_DATA } from './data/resume-data';
+import { Project } from './types';
 
 // UI Components
 import { ParticleDonut } from './components/ui/ParticleDonut';
@@ -14,10 +16,15 @@ import { SkillsSection } from './components/sections/SkillsSection';
 import { WorksSection } from './components/sections/WorksSection';
 import { ContactSection } from './components/sections/ContactSection';
 
+// Complex Components
+import { ProjectModal } from './components/ProjectModal';
+
 // Styles
 import './styles/animations.css';
 
 export default function Portfolio() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-pink-500/30">
       
@@ -45,6 +52,7 @@ export default function Portfolio() {
         {/* Works Section */}
         <WorksSection 
           projects={RESUME_DATA.projects}
+          onProjectClick={setSelectedProject}
         />
 
         {/* Skills Section */}
@@ -65,6 +73,14 @@ export default function Portfolio() {
         />
 
       </main>
+      
+      {/* Project Detail Modal */}
+      {selectedProject && (
+        <ProjectModal 
+          project={selectedProject} 
+          onClose={() => setSelectedProject(null)} 
+        />
+      )}
     </div>
   );
 }

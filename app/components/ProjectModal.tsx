@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { X, Shield, Menu, Grid, User, Eye, Check, Target, Star, TrendingUp, UserX, Building2, Users, Home, Edit3, Smartphone, Info, FileText, ShoppingCart, Plus } from 'lucide-react';
-import { iconMap } from '../utils/iconMap';
+import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive } from 'lucide-react';
 import { Project } from '../types';
 import { ScrollytellingBlock } from './ScrollytellingBlock';
 import { Carousel3D } from './Carousel3D';
@@ -11,31 +10,869 @@ import { IncidentScenario } from './IncidentScenario';
 import GoalsInteractive from './GoalsInteractive';
 import PatternCards from './PatternCards';
 import SafetyRails from './SafetyRails';
-import { FeaturesInteractive } from './project/FeaturesInteractive';
-import { InterviewImage } from './project/InterviewImage';
-import { SurveyTabsComponent } from './project/SurveyTabsComponent';
-import { GalleryComponent } from './project/GalleryComponent';
-import { BeforeAfterSlider } from './project/BeforeAfterSlider';
-import { InteractiveFlowDiagram } from './project/InteractiveFlowDiagram';
-import { ConsoleNavigation } from './project/ConsoleNavigation';
-import { initPulseAnimation } from '../utils/pulseAnimation';
 import dynamic from 'next/dynamic';
 
 // Dynamically import CourtCanva2 component
 const CourtCanva2 = dynamic(() => import('./CourtCanva2'), { ssr: false });
 
-// Initialize pulse animation
+// Add keyframes for pulse animation
 if (typeof document !== 'undefined') {
-  initPulseAnimation();
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+      70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(0,0,0,0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+    }
+  `;
+  if (!document.querySelector('style[data-pulse-animation]')) {
+    style.setAttribute('data-pulse-animation', 'true');
+    document.head.appendChild(style);
+  }
 }
+
+// Icon mapping for features
+const iconMap: Record<string, LucideIcon> = {
+  'smile': Smile,
+  'edit': Edit,
+  'cloud': Cloud,
+  'search': Search,
+  'users': Users,
+  'layout': Layout,
+  'wifi-off': WifiOff,
+  'trending-up': TrendingUp,
+  'message-circle': MessageCircle,
+  'smartphone': Smartphone,
+  'tablet': Tablet,
+  'check': Check,
+  'minus': Minus,
+  'code': Code,
+  'shield': Shield,
+  'target': Target,
+  'star': Star,
+  'user-x': UserX,
+  'zap': Zap,
+  'activity': Activity,
+  'eye': Eye,
+  'alert-circle': AlertCircle,
+  'help-circle': HelpCircle,
+  'eye-off': EyeOff,
+  'sun': Sun,
+  'lightbulb': Lightbulb,
+  'shopping-cart': ShoppingCart,
+  'user': User,
+  'archive': Archive,
+};
+
+// Features Interactive Component
+const FeaturesInteractive = ({ features }: { features: Array<{ icon: string; title: string; description: string; image: string }> }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return (
+    <div className="flex gap-12 items-start mt-8">
+      {/* Left: Feature List */}
+      <div className="flex-1 flex flex-col gap-4">
+        {features.map((feature, idx) => {
+          const Icon = iconMap[feature.icon] || Smile;
+          const isActive = idx === activeIndex;
+          
+          return (
+            <div
+              key={idx}
+              className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 flex gap-5 items-start border ${
+                isActive 
+                  ? 'bg-slate-800/50 border-pink-500/30 shadow-xl shadow-pink-500/5 translate-x-2' 
+                  : 'bg-transparent border-transparent hover:bg-slate-800/30 hover:border-slate-700/50'
+              }`}
+              onMouseEnter={() => setActiveIndex(idx)}
+            >
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                isActive 
+                  ? 'bg-gradient-to-br from-pink-500 to-purple-500 text-white scale-110' 
+                  : 'bg-slate-800/50 text-slate-400'
+              }`}>
+                <Icon size={24} strokeWidth={2} />
+              </div>
+              
+              <div className="flex-1">
+                <h4 className={`text-lg font-bold mb-2 transition-colors ${
+                  isActive ? 'text-white' : 'text-slate-300'
+                }`}>
+                  {feature.title}
+                </h4>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Right: Sticky Preview */}
+      <div className="flex-1 sticky top-10">
+        <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-white/5 rounded-3xl p-3 shadow-2xl overflow-hidden">
+          {/* Device Frame Decoration */}
+          <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm border-b border-white/5 flex items-center px-4 gap-2 z-10">
+            <div className="w-3 h-3 rounded-full bg-pink-500/60"></div>
+            <div className="w-3 h-3 rounded-full bg-purple-500/60"></div>
+            <div className="w-3 h-3 rounded-full bg-blue-500/60"></div>
+          </div>
+
+          {/* Image Container */}
+          <div className="relative mt-10 h-[500px] bg-slate-900/50 rounded-2xl overflow-hidden">
+            {features.map((feature, idx) => (
+              <img
+                key={idx}
+                src={feature.image}
+                alt={feature.title}
+                className={`absolute inset-0 w-full h-full object-contain p-4 transition-all duration-500 ${
+                  idx === activeIndex
+                    ? 'opacity-100 scale-100 translate-y-0'
+                    : 'opacity-0 scale-95 translate-y-5 pointer-events-none'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Interactive Flow Diagram Component
+const InteractiveFlowDiagram = ({ 
+  title, 
+  content, 
+  flowDiagrams 
+}: { 
+  title?: string; 
+  content?: string; 
+  flowDiagrams: Array<{
+    id: string;
+    label: string;
+    caption: string;
+    nodes: Array<{
+      label: string;
+      x: number;
+      y: number;
+      type?: 'start' | 'end' | 'normal';
+    }>;
+  }>;
+}) => {
+  const [activeFlowIndex, setActiveFlowIndex] = useState(0);
+
+  return (
+    <div className="w-full max-w-5xl mx-auto my-16">
+      {/* Header */}
+      {title && (
+        <h3 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+          <span className="w-8 h-[2px] bg-gradient-to-r from-cyan-500 to-purple-500 inline-block"/> 
+          {title}
+        </h3>
+      )}
+      {content && (
+        <p className="text-slate-400 mb-8">{content}</p>
+      )}
+
+      {/* Toggle Buttons */}
+      <div className="flex gap-2 bg-slate-800/50 p-1 rounded-full w-fit mb-10 border border-white/10">
+        {flowDiagrams.map((flow, idx) => (
+          <button
+            key={flow.id}
+            onClick={() => setActiveFlowIndex(idx)}
+            className={`px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 ${
+              activeFlowIndex === idx
+                ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/30' 
+                : 'bg-transparent text-slate-400 hover:text-white'
+            }`}
+          >
+            {flow.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Diagram Container */}
+      <div className="relative w-full h-[380px] bg-slate-950/50 rounded-2xl border border-cyan-500/20 overflow-visible shadow-xl shadow-cyan-500/10">
+        {flowDiagrams.map((flow, idx) => {
+          // Define custom connections for flow-1 (branching structure)
+          const connections = flow.id === 'flow-1' ? [
+            [0, 2], // Discover -> Select
+            [1, 2], // Search -> Select
+            [2, 3], // Select -> Take Away
+            [2, 4], // Select -> Dine In
+            [3, 6], // Take Away -> Check Out
+            [4, 5], // Dine In -> Select Table
+            [5, 6], // Select Table -> Check Out
+            [6, 7], // Check Out -> Place Order
+            [7, 8], // Place Order -> Finish
+            [8, 9]  // Finish -> Review
+          ] : flow.nodes.map((_, i) => i < flow.nodes.length - 1 ? [i, i + 1] : null).filter(Boolean) as number[][];
+
+          return (
+            <div
+              key={flow.id}
+              className={`absolute inset-0 transition-all duration-500 ${
+                activeFlowIndex === idx 
+                  ? 'opacity-100 scale-100' 
+                  : 'opacity-0 scale-95 pointer-events-none'
+              }`}
+            >
+              {/* SVG Connection Lines - behind nodes */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+                {connections.map((conn, i) => {
+                  const fromNode = flow.nodes[conn[0]];
+                  const toNode = flow.nodes[conn[1]];
+                  
+                  // Calculate direction and edge offsets
+                  const dx = toNode.x - fromNode.x;
+                  const dy = toNode.y - fromNode.y;
+                  const distance = Math.sqrt(dx * dx + dy * dy);
+                  
+                  // Normalize direction
+                  const dirX = dx / distance;
+                  const dirY = dy / distance;
+                  
+                  // Offset from node edge (approximate node radius)
+                  const offset = 4; // percentage units
+                  
+                  // Start from edge of fromNode
+                  const x1 = fromNode.x + dirX * offset;
+                  const y1 = fromNode.y + dirY * offset;
+                  
+                  // End at edge of toNode
+                  const x2 = toNode.x - dirX * offset;
+                  const y2 = toNode.y - dirY * offset;
+                  
+                  return (
+                    <g key={`${conn[0]}-${conn[1]}`}>
+                      {/* Thin elegant connection line from edge to edge */}
+                      <line
+                        x1={`${x1}%`}
+                        y1={`${y1}%`}
+                        x2={`${x2}%`}
+                        y2={`${y2}%`}
+                        stroke="#6EE7B7"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        opacity="0.6"
+                      />
+                    </g>
+                  );
+                })}
+              </svg>
+
+            {/* Flow Nodes */}
+            <div className="absolute inset-0" style={{ zIndex: 10 }}>
+              {flow.nodes.map((node, i) => (
+                <div
+                  key={i}
+                  className={`absolute transform -translate-x-1/2 -translate-y-1/2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 hover:scale-110 ${
+                    node.type === 'start'
+                      ? 'bg-purple-500/20 border-2 border-purple-400 text-purple-200 shadow-lg shadow-purple-500/30'
+                      : node.type === 'end'
+                      ? 'bg-cyan-500/20 border-2 border-cyan-400 text-cyan-200 shadow-lg shadow-cyan-500/30'
+                      : 'bg-slate-800/95 border-2 border-cyan-500/50 text-slate-200 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/40'
+                  }`}
+                  style={{
+                    left: `${node.x}%`,
+                    top: `${node.y}%`,
+                    zIndex: 20
+                  }}
+                >
+                  {node.label}
+                </div>
+              ))}
+            </div>
+
+            {/* Caption */}
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-slate-500 text-sm italic" style={{ zIndex: 5 }}>
+              {flow.caption}
+            </div>
+          </div>
+        );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// Interview Image Component with click-to-enlarge
+const InterviewImage = ({ src, alt, caption, className, hasTitle, onLightboxChange }: { src: string; alt: string; caption?: string; className?: string; hasTitle?: boolean; onLightboxChange?: (isOpen: boolean) => void }) => {
+  const [isEnlarged, setIsEnlarged] = useState(false);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isEnlarged) {
+        setIsEnlarged(false);
+        onLightboxChange?.(false);
+      }
+    };
+    
+    if (isEnlarged) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isEnlarged, onLightboxChange]);
+
+  return (
+    <>
+      <div 
+        className={`cursor-zoom-in group relative ${hasTitle ? 'max-w-md' : ''}`}
+        onClick={() => {
+          setIsEnlarged(true);
+          onLightboxChange?.(true);
+        }}
+      >
+        <img 
+          src={src}
+          alt={alt}
+          className={className || `w-full rounded-xl border border-white/10 shadow-2xl ${hasTitle ? 'max-h-48 object-contain' : ''} group-hover:border-pink-500/50 transition-all duration-300`}
+        />
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center rounded-xl">
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/70 backdrop-blur-sm px-4 py-2 rounded-full text-white text-sm flex items-center gap-2">
+            <Maximize2 size={16} />
+            Click to enlarge
+          </div>
+        </div>
+      </div>
+      {caption && (
+        <p className="text-center text-slate-400 text-sm mt-4 italic">
+          {caption}
+        </p>
+      )}
+
+      {/* Enlarged Modal */}
+      {isEnlarged && (
+        <div 
+          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
+          onClick={() => {
+            setIsEnlarged(false);
+            onLightboxChange?.(false);
+          }}
+        >
+          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <div className="relative">
+              <img 
+                src={src}
+                alt={alt}
+                className="max-w-[95vw] max-h-[95vh] w-auto h-auto object-contain"
+              />
+              
+              {/* Close button on image */}
+              <button
+                onClick={() => {
+                  setIsEnlarged(false);
+                  onLightboxChange?.(false);
+                }}
+                className="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-xl hover:scale-110 transition-all duration-200 z-10"
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+            </div>
+          </div>
+          
+          {/* Bottom hint */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm px-6 py-3 rounded-full text-white text-sm border border-white/10 pointer-events-none">
+            Click anywhere or press ESC to close
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+// Survey Tabs Component
+const SurveyTabsComponent = ({ tabs, caption, onLightboxChange }: { tabs: Array<{label: string; images: string[]}>; caption?: string; onLightboxChange?: (isOpen: boolean) => void }) => {
+  const [activeTab, setActiveTab] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
+
+  const currentImages = tabs[activeTab]?.images || [];
+
+  const openLightbox = (index: number) => {
+    setLightboxImageIndex(index);
+    setIsLightboxOpen(true);
+    onLightboxChange?.(true);
+  };
+
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    onLightboxChange?.(false);
+  };
+
+  // Add ESC key listener
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isLightboxOpen) {
+        setIsLightboxOpen(false);
+        onLightboxChange?.(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isLightboxOpen, onLightboxChange]);
+
+  const nextImage = () => {
+    setLightboxImageIndex((prev) => (prev + 1) % currentImages.length);
+  };
+
+  const prevImage = () => {
+    setLightboxImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
+  };
+
+  return (
+    <div className="w-full max-w-6xl mx-auto">
+      {caption && (
+        <p className="text-center text-slate-400 text-base mb-8 italic">{caption}</p>
+      )}
+      
+      {/* Tabs */}
+      <div className="flex justify-center gap-3 mb-8 flex-wrap">
+        {tabs.map((tab, idx) => (
+          <button
+            key={idx}
+            onClick={() => setActiveTab(idx)}
+            className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+              activeTab === idx
+                ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/30 scale-105'
+                : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50 hover:text-white border border-white/10'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Thumbnail Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {currentImages.map((img, idx) => (
+          <button
+            key={idx}
+            onClick={() => openLightbox(idx)}
+            className="group relative aspect-square rounded-xl overflow-hidden border border-white/10 bg-slate-900 hover:border-pink-500/50 hover:shadow-xl hover:shadow-pink-500/20 transition-all duration-300 cursor-zoom-in"
+          >
+            <img 
+              src={img}
+              alt={`${tabs[activeTab].label} survey ${idx + 1}`}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            />
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full text-white text-xs flex items-center gap-1.5">
+                <Maximize2 size={14} />
+                Enlarge
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Lightbox Modal */}
+      {isLightboxOpen && (
+        <div 
+          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
+          onClick={closeLightbox}
+        >
+          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <div className="relative">
+              <img 
+                src={currentImages[lightboxImageIndex]}
+                alt={`${tabs[activeTab].label} survey ${lightboxImageIndex + 1}`}
+                className="max-w-[95vw] max-h-[95vh] w-auto h-auto object-contain"
+              />
+              
+              {/* Close button on image */}
+              <button
+                onClick={closeLightbox}
+                className="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-xl hover:scale-110 transition-all duration-200 z-10"
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            {/* Lightbox Navigation */}
+            {currentImages.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-pink-500/50 hover:scale-110 transition-all duration-300"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-pink-500/50 hover:scale-110 transition-all duration-300"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={28} />
+                </button>
+              </>
+            )}
+            
+            {/* Bottom hint with counter */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm px-6 py-3 rounded-full text-white text-sm border border-white/10 pointer-events-none">
+              <div className="flex items-center gap-3">
+                <span className="text-slate-400">{lightboxImageIndex + 1} / {currentImages.length}</span>
+                <span className="text-white">•</span>
+                <span>Click anywhere or press ESC to close</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Gallery Component with Lightbox
+const GalleryComponent = ({ images, caption, onLightboxChange }: { images: string[]; caption?: string; onLightboxChange?: (isOpen: boolean) => void }) => {
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
+
+  const openLightbox = (index: number) => {
+    setLightboxImageIndex(index);
+    setIsLightboxOpen(true);
+    onLightboxChange?.(true);
+  };
+
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    onLightboxChange?.(false);
+  };
+
+  // Add ESC key listener
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isLightboxOpen) {
+        setIsLightboxOpen(false);
+        onLightboxChange?.(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isLightboxOpen, onLightboxChange]);
+
+  const nextImage = () => {
+    setLightboxImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setLightboxImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  return (
+    <div className="my-12 flex justify-center">
+      <div className="max-w-7xl w-full">
+        {/* Masonry Layout - Photo Wall Style with Original Aspect Ratios */}
+        <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-4">
+          {images.map((imgSrc, imgIdx) => (
+            <button
+              key={imgIdx}
+              onClick={() => openLightbox(imgIdx)}
+              className="relative overflow-hidden rounded-lg border border-white/10 group cursor-zoom-in bg-slate-900 shadow-md hover:shadow-pink-900/20 hover:border-pink-500/50 transition-all duration-300 w-full mb-4 break-inside-avoid"
+            >
+              <img 
+                src={imgSrc} 
+                alt={`Gallery item ${imgIdx + 1}`}
+                className="w-full h-auto object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+              />
+              {/* Hover overlay */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/70 backdrop-blur-sm px-3 py-1.5 rounded-full text-white text-xs flex items-center gap-1.5">
+                  <Maximize2 size={14} />
+                  Click to enlarge
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+        {caption && (
+          <p className="text-center text-slate-500 text-sm mt-6 italic">
+            {caption}
+          </p>
+        )}
+      </div>
+
+      {/* Lightbox Modal */}
+      {isLightboxOpen && (
+        <div 
+          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
+          onClick={closeLightbox}
+        >
+          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <div className="relative">
+              <img 
+                src={images[lightboxImageIndex]}
+                alt={`Gallery item ${lightboxImageIndex + 1}`}
+                className="max-w-[95vw] max-h-[95vh] w-auto h-auto object-contain"
+              />
+              
+              {/* Close button on image */}
+              <button
+                onClick={closeLightbox}
+                className="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-xl hover:scale-110 transition-all duration-200 z-10"
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            {/* Navigation Buttons */}
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-pink-500/50 hover:scale-110 transition-all duration-300"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+                
+                <button
+                  onClick={nextImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-pink-500/50 hover:scale-110 transition-all duration-300"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={28} />
+                </button>
+              </>
+            )}
+            
+            {/* Bottom hint with counter */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm px-6 py-3 rounded-full text-white text-sm border border-white/10 pointer-events-none">
+              <div className="flex items-center gap-3">
+                <span className="text-slate-400">{lightboxImageIndex + 1} / {images.length}</span>
+                <span className="text-white">•</span>
+                <span>Click anywhere or press ESC to close</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Before/After Slider Component
+const BeforeAfterSlider: React.FC<{ section: any }> = ({ section }) => {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const [activeComparison, setActiveComparison] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const comparisons = section.beforeAfterSlider.comparisons || [];
+
+  const handleMove = (clientX: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    let position = ((clientX - rect.left) / rect.width) * 100;
+    position = Math.max(0, Math.min(100, position));
+    setSliderPosition(position);
+  };
+
+  const handleMouseDown = () => setIsDragging(true);
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) handleMove(e.clientX);
+  };
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDragging) handleMove(e.touches[0].clientX);
+  };
+  const handleClick = (e: React.MouseEvent) => handleMove(e.clientX);
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => setIsDragging(false);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    window.addEventListener('touchend', handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
+      window.removeEventListener('touchend', handleGlobalMouseUp);
+    };
+  }, []);
+
+  const currentComparison = comparisons[activeComparison];
+
+  if (!currentComparison) {
+    return <div className="text-white">Loading comparison images...</div>;
+  }
+
+  return (
+    <div className="w-full max-w-5xl mx-auto">
+      <div className="text-center max-w-3xl mx-auto mb-10">
+        <span className="inline-block px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-wider mb-4 uppercase text-cyan-400">
+          {section.beforeAfterSlider.badge}
+        </span>
+        <h3 className="text-4xl font-extrabold text-white mb-4 tracking-tight">
+          {section.title}
+        </h3>
+        <p className="text-lg leading-relaxed text-slate-400">
+          {section.content}
+        </p>
+      </div>
+
+      {comparisons.length > 1 && (
+        <div className="flex justify-center gap-4 mb-6">
+          {comparisons.map((comp: any, idx: number) => (
+            <button
+              key={idx}
+              onClick={() => setActiveComparison(idx)}
+              className={`px-6 py-2.5 rounded-lg font-semibold text-sm transition-all ${
+                activeComparison === idx
+                  ? 'bg-cyan-400 text-slate-900'
+                  : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/10'
+              }`}
+            >
+              {comp.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div 
+        ref={containerRef}
+        className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-2xl cursor-col-resize select-none mb-12"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleTouchMove}
+        onClick={handleClick}
+      >
+        {/* After Image (Base Layer) */}
+        <div 
+          className="absolute inset-0 bg-slate-900 bg-cover bg-center"
+          style={{ backgroundImage: `url(${currentComparison.afterImage})` }}
+        />
+        
+        {/* Before Image (Clipped Layer) */}
+        <div 
+          className="absolute top-0 left-0 h-full border-r-2 border-cyan-400"
+          style={{ 
+            backgroundColor: '#0f172a',
+            backgroundImage: `url(${currentComparison.beforeImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'left center',
+            width: `${sliderPosition}%`,
+            filter: 'grayscale(0.8) contrast(1.2)'
+          }}
+        />
+
+        {/* Slider Handle */}
+        <div 
+          className="absolute top-1/2 w-11 h-11 -translate-x-1/2 -translate-y-1/2 bg-cyan-400 rounded-full flex items-center justify-center pointer-events-none z-20"
+          style={{ 
+            left: `${sliderPosition}%`,
+            boxShadow: '0 0 25px rgba(34, 211, 238, 0.6)'
+          }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 16L22 12L18 8"/><path d="M6 8L2 12L6 16"/>
+          </svg>
+        </div>
+        <div 
+          className={`absolute bottom-5 left-5 px-4 py-2 bg-black/80 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-rose-400 border border-rose-400/30 transition-opacity duration-300 pointer-events-none ${
+            sliderPosition < 20 ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {section.beforeAfterSlider.beforeLabel}
+        </div>
+        <div 
+          className={`absolute bottom-5 right-5 px-4 py-2 bg-black/80 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-emerald-400 border border-emerald-400/30 transition-opacity duration-300 pointer-events-none ${
+            sliderPosition > 80 ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {section.beforeAfterSlider.afterLabel}
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8 pt-8 border-t border-white/10">
+        {section.beforeAfterSlider.improvements.map((item: any, idx: number) => (
+          <div key={idx} className="p-6 rounded-xl bg-white/[0.02] border border-transparent hover:border-white/10 hover:bg-white/[0.04] transition-all hover:-translate-y-0.5">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                {item.icon}
+              </div>
+              <h4 className="text-lg font-bold text-white">{item.title}</h4>
+            </div>
+            <p className="text-[15px] leading-relaxed text-slate-400 pl-11">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Console Navigation Component  
+const ConsoleNavigation: React.FC<{ section: any }> = ({ section }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const navRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  return (
+    <div className="w-full max-w-5xl mx-auto">
+      <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+        <span className="w-8 h-[2px] bg-purple-500 inline-block"/> {section.title}
+      </h3>
+      <p className="text-slate-400 mb-12 text-lg">{section.intro}</p>
+
+      <div className="grid md:grid-cols-[350px_1fr] gap-10 md:gap-20 border-t border-b border-white/10 py-12 relative">
+        <div className="relative flex flex-col gap-6">
+          <div className="hidden md:block absolute right-[-2.5rem] top-0 bottom-0 w-px bg-white/10" />
+          <div 
+            className="hidden md:block absolute right-[-2.5rem] w-0.5 h-6 bg-cyan-400 transition-all duration-300 ease-out"
+            style={{ boxShadow: '0 0 10px rgb(34 211 238)', top: navRefs.current[activeIndex]?.offsetTop || 0 }}
+          />
+          {section.consoleNav.items.map((item: any, idx: number) => (
+            <div
+              key={idx}
+              ref={el => { navRefs.current[idx] = el; }}
+              className={`flex items-center justify-between text-base font-semibold cursor-pointer transition-colors duration-300 ${
+                idx === activeIndex ? 'text-white' : 'text-slate-500'
+              } hover:text-slate-300`}
+              onMouseEnter={() => setActiveIndex(idx)}
+            >
+              <span>{item.navTitle}</span>
+              <span className={`font-mono text-xs text-cyan-400 transition-all duration-300 ${
+                idx === activeIndex ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
+              }`}>
+                {String(idx + 1).padStart(2, '0')}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="relative min-h-[220px] flex items-center">
+          {section.consoleNav.items.map((item: any, idx: number) => (
+            <div
+              key={idx}
+              className={`absolute top-1/2 left-0 w-full transition-all duration-400 ease-out ${
+                idx === activeIndex ? 'opacity-100 -translate-y-1/2 translate-x-0' : 'opacity-0 -translate-y-1/2 translate-x-5 pointer-events-none'
+              }`}
+            >
+              <div className="inline-block font-mono text-[11px] text-cyan-400 border border-cyan-400/30 px-2 py-1 rounded mb-3 uppercase tracking-wider">
+                {item.tag}
+              </div>
+              <h3 className="text-3xl font-extrabold text-white mb-5 bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent leading-tight">
+                {item.displayTitle}
+              </h3>
+              <p className="text-base leading-relaxed text-slate-400 max-w-lg">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
-  isPage?: boolean;
 }
 
-export const ProjectModal = ({ project, onClose, isPage = false }: ProjectModalProps) => {
+export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState("");
   const [isAnyLightboxOpen, setIsAnyLightboxOpen] = useState(false);
@@ -66,42 +903,30 @@ export const ProjectModal = ({ project, onClose, isPage = false }: ProjectModalP
 
   if (!project) return null;
 
-  const ContentWrapper = isPage ? 'div' : 'div';
-  const outerClasses = isPage 
-    ? "w-full min-h-screen bg-slate-950" 
-    : "fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden";
-  const innerClasses = isPage
-    ? "w-full bg-slate-950"
-    : "relative w-full max-w-6xl h-[90vh] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-slide-up";
-
   return (
-    <div className={outerClasses}>
-      {/* Backdrop - only for modal mode */}
-      {!isPage && (
-        <div 
-          className="absolute inset-0 bg-slate-950/90 backdrop-blur-md animate-fade-in" 
-          onClick={onClose}
-        />
-      )}
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-slate-950/90 backdrop-blur-md animate-fade-in" 
+        onClick={onClose}
+      />
       
-      {/* Modal/Page Content */}
-      <div className={innerClasses}>
+      {/* Modal Content */}
+      <div className="relative w-full max-w-6xl h-[90vh] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-slide-up">
         
-        {/* Close Button - only for modal mode */}
-        {!isPage && (
-          <button 
-            onClick={isAnyLightboxOpen ? undefined : onClose}
-            disabled={isAnyLightboxOpen}
-            className={`absolute top-4 right-4 z-50 p-2 rounded-full text-white transition-all border border-white/10 ${
-              isAnyLightboxOpen 
-                ? 'bg-black/30 opacity-40 cursor-not-allowed' 
-                : 'bg-black/50 hover:bg-white/20 cursor-pointer'
-            }`}
-            title={isAnyLightboxOpen ? 'Close the enlarged image first' : 'Close project'}
-          >
-            <X size={24} />
-          </button>
-        )}
+        {/* Close Button */}
+        <button 
+          onClick={isAnyLightboxOpen ? undefined : onClose}
+          disabled={isAnyLightboxOpen}
+          className={`absolute top-4 right-4 z-50 p-2 rounded-full text-white transition-all border border-white/10 ${
+            isAnyLightboxOpen 
+              ? 'bg-black/30 opacity-40 cursor-not-allowed' 
+              : 'bg-black/50 hover:bg-white/20 cursor-pointer'
+          }`}
+          title={isAnyLightboxOpen ? 'Close the enlarged image first' : 'Close project'}
+        >
+          <X size={24} />
+        </button>
 
         {/* Scrollable Area */}
         <div ref={scrollContainerRef} className="overflow-y-auto h-full scrollbar-thin scrollbar-thumb-pink-500/30 scrollbar-track-transparent">

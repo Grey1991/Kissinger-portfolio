@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Shield, AlertTriangle } from 'lucide-react';
-import styles from './SafetyRails.module.css';
 
 interface SafetyRailCard {
   risk: string;
@@ -26,10 +25,10 @@ const SafetyRails: React.FC<SafetyRailsProps> = ({ cards, onLightboxChange }) =>
     onLightboxChange?.(true);
   };
 
-  const closeImage = useCallback(() => {
+  const closeImage = () => {
     setSelectedImage(null);
     onLightboxChange?.(false);
-  }, [onLightboxChange]);
+  };
 
   // Handle ESC key to close lightbox
   useEffect(() => {
@@ -43,57 +42,57 @@ const SafetyRails: React.FC<SafetyRailsProps> = ({ cards, onLightboxChange }) =>
   }, [selectedImage, closeImage]);
 
   return (
-    <div className={styles.container}>
+    <div className="space-y-8">
       {/* Title and Note */}
-      <div className={styles.headerSection}>
-        <h3 className={styles.title}>
-          <span className={styles.titleDecoration}/> Risk Scenarios &amp; Solutions (Post-testing Iteration)
+      <div className="space-y-3">
+        <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+          <span className="w-8 h-[2px] bg-purple-500 inline-block"/> Risk Scenarios &amp; Solutions (Post-testing Iteration)
         </h3>
-        <p className={styles.note}>
+        <p className="text-sm text-gray-400 italic">
           These solutions were refined through usability feedback and design iteration. Prototype only — not yet implemented.
         </p>
       </div>
 
       {/* 6-Card Grid */}
-      <div className={styles.grid}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {cards.map((card, index) => (
           <div
             key={index}
-            className={styles.card}
+            className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 space-y-5 hover:bg-white/[0.07] transition-all duration-300"
           >
             {/* Risk Section */}
-            <div className={styles.section}>
-              <div className={styles.tagRow}>
-                <span className={`${styles.tag} ${styles.tagRisk}`}>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-500/10 border border-red-500/20 rounded-md text-xs font-medium text-red-400">
                   <AlertTriangle size={12} />
                   Risk
                 </span>
               </div>
-              <p className={styles.text}>
+              <p className="text-sm text-gray-300 leading-relaxed">
                 {card.risk}
               </p>
             </div>
 
             {/* Solution Section */}
-            <div className={styles.section}>
-              <div className={styles.tagRow}>
-                <span className={`${styles.tag} ${styles.tagSolution}`}>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-md text-xs font-medium text-emerald-400">
                   <Shield size={12} />
                   Solution
                 </span>
               </div>
-              <p className={styles.text}>
+              <p className="text-sm text-gray-300 leading-relaxed">
                 {card.guardrail}
               </p>
             </div>
 
             {/* Optional Chips */}
             {card.chips && card.chips.length > 0 && (
-              <div className={styles.chips}>
+              <div className="flex flex-wrap gap-2">
                 {card.chips.map((chip, chipIndex) => (
                   <span
                     key={chipIndex}
-                    className={styles.chip}
+                    className="px-2.5 py-1 bg-blue-500/10 border border-blue-500/20 rounded-md text-xs text-blue-300"
                   >
                     {chip}
                   </span>
@@ -102,20 +101,20 @@ const SafetyRails: React.FC<SafetyRailsProps> = ({ cards, onLightboxChange }) =>
             )}
 
             {/* Supporting Screenshot */}
-            <div className={styles.screenshotSection}>
+            <div className="space-y-3 pt-2">
               <div
-                className={styles.imageWrapper}
+                className="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-white/10 cursor-pointer hover:border-white/20 transition-colors group"
                 onClick={() => openImage(card.image)}
               >
                 <Image
                   src={card.image}
                   alt={card.caption}
                   fill
-                  className={styles.image}
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className={styles.imageOverlay} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <p className={styles.caption}>
+              <p className="text-xs text-gray-400 leading-relaxed">
                 {card.caption}
               </p>
             </div>
@@ -126,21 +125,21 @@ const SafetyRails: React.FC<SafetyRailsProps> = ({ cards, onLightboxChange }) =>
       {/* Lightbox Modal */}
       {selectedImage && (
         <div
-          className={styles.lightboxOverlay}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 cursor-pointer"
           onClick={closeImage}
         >
           <button
-            className={styles.lightboxClose}
+            className="absolute top-4 left-4 text-white/80 hover:text-white text-4xl font-light leading-none z-10"
             onClick={closeImage}
           >
             ×
           </button>
-          <div className={styles.lightboxContainer}>
+          <div className="relative max-w-6xl max-h-[90vh] w-full h-full">
             <Image
               src={selectedImage}
               alt="Enlarged view"
               fill
-              className={styles.lightboxImage}
+              className="object-contain"
             />
           </div>
         </div>
