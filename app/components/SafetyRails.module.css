@@ -1,0 +1,213 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: rgb(255 255 255);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.titleDecoration {
+  width: 2rem;
+  height: 2px;
+  background-color: rgb(168 85 247);
+  display: inline-block;
+}
+
+.note {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(156 163 175);
+  font-style: italic;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  background-color: rgb(255 255 255 / 0.05);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: all 0.3s;
+}
+
+.card:hover {
+  background-color: rgb(255 255 255 / 0.07);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.badgeWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+.riskBadge {
+  background-color: rgb(239 68 68 / 0.1);
+  border: 1px solid rgb(239 68 68 / 0.2);
+  color: rgb(248 113 113);
+}
+
+.solutionBadge {
+  background-color: rgb(16 185 129 / 0.1);
+  border: 1px solid rgb(16 185 129 / 0.2);
+  color: rgb(52 211 153);
+}
+
+.text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(209 213 219);
+  line-height: 1.625;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  padding: 0.25rem 0.625rem;
+  background-color: rgb(59 130 246 / 0.1);
+  border: 1px solid rgb(59 130 246 / 0.2);
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(147 197 253);
+}
+
+.imageSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.imageWrapper:hover {
+  border-color: rgb(255 255 255 / 0.2);
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.imageWrapper:hover .image {
+  transform: scale(1.05);
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.6), transparent, transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.imageWrapper:hover .imageOverlay {
+  opacity: 1;
+}
+
+.caption {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(156 163 175);
+  line-height: 1.625;
+}
+
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(0 0 0 / 0.9);
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: rgb(255 255 255 / 0.8);
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 300;
+  line-height: 1;
+  z-index: 10;
+  transition: color 0.3s;
+}
+
+.lightboxClose:hover {
+  color: rgb(255 255 255);
+}
+
+.lightboxImageContainer {
+  position: relative;
+  max-width: 72rem;
+  max-height: 90vh;
+  width: 100%;
+  height: 100%;
+}
+
+.lightboxImage {
+  object-fit: contain;
+}

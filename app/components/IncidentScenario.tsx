@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import styles from './IncidentScenario.module.css';
 
 export const IncidentScenario = () => {
   const [isRunning, setIsRunning] = useState(false);
@@ -75,19 +76,19 @@ export const IncidentScenario = () => {
   };
 
   return (
-    <div className="w-full my-16">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="text-center mb-10">
-        <h3 className="text-4xl font-bold text-white mb-2">Incident Response Scenario</h3>
-        <p className="text-slate-400">Multi-agency collaboration via ICEMS</p>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Incident Response Scenario</h3>
+        <p className={styles.subtitle}>Multi-agency collaboration via ICEMS</p>
       </div>
 
       {/* Scene Container */}
-      <div className="relative w-full max-w-[900px] h-[500px] mx-auto border border-white/10 rounded-3xl bg-slate-950/30 backdrop-blur-md overflow-hidden shadow-2xl">
+      <div className={styles.sceneContainer}>
         
         {/* Background Grid */}
         <div 
-          className="absolute inset-0 opacity-20"
+          className={styles.backgroundGrid}
           style={{
             backgroundImage: `
               radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.05), transparent 25%),
@@ -99,80 +100,80 @@ export const IncidentScenario = () => {
         />
 
         {/* Nodes */}
-        <div className={`absolute bottom-[60px] left-[60px] w-[140px] p-4 rounded-xl border transition-all duration-500 z-10 ${
+        <div className={`${styles.node} ${styles.nodeMop} ${
           activeNodes.has('mop') 
-            ? 'bg-slate-800/90 border-purple-400 shadow-[0_0_30px_rgba(168,85,247,0.5)] scale-100 opacity-100' 
-            : 'bg-slate-900/60 border-white/10 scale-90 opacity-40'
+            ? styles.nodeActive 
+            : styles.nodeInactive
         }`}>
-          <div className="text-3xl mb-2 text-center">📱</div>
-          <div className="text-sm font-bold text-white text-center">Public (MOP)</div>
-          <div className="text-[10px] text-slate-400 text-center uppercase tracking-wider">
+          <div className={styles.nodeIcon}>📱</div>
+          <div className={styles.nodeTitle}>Public (MOP)</div>
+          <div className={styles.nodeStatus}>
             {activeNodes.has('mop') ? 'Calling...' : 'Standby'}
           </div>
         </div>
 
-        <div className={`absolute top-[60px] left-[180px] w-[140px] p-4 rounded-xl border transition-all duration-500 z-10 ${
+        <div className={`${styles.node} ${styles.nodePolice} ${
           activeNodes.has('police') 
-            ? 'bg-slate-800/90 border-blue-400 shadow-[0_0_30px_rgba(59,130,246,0.5)] scale-100 opacity-100' 
-            : 'bg-slate-900/60 border-white/10 scale-90 opacity-40'
+            ? styles.nodeActive 
+            : styles.nodeInactive
         }`}>
-          <div className="text-3xl mb-2 text-center">👮</div>
-          <div className="text-sm font-bold text-white text-center">Police (POL)</div>
-          <div className="text-[10px] text-slate-400 text-center uppercase tracking-wider">
+          <div className={styles.nodeIcon}>👮</div>
+          <div className={styles.nodeTitle}>Police (POL)</div>
+          <div className={styles.nodeStatus}>
             {activeNodes.has('police') ? 'Active / Lead' : 'Offline'}
           </div>
         </div>
 
-        <div className={`absolute top-[60px] left-[380px] w-[140px] p-4 rounded-xl border transition-all duration-500 z-10 ${
+        <div className={`${styles.node} ${styles.nodeSls} ${
           activeNodes.has('sls') 
-            ? 'bg-slate-800/90 border-yellow-400 shadow-[0_0_30px_rgba(234,179,8,0.5)] scale-100 opacity-100' 
-            : 'bg-slate-900/60 border-white/10 scale-90 opacity-40'
+            ? styles.nodeActive 
+            : styles.nodeInactive
         }`}>
-          <div className="text-3xl mb-2 text-center">🏄</div>
-          <div className="text-sm font-bold text-white text-center">Surf Life Saving</div>
-          <div className="text-[10px] text-slate-400 text-center uppercase tracking-wider">
+          <div className={styles.nodeIcon}>🏄</div>
+          <div className={styles.nodeTitle}>Surf Life Saving</div>
+          <div className={styles.nodeStatus}>
             {activeNodes.has('sls') ? 'Joined' : 'Offline'}
           </div>
         </div>
 
-        <div className={`absolute top-[60px] left-[580px] w-[140px] p-4 rounded-xl border transition-all duration-500 z-10 ${
+        <div className={`${styles.node} ${styles.nodeAmbo} ${
           activeNodes.has('ambo') 
-            ? 'bg-slate-800/90 border-red-400 shadow-[0_0_30px_rgba(239,68,68,0.5)] scale-100 opacity-100' 
-            : 'bg-slate-900/60 border-white/10 scale-90 opacity-40'
+            ? styles.nodeActive 
+            : styles.nodeInactive
         }`}>
-          <div className="text-3xl mb-2 text-center">🚑</div>
-          <div className="text-sm font-bold text-white text-center">Ambulance</div>
-          <div className="text-[10px] text-slate-400 text-center uppercase tracking-wider">
+          <div className={styles.nodeIcon}>🚑</div>
+          <div className={styles.nodeTitle}>Ambulance</div>
+          <div className={styles.nodeStatus}>
             {activeNodes.has('ambo') ? 'Joined' : 'Offline'}
           </div>
         </div>
 
-        <div className={`absolute bottom-[60px] left-[380px] w-[140px] p-4 rounded-xl border transition-all duration-500 z-10 ${
+        <div className={`${styles.node} ${styles.nodeClub} ${
           activeNodes.has('club') 
-            ? 'bg-slate-800/90 border-yellow-400 shadow-[0_0_30px_rgba(234,179,8,0.5)] scale-100 opacity-100' 
-            : 'bg-slate-900/60 border-white/10 scale-90 opacity-40'
+            ? styles.nodeActive 
+            : styles.nodeInactive
         }`}>
-          <div className="text-3xl mb-2 text-center">🏖️</div>
-          <div className="text-sm font-bold text-white text-center">Clubhouse</div>
-          <div className="text-[10px] text-slate-400 text-center uppercase tracking-wider">
+          <div className={styles.nodeIcon}>🏖️</div>
+          <div className={styles.nodeTitle}>Clubhouse</div>
+          <div className={styles.nodeStatus}>
             {activeNodes.has('club') ? 'Assets Deployed' : 'Patrol'}
           </div>
         </div>
 
-        <div className={`absolute bottom-[60px] left-[580px] w-[140px] p-4 rounded-xl border transition-all duration-500 z-10 ${
+        <div className={`${styles.node} ${styles.nodeScene} ${
           activeNodes.has('scene') 
-            ? 'bg-slate-800/90 border-red-400 shadow-[0_0_30px_rgba(239,68,68,0.5)] scale-100 opacity-100' 
-            : 'bg-slate-900/60 border-white/10 scale-90 opacity-40'
+            ? styles.nodeActive 
+            : styles.nodeInactive
         }`}>
-          <div className="text-3xl mb-2 text-center">📍</div>
-          <div className="text-sm font-bold text-white text-center">Incident Scene</div>
-          <div className="text-[10px] text-slate-400 text-center uppercase tracking-wider">
+          <div className={styles.nodeIcon}>📍</div>
+          <div className={styles.nodeTitle}>Incident Scene</div>
+          <div className={styles.nodeStatus}>
             {activeNodes.has('scene') ? 'Arrived' : 'Pending'}
           </div>
         </div>
 
         {/* SVG Connections */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+        <svg className={styles.svgConnections}>
           {/* Background Dashed Lines */}
           <path d="M130,390 L200,160" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeDasharray="10 5" fill="none" />
           <path d="M250,130 L380,130" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeDasharray="10 5" fill="none" />
@@ -253,21 +254,14 @@ export const IncidentScenario = () => {
           )}
         </svg>
 
-        <style jsx>{`
-          @keyframes drawLine {
-            to {
-              stroke-dashoffset: 0;
-            }
-          }
-        `}</style>
       </div>
 
       {/* Controls */}
-      <div className="flex gap-5 mt-8 max-w-[900px] mx-auto items-start">
+      <div className={styles.controls}>
         <button 
           onClick={startScenario}
           disabled={isRunning}
-          className="px-8 py-4 bg-red-500 hover:bg-red-600 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg font-bold shadow-lg hover:shadow-red-500/40 transition-all flex items-center gap-3"
+          className={styles.startButton}
         >
           <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path d="M18.88 18.88A3 3 0 0 1 14.64 23H9.36a3 3 0 0 1-4.24-4.24l.88-.88V12a6 6 0 1 1 12 0v5.88l.88.88z"></path>
@@ -276,13 +270,13 @@ export const IncidentScenario = () => {
         </button>
         
         {/* Terminal */}
-        <div className="flex-1 h-[120px] bg-slate-950 border border-white/10 rounded-lg p-4 font-mono text-sm text-emerald-400 overflow-y-auto shadow-inner">
+        <div className={styles.terminal}>
           {logs.length === 0 && (
-            <div className="text-slate-600">Ready for simulation...</div>
+            <div className={styles.terminalEmpty}>Ready for simulation...</div>
           )}
           {logs.map((entry, idx) => (
-            <div key={idx} className="mb-1.5 animate-fade-in">
-              <span className="text-slate-500 mr-3">{entry.time}</span>
+            <div key={idx} className={styles.logEntry}>
+              <span className={styles.logTime}>{entry.time}</span>
               {entry.message}
             </div>
           ))}

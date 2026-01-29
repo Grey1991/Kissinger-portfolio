@@ -1,0 +1,40 @@
+import { 
+  Smile, Edit, Cloud, Search, Users, Layout, WifiOff, 
+  TrendingUp, MessageCircle, Smartphone, Tablet, Check, 
+  Minus, Code, Shield, Target, Star, UserX, Zap, Activity, 
+  Eye, AlertCircle, HelpCircle, EyeOff, Sun, Lightbulb, 
+  ShoppingCart, User, Archive, LucideIcon 
+} from 'lucide-react';
+
+// Icon mapping for features
+export const iconMap: Record<string, LucideIcon> = {
+  'smile': Smile,
+  'edit': Edit,
+  'cloud': Cloud,
+  'search': Search,
+  'users': Users,
+  'layout': Layout,
+  'wifi-off': WifiOff,
+  'trending-up': TrendingUp,
+  'message-circle': MessageCircle,
+  'smartphone': Smartphone,
+  'tablet': Tablet,
+  'check': Check,
+  'minus': Minus,
+  'code': Code,
+  'shield': Shield,
+  'target': Target,
+  'star': Star,
+  'user-x': UserX,
+  'zap': Zap,
+  'activity': Activity,
+  'eye': Eye,
+  'alert-circle': AlertCircle,
+  'help-circle': HelpCircle,
+  'eye-off': EyeOff,
+  'sun': Sun,
+  'lightbulb': Lightbulb,
+  'shopping-cart': ShoppingCart,
+  'user': User,
+  'archive': Archive,
+};
