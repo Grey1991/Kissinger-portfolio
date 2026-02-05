@@ -1524,10 +1524,10 @@ export const RESUME_DATA: ResumeData = {
           },
           {
             id: "whats-next",
-            type: "wrapup-section",
+            type: "next-steps",
             title: "Next Steps & Learnings",
             content: "A roadmap for future iterations and reflections on the design process.",
-            wrapup: {
+            nextSteps: {
               roadmap: [
                 { icon: "users", title: "Conduct Usability Testing" },
                 { icon: "edit", title: "Refine Collaboration Features" },

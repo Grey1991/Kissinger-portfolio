@@ -2085,40 +2085,8 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   <FeaturesInteractive features={section.interactiveFeatures || []} />
                 </div>
               )}
-
-              {/* What's Next Cards Block */}
-              {section.type === 'next-steps-cards' && section.nextSteps && (
-                <div className="w-full max-w-5xl mx-auto">
-                  {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-12 text-center flex items-center justify-center gap-3">
-                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
-                      {section.title}
-                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
-                    </h3>
-                  )}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {section.nextSteps.map((step, idx) => {
-                      const Icon = iconMap[step.icon] || TrendingUp;
-                      return (
-                        <div 
-                          key={idx}
-                          className="group bg-slate-900/50 border border-white/10 rounded-2xl p-8 text-center transition-all duration-300 hover:bg-slate-800/50 hover:border-pink-500/30 hover:shadow-xl hover:shadow-pink-500/10 hover:-translate-y-2"
-                        >
-                          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-pink-500/10 to-purple-500/10 border border-pink-500/20 flex items-center justify-center group-hover:scale-110 group-hover:border-pink-500/50 transition-all duration-300">
-                            <Icon size={28} className="text-pink-400 group-hover:text-pink-300" strokeWidth={2} />
-                          </div>
-                          <h4 className="text-base font-semibold text-white leading-snug">
-                            {step.title}
-                          </h4>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Wrapup Section: Comprehensive Roadmap + Learnings + Improvements */}
-              {section.type === 'wrapup-section' && section.wrapup && (
+              {/* Next Steps Section: Comprehensive Roadmap + Learnings + Improvements */}
+              {section.type === 'next-steps' && section.nextSteps && (
                 <div className="w-full max-w-6xl mx-auto">
                   {/* Header */}
                   <div className="mb-12">
@@ -2138,9 +2106,9 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                       <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Future Roadmap</h4>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-                      {section.wrapup.roadmap.map((item, idx) => {
+                      {section.nextSteps.roadmap.map((item, idx) => {
                         const Icon = iconMap[item.icon] || Star;
-                        const isLast = idx === section.wrapup!.roadmap.length - 1;
+                        const isLast = idx === section.nextSteps!.roadmap.length - 1;
                         return (
                           <div key={idx} className="relative">
                             <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-2 group">
@@ -2170,7 +2138,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         </span>
                       </div>
                       <div className="space-y-6">
-                        {section.wrapup.learnings.map((item, idx) => {
+                        {section.nextSteps.learnings.map((item, idx) => {
                           const Icon = iconMap[item.icon] || Check;
                           return (
                             <div key={idx} className="flex gap-4">
@@ -2196,7 +2164,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         </span>
                       </div>
                       <div className="space-y-6">
-                        {section.wrapup.improvements.map((item, idx) => {
+                        {section.nextSteps.improvements.map((item, idx) => {
                           const Icon = iconMap[item.icon] || Target;
                           return (
                             <div key={idx} className="flex gap-4">
