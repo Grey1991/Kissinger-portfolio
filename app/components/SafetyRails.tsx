@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Shield, AlertTriangle } from 'lucide-react';
+import Lightbox from './Lightbox';
 
 interface SafetyRailCard {
   risk: string;
@@ -18,35 +19,35 @@ interface SafetyRailsProps {
 }
 
 const SafetyRails: React.FC<SafetyRailsProps> = ({ cards, onLightboxChange }) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number>(-1);
 
-  const openImage = (src: string) => {
-    setSelectedImage(src);
+  const openImage = (index: number) => {
+    setSelectedImageIndex(index);
     onLightboxChange?.(true);
   };
 
   const closeImage = () => {
-    setSelectedImage(null);
+    setSelectedImageIndex(-1);
     onLightboxChange?.(false);
   };
 
-  // Handle ESC key to close lightbox
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && selectedImage) {
-        closeImage();
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [selectedImage, closeImage]);
+  const nextImage = () => {
+    setSelectedImageIndex((prev) => (prev + 1) % cards.length);
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prev) => (prev - 1 + cards.length) % cards.length);
+  };
 
   return (
     <div className="space-y-8">
       {/* Title and Note */}
       <div className="space-y-3">
         <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-          <span className="w-8 h-[2px] bg-purple-500 inline-block"/> Risk Scenarios &amp; Solutions (Post-testing Iteration)
+          <span className="w-8 h-[2px] bg-purple-500 inline-block"/> Risk Scenarios &amp; Solutions
+          <span className="ml-2 px-3 py-1 text-xs font-normal text-gray-400 bg-gray-800/50 border border-gray-700/50 rounded-full">
+            Post-testing iteration
+          </span>
         </h3>
         <p className="text-sm text-gray-400 italic">
           These solutions were refined through usability feedback and design iteration. Prototype only — not yet implemented.
@@ -86,25 +87,11 @@ const SafetyRails: React.FC<SafetyRailsProps> = ({ cards, onLightboxChange }) =>
               </p>
             </div>
 
-            {/* Optional Chips */}
-            {card.chips && card.chips.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {card.chips.map((chip, chipIndex) => (
-                  <span
-                    key={chipIndex}
-                    className="px-2.5 py-1 bg-blue-500/10 border border-blue-500/20 rounded-md text-xs text-blue-300"
-                  >
-                    {chip}
-                  </span>
-                ))}
-              </div>
-            )}
-
             {/* Supporting Screenshot */}
             <div className="space-y-3 pt-2">
               <div
                 className="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-white/10 cursor-pointer hover:border-white/20 transition-colors group"
-                onClick={() => openImage(card.image)}
+                onClick={() => openImage(index)}
               >
                 <Image
                   src={card.image}
@@ -122,28 +109,17 @@ const SafetyRails: React.FC<SafetyRailsProps> = ({ cards, onLightboxChange }) =>
         ))}
       </div>
 
-      {/* Lightbox Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 cursor-pointer"
-          onClick={closeImage}
-        >
-          <button
-            className="absolute top-4 left-4 text-white/80 hover:text-white text-4xl font-light leading-none z-10"
-            onClick={closeImage}
-          >
-            ×
-          </button>
-          <div className="relative max-w-6xl max-h-[90vh] w-full h-full">
-            <Image
-              src={selectedImage}
-              alt="Enlarged view"
-              fill
-              className="object-contain"
-            />
-          </div>
-        </div>
-      )}
+      {/* Lightbox */}
+      <Lightbox
+        isOpen={selectedImageIndex >= 0}
+        images={cards.map(card => card.image)}
+        currentIndex={selectedImageIndex >= 0 ? selectedImageIndex : 0}
+        onClose={closeImage}
+        onNext={nextImage}
+        onPrev={prevImage}
+        caption={selectedImageIndex >= 0 ? cards[selectedImageIndex].caption : ''}
+        alt="Risk scenario screenshot"
+      />
     </div>
   );
 };

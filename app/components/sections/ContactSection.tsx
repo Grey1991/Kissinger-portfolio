@@ -19,7 +19,7 @@ export const ContactSection = ({ email, linkedin, website }: ContactSectionProps
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">extraordinary.</span>
         </h2>
         <p className="text-slate-400 text-lg">
-          Currently available for new opportunities. Specialized in turning complex problems into elegant, user-centric solutions.
+          Currently available for new opportunities. Specialised in turning complex problems into elegant, user-centric solutions.
         </p>
         
         <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">

@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   Database, Users, Shield, Clock, Layers, Smartphone, 
   PenTool, Utensils, Search, MousePointer, CheckSquare, Monitor,
-  Layout, Activity, Target, Code, FileText, Eye, TrendingUp, Zap, Lightbulb, RefreshCw, MessageCircle, AlertCircle, HelpCircle, Check
+  Layout, Activity, Target, Code, FileText, Eye, TrendingUp, Zap, Lightbulb, RefreshCw, MessageCircle, AlertCircle, HelpCircle, Check, ShoppingCart, UserPlus
 } from 'lucide-react';
 import { ResumeData } from '../types';
 
@@ -16,7 +16,7 @@ export const RESUME_DATA: ResumeData = {
     linkedin: "https://www.linkedin.com/in/kissingerhu",
     website: "https://www.kissingerhu.com"
   },
-  summary: "Senior UI/UX Designer with 5+ years of experience specialized in modernizing legacy systems and designing complex enterprise platforms. Currently the sole designer at Surf Life Saving Australia, leading digital transformation across desktop and mobile. Expert in translating heavy data and compliance workflows into clear, human-centered experiences.",
+  summary: "Senior UI/UX Designer with 5+ years of experience specialised in modernising legacy systems and designing complex enterprise platforms. Currently the sole designer at Surf Life Saving Australia, leading digital transformation across desktop and mobile. Expert in translating heavy data and compliance workflows into clear, human-centred experiences.",
   skills: [
     "End-to-End Product & UI/UX Design",
     "Complex Workflow & Form Design",
@@ -58,8 +58,8 @@ export const RESUME_DATA: ResumeData = {
       period: "04/2022 - 01/2023",
       description: "Sports Tech - Custom Court Design & Ordering Platform.",
       achievements: [
-        "Optimized responsive purchase flows for 'CourtCanva', significantly improving discoverability.",
-        "Iterated designs in an Agile environment, delivering production-ready assets for complex customization tools."
+        "Optimised responsive purchase flows for 'CourtCanva', significantly improving discoverability.",
+        "Iterated designs in an Agile environment, delivering production-ready assets for complex customisation tools."
       ]
     },
     {
@@ -91,10 +91,10 @@ export const RESUME_DATA: ResumeData = {
       title: "SurfGuard (SLSA)",
       subtitle: "Legacy System Rewrite",
       category: "Enterprise",
-      summary: "Modernizing a critical nationwide operational database into a scalable, user-friendly React application.",
+      summary: "Modernising a critical nationwide operational database into a scalable, user-friendly React application.",
       tags: ["Enterprise Admin", "Legacy Modernisation", "Design System", "Complex Workflows"],
       gradient: "from-blue-700 to-cyan-600",
-      icon: <Database />,
+      icon: <Shield />,
       details: {
         role: "Sole Lead Designer",
         year: "2023 - Present",
@@ -107,7 +107,7 @@ export const RESUME_DATA: ResumeData = {
         approach: "I started by auditing the existing workflows, mapping out the information architecture, and then creating low-fidelity wireframes to validate logic with BAs. I then moved to high-fidelity prototypes for stakeholder sign-off before delivering dev-ready specs.",
         keyDecisions: [
           "Introduced a 'Drawer' pattern for editing records to keep context, rather than full-page reloads.",
-          "Standardized data tables with sticky headers and customizable columns to handle dense information.",
+          "Standardised data tables with sticky headers and customisable columns to handle dense information.",
           "Created a 'Status Badge' system to quickly communicate member compliance status."
         ],
         outcome: "A modernized, accessible platform that significantly reduced training time for new administrators and improved data entry accuracy."
@@ -115,56 +115,323 @@ export const RESUME_DATA: ResumeData = {
     },
     {
       id: "slshub",
-      title: "SLS Hub (SLSA)",
-      subtitle: "New National Platform (Live)",
+      title: "SLS Hub — National Member Portal",
+      subtitle: "Live Product · 2024-present",
       category: "Platform",
-      summary: "A new lightweight national platform replacing the legacy Members Area, serving thousands of members.",
-      tags: ["Platform UX", "IA", "Authentication", "Responsive UI"],
+      summary: "The redesigned national member portal that unifies memberships, awards, patrols, submissions, resources, and admin operations — delivered with rules/eligibility-driven visibility, cross-system linking, and a consistent UI across desktop, mobile, and dark mode.",
+      tags: ["Portal", "Transactions", "Governance", "Live Product"],
       gradient: "from-yellow-600 to-orange-500",
+      image: "/slshub/SLS Hub Hero.png",
       icon: <Users />,
+      isCaseStudy: true,
+      finalDesignLink: "selected-screens",
       details: {
-        role: "Lead Product Designer",
-        year: "2024 (Live)",
-        platform: "Responsive Web",
-        tools: "Figma, Jira",
-        type: "B2C / Member Platform",
-        overview: "Replacing the aging 'Members Area', SLS Hub serves as the central entry point for members to renew memberships, access resources, and view awards. The challenge was to create a modern, mobile-friendly experience.",
-        myRole: "Designed end-to-end journeys for authentication, dashboard, and navigation. Created light/dark themes and ensured WCAG 2.1 AA compliance.",
-        constraints: "Integration with legacy backend APIs, diverse user demographic (age 16 to 80+), and need for high availability.",
-        approach: "Adopted a mobile-first strategy. Simplified the IA to group related tasks (e.g., 'My Training', 'My Patrols'). Used prototyping to test navigation clarity with volunteer members.",
-        keyDecisions: [
-          "Implemented a 'Magic Link' and simplified SSO flow to reduce login friction.",
-          "Designed a modular 'Widget' based dashboard that adapts to user roles.",
-          "Prioritized 'Renew Membership' CTA during renewal season based on user analytics."
+        role: "UI/UX Designer",
+        year: "2024-present",
+        platform: "Web + Mobile (responsive) + Dark mode",
+        tools: "Figma, Jira, Confluence",
+        
+        toc: [
+          { id: "summary", label: "Summary" },
+          { id: "module-coverage", label: "Module Coverage" },
+          { id: "rules-governance", label: "Rules & Governance" },
+          { id: "design-system", label: "Design System & Delivery" },
+          { id: "responsive-dark", label: "Responsive & Dark Mode" },
+          { id: "guides-enablement", label: "Guides & Enablement" },
+          { id: "quality-readiness", label: "Quality & Release Readiness" },
+          { id: "selected-screens", label: "Selected Screens" },
+          { id: "wrap-up", label: "Wrap-up" }
         ],
-        outcome: "Successful launch with positive feedback on ease of use. significantly reduced support tickets related to login issues."
+
+        contentSections: [
+          {
+            id: "summary",
+            type: "text-block",
+            title: "Summary",
+            content: "SLS Hub replaces the legacy Members Area as the central portal for members to manage memberships, awards, patrol participation, requests, resources, and linked services.\n\nI owned end-to-end UI/UX across the portal (desktop + responsive mobile), delivered a shared component library, implementation-ready specs (Dev Mode), fully clickable prototypes for full-flow validation, and continuous cross-device QA to protect design intent through build and release.\n\nWhat this demonstrates:\n• System-level portal UX with role- and eligibility-driven visibility (member vs admin, award-gated access)\n• Rules-heavy transactional workflows (renewals, transfers, submissions, approvals, payments)\n• Operational traceability (history logs, records, exports, audit-friendly status changes)"
+          },
+          {
+            id: "module-coverage",
+            type: "text-block",
+            title: "Module Coverage",
+            content: "SLS Hub spans a wide set of member and admin capabilities, organised into a clear navigation model (Dashboard, Applications, Account, More modules, and Admin). This coverage map reflects the scope I designed and standardised across the platform.\n\nCoverage includes:\n• Dashboard & Applications (portal entry, task widgets, quick actions)\n• Account Management (profile, verification, password recovery)\n• Memberships (renewals, transfers, family groups, payments)\n• Awards & Training (proficiency tracking, submissions, approvals)\n• Patrols & Operations (scheduling, hours, substitutions, calendar exports)\n• Submissions & Forms (apply, multi-step workflows, admin processing)\n• Resources & Documents (library, sharing, access controls)\n• Admin Tools (user management, permissions, reports, bulk actions)\n• Nipper Tracker (sessions, attendance, RFID/NFC, awards)"
+          },
+          {
+            id: "rules-governance",
+            type: "text-block",
+            title: "Rules & Governance",
+            content: "A large part of SLS Hub UX is rules-driven: permissions, eligibility, statuses, and time windows determine what content and actions are available. I designed interfaces that make these rules explicit through guided states, inline validation, and status-driven calls-to-action to reduce 'why can't I see this?' support load.\n\nExamples of governance patterns:\n• Eligibility-gated modules and actions (award/proficiency-driven access)\n• Status-based visibility and CTAs (pending / approved / rejected / expired)\n• Multi-step approvals and audit-friendly confirmations\n• Admin controls designed to be predictable and reversible where possible"
+          },
+          {
+            id: "design-system",
+            type: "text-block",
+            title: "Design System & Delivery",
+            content: "Built and maintained a shared component library and mapped Confluence field requirements to UI components to support consistent implementation. Delivered Dev Mode-ready specs, fully clickable prototypes for end-to-end validation, and partnered closely with developers to confirm feasibility and protect design intent.\n\nWhat I delivered:\n• Shared component library for consistent patterns across modules\n• Confluence requirements mapping (fields → UI components) for build clarity\n• Dev Mode specs for implementation-ready handoff\n• Clickable prototypes covering complete flows (for dev + stakeholders)\n• Continuous alignment with BA/stakeholders to validate expected behaviours"
+          },
+          {
+            id: "responsive-dark",
+            type: "text-block",
+            title: "Responsive & Dark Mode",
+            content: "Designed responsive mobile layouts for members who predominantly access Hub on phones, ensuring key workflows remain usable under smaller viewports and real-world constraints. Also delivered a dark mode experience to provide an accessible alternative and align with modern platform expectations.\n\nWhat was addressed:\n• Navigation and action density across breakpoints\n• Mobile-friendly forms and step progression\n• Modal/overlay behaviour for small viewports\n• Dark mode styling and contrast consistency across modules"
+          },
+          {
+            id: "guides-enablement",
+            type: "text-block",
+            title: "Guides & Enablement",
+            content: "Supporting assets:\n• Brochure and favicon to strengthen consistency and recognition"
+          },
+          {
+            id: "quality-readiness",
+            type: "text-block",
+            title: "Quality & Release Readiness",
+            content: "Ran continuous UI QA per ticket throughout development, testing across browsers and devices and partnering with developers to confirm feasibility and correctness. This helped catch edge cases early (rule-driven visibility, status transitions, responsive regressions, modal constraints) and ensured the experience shipped consistently."
+          },
+          {
+            id: "selected-screens",
+            type: "text-block",
+            title: "Selected Screens",
+            content: "Below are grouped examples showing how rules, transactions, and operational workflows were handled in the UI.",
+            figmaPrototype: {
+              url: "https://embed.figma.com/proto/t7rvIQsmnlsL9LOJcQF1OR/SLS-HUB-Clickable-Prototype?page-id=0%3A1&node-id=1652-284737&viewport=2482%2C36040%2C0.33&scaling=contain&content-scaling=fixed&starting-point-node-id=1652%3A284737&show-proto-sidebar=1&embed-host=share",
+              title: "Interactive Prototype",
+              description: "Explore the clickable prototype to experience the full user flows and interactions."
+            }
+          },
+          {
+            id: "wrap-up",
+            type: "wrapup-section",
+            title: "Wrap-up",
+            heroText: "SLS Hub is a live national portal that balances self-serve member journeys with governance, traceability, and operational workflows. My contribution focused on scalable UI patterns, rules-driven actions, cross-system linking, and delivery-quality specs and QA to ensure the experience ships consistently across devices.",
+            outcomes: [],
+            statusBar: {
+              label: "Project Status",
+              value: "Live Product",
+              badges: [
+                { text: "✓ Live", type: "done" },
+                { text: "🌐 National Portal", type: "done" }
+              ]
+            },
+            content: ""
+          }
+        ]
       }
     },
     {
       id: "memberjoin",
       title: "Member Join (SLSA)",
-      subtitle: "Compliance-heavy Onboarding",
-      category: "Regulated",
-      summary: "Re-architecting a complex, multi-step onboarding flow covering declarations, fees, and payments.",
-      tags: ["Form UX", "Microcopy", "Validation", "Compliance"],
-      gradient: "from-emerald-600 to-teal-500",
-      icon: <Shield />,
+      subtitle: "Member Join Process Rewrite",
+      category: "Web App",
+      summary: "The Member Join Rewrite project's aim is to enhance the current online membership sign-up, rejoin and renewal process to provide an improved source of information on the SLS Website coupled with an intuitive, streamlined SLS Hub process, and consolidated reporting and reconciliation features in SurfGuard.",
+      shortSummary: "Enhancing the membership sign-up and renewal process with improved information on the SLS Website, streamlined SLS Hub flows, and consolidated reporting in SurfGuard.",
+      tags: ["Form UX", "System Integration", "Compliance", "Working Project"],
+      gradient: "from-slate-700 to-slate-800",
+      icon: <UserPlus />,
+      image: "/member%20join%20slsa/Join%20Cover%20image.png",
+      isCaseStudy: true,
+      finalDesignLink: "ui-walkthrough",
       details: {
-        role: "UX Designer",
-        year: "2023",
-        platform: "Web",
-        tools: "Figma",
-        type: "Public Facing Form",
-        overview: "Joining a surf club involves complex legal declarations, payment calculations, and guardian approvals. The existing flow had high drop-off rates due to confusion.",
-        myRole: "Redesigned the entire flow. Simplified decision-making via progressive disclosure and rule-driven defaults.",
-        constraints: "Cannot remove legal text, must support multi-member family registrations in one transaction.",
-        approach: "Broke the massive form into digestible steps (Stepper Pattern). Used 'If this, then that' logic to hide irrelevant fields.",
-        keyDecisions: [
-          "Grouped 'Family' members into a single card view to prevent repetitive data entry.",
-          "Used inline validation with helpful microcopy instead of generic error messages.",
-          "Added a 'Save & Resume' feature for lengthy applications."
+        role: "UI/UX Designer",
+        year: "Dec 2025 – Feb 2026",
+        platform: "Web App (Responsive)",
+        tools: "Figma, Confluence",
+        type: "Public Facing + Member Portal",
+        
+        toc: [
+          { id: "demo-video", label: "Demo Walkthrough" },
+          { id: "overview", label: "Project Overview" },
+          { id: "problem-goal", label: "Problem & Goal" },
+          { id: "scope", label: "Project Blueprint" },
+          { id: "ui-walkthrough", label: "Design Outcomes" },
+          { id: "status", label: "Wrap-up" }
         ],
-        outcome: "Improved completion rates and reduced the perceived complexity of the joining process."
+
+        overview: "This project involves a complex delivery across three distinct ecosystems: SLSA Website (Public), SLS Hub (Member Portal), and SurfGuard (Admin/CRM). The unified landing page handles information and user triage, while the Hub manages transactional forms and payments.",
+        myRole: "UI/UX Designer responsible for the complete UX/UI across all three systems, including wireframes, prototypes, and stakeholder validation.",
+        constraints: "Must maintain strict compliance with safeguarding standards, integrate with legacy CRM systems, and support complex pricing logic including promo codes and government vouchers.",
+        approach: "Progressive disclosure strategy to guide users through complex decisions, with clear separation between information (SLSA Website) and transactions (Hub).",
+        keyDecisions: ["Upfront membership type identification", "Interactive club finder with map", "Price transparency before account creation", "Full SurfGuard integration for automated reporting"],
+        outcome: "Currently in V1 stakeholder validation phase, optimizing flows based on initial feedback.",
+        
+        contentSections: [
+          {
+            id: "demo-video",
+            type: "video",
+            src: "/member%20join%20slsa/Member%20Join%20Process(Join%20as%20Family%20Membership)_Video%20walkthrough.mp4",
+            alt: "Member Join Process Demo Walkthrough",
+            caption: "Full walkthrough demonstrating the family membership join process"
+          },
+          {
+            id: "overview",
+            type: "text-block",
+            title: "Project Overview",
+            content: "Unifying the join, renew, and re-join experience from fragmented state portals into a consistent national guide, fully integrated with SurfGuard for seamless reporting and reconciliation.\n\nThis project involves a complex delivery across three distinct ecosystems: SLSA Website (Public), SLS Hub (Member Portal), and SurfGuard (Admin/CRM)."
+          },
+          {
+            id: "problem-goal",
+            type: "problem-goal",
+            title: "Problem & Goal",
+            problemText: "The current ecosystem suffers from <strong>fragmented entry points</strong> across state and club websites, leading to inconsistent information and repetitive workflows.<br/><br/>The legacy reliance on <strong>offline forms</strong> creates friction for members and results in <strong>disconnected data</strong> for reconciliation within SurfGuard.",
+            goalText: "To provide a <strong>centralised source</strong> of information and guidance on the SLSA Website.<br/><br/>Create a faster, <strong>intuitive transactional process</strong> in the Hub, and ensure full integration with SurfGuard for <strong>automated reporting</strong> and financial reconciliation."
+          },
+          {
+            id: "scope",
+            type: "flip-cards",
+            title: "Project Blueprint",
+            hint: "Hover cards to reveal logic",
+            cards: [
+              {
+                system: "SLSA Website",
+                tag: "PUBLIC FACING",
+                color: "cyan",
+                icon: "globe",
+                scope: [
+                  { id: "01", text: "Landing Page" },
+                  { id: "02", text: "Guides & Content" },
+                  { id: "03", text: "Logic Flow" },
+                  { id: "04", text: "Club Directory" }
+                ],
+                logic: {
+                  title: "Triage Logic",
+                  steps: [
+                    "User Entry",
+                    "Logic Engine|Who • What • Where",
+                    "Display Pricing",
+                    "Hub Redirect"
+                  ]
+                }
+              },
+              {
+                system: "SLS Hub",
+                tag: "MEMBERS AREA",
+                color: "pink",
+                icon: "users",
+                scope: [
+                  { id: "05", text: "Join Wizard" },
+                  { id: "06", text: "Member Portal" },
+                  { id: "07", text: "Automations" }
+                ],
+                logic: {
+                  title: "Process Map",
+                  dualColumn: [
+                    {
+                      label: "JOIN FLOW",
+                      steps: ["1. State", "2. Who", "3. Details", "4. Family", "5. Pay"]
+                    },
+                    {
+                      label: "RENEW FLOW",
+                      steps: ["1. Verify", "2. Update", "3. Options", "4. Pay"]
+                    }
+                  ]
+                }
+              },
+              {
+                system: "SurfGuard",
+                tag: "ADMIN & SECURITY",
+                color: "emerald",
+                icon: "shield",
+                scope: [
+                  { id: "08", text: "Org & Profiles" },
+                  { id: "09", text: "Reporting Mods" }
+                ],
+                logic: {
+                  title: "Admin State",
+                  steps: [
+                    "Pending Queue",
+                    "Review",
+                    "Organisation Approval",
+                    "Sync → Hub"
+                  ]
+                }
+              }
+            ],
+            uatBar: {
+              badge: "10",
+              title: "Integration Testing & Rework (UAT)",
+              subtitle: "Cross-Platform Validation"
+            }
+          },
+          {
+            id: "ui-walkthrough",
+            type: "text-block",
+            title: "Design Outcomes",
+            content: "The member journey spans from the SLSA Website's guided logic flow, which helps users understand membership options and pricing, before redirecting into the SLS Hub to complete the customised join or renew form."
+          },
+          {
+            id: "website-flow",
+            type: "image-masonry",
+            title: "SLSA Website — Guided Logic Flow",
+            content: "Users are guided through key decision points before being redirected to the Hub:",
+            images: [
+              { src: "/member%20join%20slsa/Website%20Landing%20Page.png", caption: "Website Landing Page" },
+              { src: "/member%20join%20slsa/Logic%20Flow%20Step%201.%20Choose%20the%20type%20of%20membership.png", caption: "Step 1: Membership Type" },
+              { src: "/member%20join%20slsa/Logic%20Flow%20Step%202.%20Choose%20Type%20of%20Action.png", caption: "Step 2: Action" },
+              { src: "/member%20join%20slsa/Logic%20Flow%20Step%203.%20Select%20a%20club.png", caption: "Step 3: Select Club" },
+              { src: "/member%20join%20slsa/Logic%20Flow%20Step%204.%20Review%20fees%20and%20costs%20and%20redirect%20to%20SLS%20Hub.png", caption: "Step 4: Review Fees and Redirect to Hub" }
+            ]
+          },
+          {
+            id: "hub-journey",
+            type: "image-masonry",
+            title: "SLS Hub — Join/Renew Form Journey",
+            content: "Once redirected to the Hub, users complete the transactional process:",
+            images: [
+              { src: "/member%20join%20slsa/Redirected%20to%20SLS%20Hub%20-%20start%20by%20creating%20an%20account%20(check%20for%20existing%20account%20done).png", caption: "Redirected to SLS Hub — Start by creating an account (check for existing account done)" },
+              { src: "/member%20join%20slsa/Complete%20the%20Hub%20account%20creation%20(welcome%20email%20sent).png", caption: "Complete the Hub account creation (welcome email sent)" },
+              { src: "/member%20join%20slsa/Overview%20of%20what%20will%20be%20required%20to%20complete%20the%20process.png", caption: "Overview of what will be required to complete the process" },
+              { src: "/member%20join%20slsa/Earlier%20club%20choice%20selected%20automatically.png", caption: "Earlier scenario choice selected automatically" },
+              { src: "/member%20join%20slsa/Confirm%20or%20select%20different%20club.png", caption: "Confirm or select different club" },
+              { src: "/member%20join%20slsa/Add%20member(s)%20details%20where%20relevant%20to%20membership%20type.png", caption: "Add member(s) details where relevant to membership type" },
+              { src: "/member%20join%20slsa/Add%20contact%20details%20for%20each%20member%2C%20inc.%20Guardian%20details%20where%20necessary.png", caption: "Add contact details for each member, inc. Guardian details where necessary" },
+              { src: "/member%20join%20slsa/Capture%20other%20required%20info%20where%20necessary%2C%20inc.%20demographic%20and%20diversity%20information.png", caption: "Capture other required info where necessary, inc. demographic and diversity information" },
+              { src: "/member%20join%20slsa/Sign%20declaration(s).png", caption: "Sign declaration(s)" },
+              { src: "/member%20join%20slsa/Choose%20fees%20and%20add%20on%20services%20(summary).png", caption: "Choose fees and add on services (summary)" },
+              { src: "/member%20join%20slsa/Expanded%20%27cart%27%20showing%20selected%20fees.png", caption: "Expanded 'cart' showing selected fees" },
+              { src: "/member%20join%20slsa/Check%20summary%20of%20order%20and%20choose%20payment%20method%20inc.%20promo%20code%20and%3Aor%20sports%20vouchers.png", caption: "Check summary of order and choose payment method inc. promo code and/or sports vouchers" },
+              { src: "/member%20join%20slsa/Confirmation%20of%20payment%20and%20receipt%20options%20plus%20return%20to%20home.png", caption: "Confirmation of payment and receipt options plus return to home" }
+            ]
+          },
+          {
+            id: "status",
+            type: "wrapup-section",
+            title: "Wrap-up",
+            heroText: "This rewrite transforms a complex, multi-system join/renew experience into a clear, consistent journey. We focused on designing an end-to-end flow across the SLSA Website and SLS Hub, ensuring critical data—such as safeguarding requirements and transaction records—is captured consistently for downstream operational processes.",
+            outcomes: [
+              {
+                icon: "link",
+                title: "System-Level UX",
+                desc: "Holistic design thinking across Website → Hub → SurfGuard, ensuring data integrity at every handover.",
+                color: "blue"
+              },
+              {
+                icon: "shield",
+                title: "Risk-Aware Design",
+                desc: "Embedded patterns for compliance and sensitive data capture reducing organisational risk.",
+                color: "orange"
+              },
+              {
+                icon: "credit-card",
+                title: "Payment Experience",
+                desc: "Reconcilable payment flows designed for both user ease and strict financial reporting needs.",
+                color: "green"
+              },
+              {
+                icon: "package",
+                title: "Delivery Discipline",
+                desc: "Structured execution through defined scope, detailed artefacts, and rigorous iteration cycles.",
+                color: "purple"
+              }
+            ],
+            statusBar: {
+              label: "Project Status",
+              value: "Scoped Rewrite & Prototyping",
+              badges: [
+                { text: "✓ Design V1 Complete", type: "done" },
+                { text: "⚡ Implementation Pending", type: "pending" }
+              ]
+            },
+            content: "Want a deeper dive? I'm happy to share a demo of the interaction flow and design rationale in a confidential conversation."
+          }
+        ]
       }
     },
     {
@@ -182,15 +449,18 @@ export const RESUME_DATA: ResumeData = {
         role: "UI/UX Designer",
         year: "2023",
         platform: "Desktop Operational Console",
-        tools: "Figma, Adobe XD",
+        tools: "Figma",
         type: "Mission Critical",
         
         toc: [
+          { id: "demo-video", label: "Demo Walkthrough" },
           { id: "overview", label: "Overview" },
+          { id: "incident-scenario", label: "Incident Response Scenario" },
+          { id: "journey", label: "End-to-End Service Journey" },
           { id: "goals", label: "Goals" },
-          { id: "journey", label: "End-to-End Journey" },
           { id: "design-highlights", label: "Design Highlights" },
-          { id: "safety-rails", label: "Safety Rails" }
+          { id: "safety-rails", label: "Risk Scenarios & Solutions" },
+          { id: "wrapup", label: "Wrap-up" }
         ],
 
         overview: "SurfCom ICEMS is an incident management system supporting operators, supervisors, and responders during live emergency operations. The system handles incident logging, real-time messaging, location tracking, and coordination workflows where speed and clarity directly impact safety outcomes.\n\nSurfCom is part of Surf Life Saving's operational communications ecosystem and is described as a radio communications centre supporting coordination and operational data collection. It also provides communication and coordination support across lifesaving services and can liaise with external emergency services as required—making clear status visibility and message traceability critical in practice.",
@@ -284,7 +554,12 @@ export const RESUME_DATA: ResumeData = {
               }
             ]
           },
-          // Removed Prototype & Prioritisation and Final UI sections as requested
+          {
+            id: "wrapup",
+            type: "wrapup-section",
+            title: "Wrap-up",
+            content: "This refresh focuses on making operational coordination faster to scan, safer to act on, and easier to hand over—especially when updates are incomplete or time-critical. The UI patterns prioritise explicit status, traceable communication, and structured capture to reduce ambiguity under pressure.\n\nPrototype status: The designs shown include post-testing iterations and are not yet implemented.\n\nWant a walkthrough? I'm happy to share a short demo of the interaction flow and design rationale in a confidential conversation."
+          }
         ]
       }
     },
@@ -646,7 +921,7 @@ export const RESUME_DATA: ResumeData = {
           { id: "reflection", label: "Reflection" }
         ],
 
-        overview: "CourtCanva is a startup platform where users can create custom court designs and receive quotes for their creations. The web application allows court owners, sports facility managers, and individuals to visualize designs through an intuitive interface and connect with builders.",
+        overview: "CourtCanva is a startup platform where users can create custom court designs and receive quotes for their creations. The web application allows court owners, sports facility managers, and individuals to visualise designs through an intuitive interface and connect with builders.",
         myRole: "Designed responsive layouts for all pages, developed style guidelines in collaboration with BAs and developers, and continuously refined the design through stakeholder feedback cycles.",
         constraints: "Ensuring seamless responsive experience across desktop, iPad, and iPhone while maintaining design consistency and accessibility standards.",
         approach: "",
@@ -853,7 +1128,7 @@ export const RESUME_DATA: ResumeData = {
                 },
                 {
                   title: "Mobile-First Strategy",
-                  description: "Starting with smaller viewports to ensure core features are prioritized before scaling up."
+                  description: "Starting with smaller viewports to ensure core features are prioritised before scaling up."
                 },
                 {
                   title: "iPad Gestures",
@@ -880,7 +1155,7 @@ export const RESUME_DATA: ResumeData = {
         role: "Product Designer",
         year: "2021",
         platform: "Desktop App",
-        tools: "Figma, Miro",
+        tools: "Adobe XD, Miro",
         type: "Concept",
         
         toc: [
@@ -1156,7 +1431,7 @@ export const RESUME_DATA: ResumeData = {
               {
                 part: "Part 2",
                 title: "Note Creation & Editing (Core Flow)",
-                description: "This is the detailed flow for creating content. It organizes the complex \"Tool Bar\" features into logical groups (Editing, Files, Output).",
+                description: "This is the detailed flow for creating content. It organises the complex \"Tool Bar\" features into logical groups (Editing, Files, Output).",
                 src: "/nootee/Task Flow-Note Creation & Editing (Core Flow).png"
               },
               {
@@ -1485,7 +1760,8 @@ export const RESUME_DATA: ResumeData = {
             type: "image",
             src: "https://i.postimg.cc/SNH9LtqF/Logo-Design-Process.avif",
             alt: "Logo Design Process",
-            caption: "Iterative process of creating the JR Food Court logo."
+            caption: "Iterative process of creating the JR Food Court logo.",
+            imageClass: "max-w-[500px] mx-auto"
           },
           {
             id: "iterations",
@@ -1505,7 +1781,7 @@ export const RESUME_DATA: ResumeData = {
                 { title: "Low-Fi 6: Searched Items", text: "Showing individual food item results with pricing.", image: "https://i.postimg.cc/1zQN2nf0/Low-Fi6.avif", caption: "Wireframe 6/16" },
                 { title: "Low-Fi 7: Store's Order Page", text: "Vendor menu layout allowing item selection.", image: "https://i.postimg.cc/kXLSNh9g/Low-Fi7.avif", caption: "Wireframe 7/16" },
                 { title: "Low-Fi 8: Store's Review Page", text: "Social proof through user ratings and comments.", image: "https://i.postimg.cc/CMPk5xQK/Low-Fi8.avif", caption: "Wireframe 8/16" },
-                { title: "Low-Fi 9: Item Detail Select page", text: "Detailed view for customizing food orders (e.g., toppings).", image: "https://i.postimg.cc/HnxMzqV7/Low-Fi9.avif", caption: "Wireframe 9/16" },
+                { title: "Low-Fi 9: Item Detail Select page", text: "Detailed view for customising food orders (e.g., toppings).", image: "https://i.postimg.cc/HnxMzqV7/Low-Fi9.avif", caption: "Wireframe 9/16" },
                 { title: "Low-Fi 10: My Shopping Cart - Take away", text: "Cart overview specific to Take Away flow.", image: "https://i.postimg.cc/cCH3hprg/Low-Fi10.avif", caption: "Wireframe 10/16" },
                 { title: "Low-Fi 11: My Shopping Cart - Dine in", text: "Cart overview with table selection integration for Dine In.", image: "https://i.postimg.cc/jqgP2SFK/Low-Fi11.avif", caption: "Wireframe 11/16" },
                 { title: "Low-Fi 12: Order Overview", text: "Final summary before payment confirmation.", image: "https://i.postimg.cc/W1rk56b4/Low-Fi12.avif", caption: "Wireframe 12/16" },

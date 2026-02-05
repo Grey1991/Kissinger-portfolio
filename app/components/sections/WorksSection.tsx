@@ -68,7 +68,11 @@ export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) =>
                     <img 
                       src={project.image} 
                       alt={project.title}
-                      className="absolute inset-0 w-full h-full object-cover opacity-100 transition-all duration-700 group-hover:scale-110" 
+                      className={`absolute inset-0 w-full h-full opacity-100 transition-all duration-700 ${
+                        project.id === 'slshub' 
+                          ? 'object-cover object-[120%_220%] scale-[1.3] group-hover:scale-[1.43]' 
+                          : 'object-cover object-top group-hover:scale-110'
+                      }`}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
                   </>
@@ -93,7 +97,7 @@ export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) =>
                 </h4>
                 <p className="text-pink-500/80 text-sm font-medium mb-3">{project.subtitle}</p>
                 <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                  {project.summary}
+                  {project.shortSummary || project.summary}
                 </p>
                 
                 <div className="flex flex-wrap gap-2 mt-auto">

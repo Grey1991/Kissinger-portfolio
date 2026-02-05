@@ -23,10 +23,10 @@ export const TestingRefinement = () => {
           {/* Problem Card */}
           <button
             onClick={() => setActiveVersion('v1')}
-            className={`p-6 rounded-2xl border-l-4 transition-all duration-400 text-left ${
+            className={`p-6 rounded-2xl border-l-4 transition-all duration-400 text-left cursor-pointer ${
               activeVersion === 'v1'
                 ? 'border-red-500 bg-slate-800/50 backdrop-blur-sm border border-white/10 opacity-100 translate-x-2'
-                : 'border-transparent opacity-40 blur-[1px]'
+                : 'border-transparent opacity-40 blur-[1px] hover:opacity-100 hover:blur-none hover:translate-x-1 hover:bg-slate-800/30'
             }`}
           >
             <div className="flex items-center gap-3 mb-3">
@@ -34,17 +34,17 @@ export const TestingRefinement = () => {
               <h3 className="text-xl font-bold text-red-400">The Problem (V1)</h3>
             </div>
             <p className="text-slate-300 leading-relaxed">
-              Users were anxious. The abstract list of seats meant they couldn&apos;t visualize where they would be sitting, leading to drop-offs.
+              Users were anxious. The abstract list of seats meant they couldn&apos;t visualise where they would be sitting, leading to drop-offs.
             </p>
           </button>
 
           {/* Solution Card */}
           <button
             onClick={() => setActiveVersion('v2')}
-            className={`p-6 rounded-2xl border-l-4 transition-all duration-400 text-left ${
+            className={`p-6 rounded-2xl border-l-4 transition-all duration-400 text-left cursor-pointer ${
               activeVersion === 'v2'
                 ? 'border-emerald-500 bg-slate-800/50 backdrop-blur-sm border border-white/10 opacity-100 translate-x-2'
-                : 'border-transparent opacity-40 blur-[1px]'
+                : 'border-transparent opacity-40 blur-[1px] hover:opacity-100 hover:blur-none hover:translate-x-1 hover:bg-slate-800/30'
             }`}
           >
             <div className="flex items-center gap-3 mb-3">

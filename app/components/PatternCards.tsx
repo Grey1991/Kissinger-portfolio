@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import Lightbox from './Lightbox';
 
 interface Pattern {
   title: string;
@@ -80,30 +80,25 @@ const patterns: Pattern[] = [
 ];
 
 export default function PatternCards({ onLightboxChange }: { onLightboxChange?: (isOpen: boolean) => void }) {
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
-  const [lightboxCaption, setLightboxCaption] = useState<string>('');
+  const [lightboxIndex, setLightboxIndex] = useState<number>(-1);
 
-  const openLightbox = (imageSrc: string, caption: string) => {
-    setLightboxImage(imageSrc);
-    setLightboxCaption(caption);
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
     onLightboxChange?.(true);
   };
 
   const closeLightbox = () => {
-    setLightboxImage(null);
-    setLightboxCaption('');
+    setLightboxIndex(-1);
     onLightboxChange?.(false);
   };
 
-  React.useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && lightboxImage) {
-        closeLightbox();
-      }
-    };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [lightboxImage]);
+  const nextImage = () => {
+    setLightboxIndex((prev) => (prev + 1) % patterns.length);
+  };
+
+  const prevImage = () => {
+    setLightboxIndex((prev) => (prev - 1 + patterns.length) % patterns.length);
+  };
 
   return (
     <div className="pattern-cards-wrapper">
@@ -124,7 +119,7 @@ export default function PatternCards({ onLightboxChange }: { onLightboxChange?: 
                 ))}
               </div>
             </div>
-            <figure className="pattern-card__media" onClick={() => openLightbox(pattern.imageSrc, pattern.figcaption)}>
+            <figure className="pattern-card__media" onClick={() => openLightbox(index)}>
               <img 
                 src={pattern.imageSrc} 
                 alt={pattern.imageAlt}
@@ -137,18 +132,17 @@ export default function PatternCards({ onLightboxChange }: { onLightboxChange?: 
         ))}
       </div>
 
-      {/* Lightbox Modal */}
-      {lightboxImage && (
-        <div className="pattern-lightbox" onClick={closeLightbox}>
-          <button className="lightbox-close" onClick={closeLightbox}>
-            <X size={24} />
-          </button>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <img src={lightboxImage} alt="Pattern detail" />
-            {lightboxCaption && <p className="lightbox-caption">{lightboxCaption}</p>}
-          </div>
-        </div>
-      )}
+      {/* Lightbox */}
+      <Lightbox
+        isOpen={lightboxIndex >= 0}
+        images={patterns.map(p => p.imageSrc)}
+        currentIndex={lightboxIndex >= 0 ? lightboxIndex : 0}
+        onClose={closeLightbox}
+        onNext={nextImage}
+        onPrev={prevImage}
+        caption={lightboxIndex >= 0 ? patterns[lightboxIndex].figcaption : ''}
+        alt="Pattern detail"
+      />
 
       <style jsx>{`
         .pattern-cards-wrapper {
@@ -304,88 +298,6 @@ export default function PatternCards({ onLightboxChange }: { onLightboxChange?: 
           }
 
           .zoom-indicator {
-            opacity: 1;
-          }
-        }
-
-        /* Lightbox Styles */
-        .pattern-lightbox {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.95);
-          z-index: 9999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 40px;
-          animation: fadeIn 0.2s ease-out;
-        }
-
-        .lightbox-close {
-          position: absolute;
-          top: 20px;
-          left: 20px;
-          width: 48px;
-          height: 48px;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          cursor: pointer;
-          transition: all 0.3s;
-          z-index: 10001;
-        }
-
-        .lightbox-close:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: rotate(90deg);
-        }
-
-        .lightbox-content {
-          max-width: 95%;
-          max-height: 95%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 16px;
-          animation: zoomIn 0.3s ease-out;
-        }
-
-        .lightbox-content img {
-          max-width: 100%;
-          max-height: 85vh;
-          width: auto;
-          height: auto;
-          border-radius: 8px;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .lightbox-caption {
-          color: #e2e8f0;
-          font-size: 14px;
-          text-align: center;
-          margin: 0;
-          padding: 0 20px;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        @keyframes zoomIn {
-          from {
-            transform: scale(0.9);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
             opacity: 1;
           }
         }

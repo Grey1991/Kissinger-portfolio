@@ -1,7 +1,19 @@
-'use client';
+"use client";
+// 禁止body滚动的hook
+function useBodyScrollLock(isOpen: boolean) {
+  useEffect(() => {
+    if (isOpen) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [isOpen]);
+}
 
 import { useEffect, useRef, useState } from 'react';
-import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive } from 'lucide-react';
+import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, LogIn, LayoutDashboard, RefreshCw, UserPlus, History, Wifi, Building, Edit2, ArrowLeftRight, ClipboardList } from 'lucide-react';
 import { Project } from '../types';
 import { ScrollytellingBlock } from './ScrollytellingBlock';
 import { Carousel3D } from './Carousel3D';
@@ -10,6 +22,7 @@ import { IncidentScenario } from './IncidentScenario';
 import GoalsInteractive from './GoalsInteractive';
 import PatternCards from './PatternCards';
 import SafetyRails from './SafetyRails';
+import Lightbox from './Lightbox';
 import dynamic from 'next/dynamic';
 
 // Dynamically import CourtCanva2 component
@@ -301,28 +314,21 @@ const InteractiveFlowDiagram = ({
 const InterviewImage = ({ src, alt, caption, className, hasTitle, onLightboxChange }: { src: string; alt: string; caption?: string; className?: string; hasTitle?: boolean; onLightboxChange?: (isOpen: boolean) => void }) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
 
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isEnlarged) {
-        setIsEnlarged(false);
-        onLightboxChange?.(false);
-      }
-    };
-    
-    if (isEnlarged) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-  }, [isEnlarged, onLightboxChange]);
+  const openLightbox = () => {
+    setIsEnlarged(true);
+    onLightboxChange?.(true);
+  };
+
+  const closeLightbox = () => {
+    setIsEnlarged(false);
+    onLightboxChange?.(false);
+  };
 
   return (
     <>
       <div 
         className={`cursor-zoom-in group relative ${hasTitle ? 'max-w-md' : ''}`}
-        onClick={() => {
-          setIsEnlarged(true);
-          onLightboxChange?.(true);
-        }}
+        onClick={openLightbox}
       >
         <img 
           src={src}
@@ -343,43 +349,14 @@ const InterviewImage = ({ src, alt, caption, className, hasTitle, onLightboxChan
         </p>
       )}
 
-      {/* Enlarged Modal */}
-      {isEnlarged && (
-        <div 
-          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
-          onClick={() => {
-            setIsEnlarged(false);
-            onLightboxChange?.(false);
-          }}
-        >
-          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <div className="relative">
-              <img 
-                src={src}
-                alt={alt}
-                className="max-w-[95vw] max-h-[95vh] w-auto h-auto object-contain"
-              />
-              
-              {/* Close button on image */}
-              <button
-                onClick={() => {
-                  setIsEnlarged(false);
-                  onLightboxChange?.(false);
-                }}
-                className="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-xl hover:scale-110 transition-all duration-200 z-10"
-                aria-label="Close"
-              >
-                <X size={20} />
-              </button>
-            </div>
-          </div>
-          
-          {/* Bottom hint */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm px-6 py-3 rounded-full text-white text-sm border border-white/10 pointer-events-none">
-            Click anywhere or press ESC to close
-          </div>
-        </div>
-      )}
+      {/* Lightbox */}
+      <Lightbox
+        isOpen={isEnlarged}
+        images={[src]}
+        currentIndex={0}
+        onClose={closeLightbox}
+        alt={alt}
+      />
     </>
   );
 };
@@ -402,18 +379,6 @@ const SurveyTabsComponent = ({ tabs, caption, onLightboxChange }: { tabs: Array<
     setIsLightboxOpen(false);
     onLightboxChange?.(false);
   };
-
-  // Add ESC key listener
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isLightboxOpen) {
-        setIsLightboxOpen(false);
-        onLightboxChange?.(false);
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [isLightboxOpen, onLightboxChange]);
 
   const nextImage = () => {
     setLightboxImageIndex((prev) => (prev + 1) % currentImages.length);
@@ -470,61 +435,206 @@ const SurveyTabsComponent = ({ tabs, caption, onLightboxChange }: { tabs: Array<
         ))}
       </div>
 
-      {/* Lightbox Modal */}
-      {isLightboxOpen && (
-        <div 
-          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
-          onClick={closeLightbox}
-        >
-          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <div className="relative">
-              <img 
-                src={currentImages[lightboxImageIndex]}
-                alt={`${tabs[activeTab].label} survey ${lightboxImageIndex + 1}`}
-                className="max-w-[95vw] max-h-[95vh] w-auto h-auto object-contain"
-              />
-              
-              {/* Close button on image */}
-              <button
-                onClick={closeLightbox}
-                className="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-xl hover:scale-110 transition-all duration-200 z-10"
-                aria-label="Close"
-              >
-                <X size={20} />
-              </button>
+      {/* Lightbox */}
+      <Lightbox
+        isOpen={isLightboxOpen}
+        images={currentImages}
+        currentIndex={lightboxImageIndex}
+        onClose={closeLightbox}
+        onNext={nextImage}
+        onPrev={prevImage}
+        alt={`${tabs[activeTab]?.label || 'Survey'} image`}
+      />
+    </div>
+  );
+};
+
+// Hub Highlights Tabs Component (for SLS Hub project)
+const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }: { 
+  tabs: Array<{
+    label: string; 
+    whyItMatters: string; 
+    primaryGallery: Array<{src: string; caption: string}>; 
+    moreScreenshots?: Array<{src: string; caption: string}>
+  }>; 
+  onLightboxChange?: (isOpen: boolean) => void 
+}) => {
+  const [activeTab, setActiveTab] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
+  const [currentGalleryType, setCurrentGalleryType] = useState<'primary' | 'more'>('primary');
+  const [expandedAccordion, setExpandedAccordion] = useState(false);
+
+  const currentTab = tabs[activeTab];
+  const currentImages = currentGalleryType === 'primary' 
+    ? currentTab?.primaryGallery || [] 
+    : currentTab?.moreScreenshots || [];
+
+  const openLightbox = (index: number, galleryType: 'primary' | 'more') => {
+    setCurrentGalleryType(galleryType);
+    setLightboxImageIndex(index);
+    setIsLightboxOpen(true);
+    onLightboxChange?.(true);
+  };
+
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+    onLightboxChange?.(false);
+  };
+
+  const nextImage = () => {
+    setLightboxImageIndex((prev) => (prev + 1) % currentImages.length);
+  };
+
+  const prevImage = () => {
+    setLightboxImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
+  };
+
+  // Reset accordion state when changing tabs
+  const handleTabChange = (idx: number) => {
+    setActiveTab(idx);
+    setExpandedAccordion(false);
+  };
+
+  return (
+    <div className="w-full max-w-7xl mx-auto my-12">
+      {/* Tabs - Responsive: Pills on desktop, Dropdown on mobile */}
+      <div className="mb-8">
+        {/* Desktop: Horizontal Pills */}
+        <div className="hidden md:flex justify-center gap-2 flex-wrap">
+          {tabs.map((tab, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleTabChange(idx)}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
+                activeTab === idx
+                  ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                  : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700/50 hover:text-white border border-white/10'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Mobile: Dropdown */}
+        <div className="md:hidden">
+          <select
+            value={activeTab}
+            onChange={(e) => handleTabChange(Number(e.target.value))}
+            className="w-full px-4 py-3 rounded-xl bg-slate-800/50 text-white border border-white/10 focus:border-orange-500/50 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
+          >
+            {tabs.map((tab, idx) => (
+              <option key={idx} value={idx}>
+                {tab.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div className="space-y-8">
+        {/* Why It Matters */}
+        <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-6">
+          <div className="flex items-start gap-3">
+            <div className="text-orange-500 mt-1">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
             </div>
-            
-            {/* Lightbox Navigation */}
-            {currentImages.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-pink-500/50 hover:scale-110 transition-all duration-300"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft size={28} />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-pink-500/50 hover:scale-110 transition-all duration-300"
-                  aria-label="Next image"
-                >
-                  <ChevronRight size={28} />
-                </button>
-              </>
-            )}
-            
-            {/* Bottom hint with counter */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm px-6 py-3 rounded-full text-white text-sm border border-white/10 pointer-events-none">
-              <div className="flex items-center gap-3">
-                <span className="text-slate-400">{lightboxImageIndex + 1} / {currentImages.length}</span>
-                <span className="text-white">•</span>
-                <span>Click anywhere or press ESC to close</span>
-              </div>
+            <div className="flex-1">
+              <h5 className="text-sm font-semibold text-orange-400 uppercase tracking-wide mb-1">Why It Matters</h5>
+              <p className="text-slate-300 leading-relaxed">{currentTab?.whyItMatters}</p>
             </div>
           </div>
         </div>
-      )}
+
+        {/* Primary Gallery */}
+        <div>
+          <h5 className="text-lg font-semibold text-slate-200 mb-4">Key Screenshots</h5>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {currentTab?.primaryGallery?.map((item, idx) => (
+              <button
+                key={idx}
+                onClick={() => openLightbox(idx, 'primary')}
+                className="group relative rounded-xl overflow-hidden border border-white/10 bg-slate-900 hover:border-orange-500/50 hover:shadow-xl hover:shadow-orange-500/20 transition-all duration-300 cursor-zoom-in"
+              >
+                <div className="aspect-video w-full">
+                  <img 
+                    src={item.src}
+                    alt={item.caption}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                {/* Caption Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                  <p className="text-white text-sm leading-tight">{item.caption}</p>
+                </div>
+                {/* Zoom Icon */}
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/70 backdrop-blur-sm px-2 py-1.5 rounded-full text-white text-xs flex items-center gap-1">
+                  <Maximize2 size={12} />
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* More Screenshots Accordion */}
+        {currentTab?.moreScreenshots && currentTab.moreScreenshots.length > 0 && (
+          <div className="border border-slate-700/50 rounded-xl overflow-hidden">
+            <button
+              onClick={() => setExpandedAccordion(!expandedAccordion)}
+              className="w-full px-6 py-4 bg-slate-800/30 hover:bg-slate-800/50 transition-colors flex items-center justify-between group"
+            >
+              <span className="text-slate-300 font-medium group-hover:text-white transition-colors">
+                View more screenshots ({currentTab.moreScreenshots.length})
+              </span>
+              <ChevronDown 
+                size={20} 
+                className={`text-slate-400 group-hover:text-white transition-all duration-300 ${expandedAccordion ? 'rotate-180' : ''}`}
+              />
+            </button>
+            
+            {expandedAccordion && (
+              <div className="p-4 bg-slate-900/30">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {currentTab.moreScreenshots.map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => openLightbox(idx, 'more')}
+                      className="group relative aspect-video rounded-lg overflow-hidden border border-white/10 bg-slate-900 hover:border-orange-500/50 hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 cursor-zoom-in"
+                    >
+                      <img 
+                        src={item.src}
+                        alt={item.caption}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <Maximize2 size={16} className="text-white" />
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox */}
+      <Lightbox
+        isOpen={isLightboxOpen}
+        images={currentImages.map(img => img.src)}
+        currentIndex={lightboxImageIndex}
+        onClose={closeLightbox}
+        onNext={nextImage}
+        onPrev={prevImage}
+        alt={currentImages[lightboxImageIndex]?.caption || ''}
+        caption={currentImages[lightboxImageIndex]?.caption}
+      />
     </div>
   );
 };
@@ -544,18 +654,6 @@ const GalleryComponent = ({ images, caption, onLightboxChange }: { images: strin
     setIsLightboxOpen(false);
     onLightboxChange?.(false);
   };
-
-  // Add ESC key listener
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isLightboxOpen) {
-        setIsLightboxOpen(false);
-        onLightboxChange?.(false);
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [isLightboxOpen, onLightboxChange]);
 
   const nextImage = () => {
     setLightboxImageIndex((prev) => (prev + 1) % images.length);
@@ -598,62 +696,17 @@ const GalleryComponent = ({ images, caption, onLightboxChange }: { images: strin
         )}
       </div>
 
-      {/* Lightbox Modal */}
-      {isLightboxOpen && (
-        <div 
-          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
-          onClick={closeLightbox}
-        >
-          <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <div className="relative">
-              <img 
-                src={images[lightboxImageIndex]}
-                alt={`Gallery item ${lightboxImageIndex + 1}`}
-                className="max-w-[95vw] max-h-[95vh] w-auto h-auto object-contain"
-              />
-              
-              {/* Close button on image */}
-              <button
-                onClick={closeLightbox}
-                className="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-xl hover:scale-110 transition-all duration-200 z-10"
-                aria-label="Close"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            {/* Navigation Buttons */}
-            {images.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-pink-500/50 hover:scale-110 transition-all duration-300"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft size={28} />
-                </button>
-                
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-pink-500/50 hover:scale-110 transition-all duration-300"
-                  aria-label="Next image"
-                >
-                  <ChevronRight size={28} />
-                </button>
-              </>
-            )}
-            
-            {/* Bottom hint with counter */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm px-6 py-3 rounded-full text-white text-sm border border-white/10 pointer-events-none">
-              <div className="flex items-center gap-3">
-                <span className="text-slate-400">{lightboxImageIndex + 1} / {images.length}</span>
-                <span className="text-white">•</span>
-                <span>Click anywhere or press ESC to close</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Lightbox */}
+      <Lightbox
+        isOpen={isLightboxOpen}
+        images={images}
+        currentIndex={lightboxImageIndex}
+        onClose={closeLightbox}
+        onNext={nextImage}
+        onPrev={prevImage}
+        caption={caption}
+        alt="Gallery image"
+      />
     </div>
   );
 };
@@ -867,6 +920,249 @@ const ConsoleNavigation: React.FC<{ section: any }> = ({ section }) => {
   );
 };
 
+// Responsive & Dark Mode Interactive Section
+const ResponsiveDarkModeSection = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  return (
+    <div className="max-w-full">
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+        
+        {/* LEFT: Narrative & Controls */}
+        <div className="flex-1 lg:sticky lg:top-10 space-y-8">
+          
+          {/* Description */}
+          <div>
+            <p className="text-slate-400 text-base leading-relaxed mb-4">
+              I designed for real-world constraints, ensuring key workflows (Forms, Rosters) remain usable on mobile devices. I also implemented a full Dark Mode system to align with modern platform expectations.
+            </p>
+            
+            {/* Coverage Badges */}
+            <div className="flex flex-wrap gap-2 mt-4">
+              <span className="font-mono text-[10px] text-green-400 bg-green-400/10 px-3 py-1.5 rounded-md border border-green-400/20">
+                Breakpoints: Desktop/Tablet/Mobile
+              </span>
+              <span className="font-mono text-[10px] text-green-400 bg-green-400/10 px-3 py-1.5 rounded-md border border-green-400/20">
+                Patterns: Forms · Tables · Modals
+              </span>
+              <span className="font-mono text-[10px] text-green-400 bg-green-400/10 px-3 py-1.5 rounded-md border border-green-400/20">
+                WCAG AA Contrast
+              </span>
+            </div>
+          </div>
+
+          {/* Toggle Switch */}
+          <div className="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-center justify-between">
+            <div className="font-semibold text-sm text-white">Try Dark Mode Preview</div>
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className={`relative w-[60px] h-[32px] rounded-full transition-all duration-300 ${
+                isDarkMode ? 'bg-indigo-500' : 'bg-slate-600'
+              }`}
+            >
+              <div
+                className={`absolute top-1 left-1 w-[24px] h-[24px] bg-white rounded-full flex items-center justify-center text-sm transition-transform duration-300 ${
+                  isDarkMode ? 'translate-x-[28px]' : 'translate-x-0'
+                }`}
+              >
+                {isDarkMode ? '🌙' : '☀️'}
+              </div>
+            </button>
+          </div>
+
+          {/* Hint */}
+          <div className="text-xs text-slate-500 leading-relaxed">
+            *Click the switch above to toggle the device mockups between Light and Dark mode designs.
+          </div>
+
+        </div>
+
+        {/* RIGHT: Device Simulation Grid */}
+        <div className="flex-[1.6] space-y-10">
+
+          {/* Device Row 1 */}
+          <div>
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-end">
+              
+              {/* Phone Frame */}
+              <div className="mx-auto md:mx-0">
+                <div className="relative w-[200px] h-[400px] bg-[#111] border-[8px] border-[#333] rounded-[24px] overflow-hidden shadow-2xl">
+                  {/* Notch */}
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[60px] h-[16px] bg-black rounded-[10px] z-10" />
+                  
+                  {/* Screen Content */}
+                  <div className="w-full h-full transition-all duration-500 flex items-start justify-center">
+                    {isDarkMode ? (
+                      <img 
+                        src="/slshub/Mobile Flow (Dark).png" 
+                        alt="Mobile Flow Dark Mode"
+                        className="w-full h-auto min-h-full object-cover object-top scale-[1.15] origin-top"
+                      />
+                    ) : (
+                      <img 
+                        src="/slshub/Mobile Flow (Light).png" 
+                        alt="Mobile Flow Light Mode"
+                        className="w-full h-auto min-h-full object-cover object-top scale-[1.15] origin-top"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Laptop Frame */}
+              <div className="flex-1 min-w-0">
+                <div className="relative w-full h-[300px] bg-[#111] border-[12px] border-[#333] border-b-[24px] rounded-t-[16px] rounded-b-[4px] overflow-hidden shadow-2xl">
+                  {/* Camera Dot */}
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#555] rounded-full" />
+                  
+                  {/* Screen Content */}
+                  <div className="w-full h-full transition-all duration-500">
+                    {isDarkMode ? (
+                      <img 
+                        src="/slshub/Desktop Dashboard(Dark).png" 
+                        alt="Desktop Dashboard Dark Mode"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <img 
+                        src="/slshub/Desktop Dashboard(Light).png" 
+                        alt="Desktop Dashboard Light Mode"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div className="mt-4 text-xs text-center text-slate-500 border-t border-white/10 pt-3">
+              Same workflow across breakpoints: layout reflows without losing critical actions.
+            </div>
+          </div>
+
+          {/* Device Row 2 */}
+          <div>
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-end">
+              
+              {/* Phone Frame - Smaller */}
+              <div className="mx-auto md:mx-0">
+                <div className="relative w-[200px] h-[350px] bg-[#111] border-[6px] border-[#333] rounded-[24px] overflow-hidden shadow-2xl">
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[60px] h-[16px] bg-black rounded-[10px] z-10" />
+                  
+                  <div className="w-full h-full transition-all duration-500">
+                    {isDarkMode ? (
+                      <img 
+                        src="/slshub/Mobile Modal (Dark).png" 
+                        alt="Mobile Modal Dark Mode"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <img 
+                        src="/slshub/Mobile Modal (Light).png" 
+                        alt="Mobile Modal Light Mode"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Laptop Frame - Smaller */}
+              <div className="flex-1 min-w-0">
+                <div className="relative w-full bg-[#111] border-[8px] border-[#333] border-b-[20px] rounded-t-[16px] rounded-b-[4px] overflow-hidden shadow-2xl">
+                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#555] rounded-full" />
+                  
+                  <div className="w-full transition-all duration-500 flex items-start justify-center">
+                    {isDarkMode ? (
+                      <img 
+                        src="/slshub/Desktop Table (Dark).png" 
+                        alt="Desktop Table Dark Mode"
+                        className="w-full h-auto object-contain"
+                      />
+                    ) : (
+                      <img 
+                        src="/slshub/Desktop Table (Light).png" 
+                        alt="Desktop Table Light Mode"
+                        className="w-full h-auto object-contain"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div className="mt-4 text-xs text-center text-slate-500 border-t border-white/10 pt-3">
+              Modal behaviour on small screens & consistent contrast in data tables.
+            </div>
+          </div>
+
+          {/* Device Row 3 - Forms */}
+          <div>
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-end">
+              
+              {/* Phone Frame */}
+              <div className="mx-auto md:mx-0">
+                <div className="relative w-[200px] h-[400px] bg-[#111] border-[8px] border-[#333] rounded-[24px] overflow-hidden shadow-2xl">
+                  {/* Notch */}
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[60px] h-[16px] bg-black rounded-[10px] z-10" />
+                  
+                  {/* Screen Content */}
+                  <div className="w-full h-full transition-all duration-500">
+                    {isDarkMode ? (
+                      <img 
+                        src="/slshub/Mobile Form (Dark).png" 
+                        alt="Mobile Form Dark Mode"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <img 
+                        src="/slshub/Mobile Form (Light).png" 
+                        alt="Mobile Form Light Mode"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Laptop Frame */}
+              <div className="flex-1 min-w-0">
+                <div className="relative w-full bg-[#111] border-[12px] border-[#333] border-b-[24px] rounded-t-[16px] rounded-b-[4px] overflow-hidden shadow-2xl">
+                  {/* Camera Dot */}
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#555] rounded-full" />
+                  
+                  {/* Screen Content */}
+                  <div className="w-full transition-all duration-500 flex items-start justify-center">
+                    {isDarkMode ? (
+                      <img 
+                        src="/slshub/Desktop Form (Dark).png" 
+                        alt="Desktop Form Dark Mode"
+                        className="w-full h-auto object-contain"
+                      />
+                    ) : (
+                      <img 
+                        src="/slshub/Desktop Form (Light).png" 
+                        alt="Desktop Form Light Mode"
+                        className="w-full h-auto object-contain"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div className="mt-4 text-xs text-center text-slate-500 border-t border-white/10 pt-3">
+              Form layouts adapt across viewports while maintaining field hierarchy and validation clarity.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
@@ -876,6 +1172,10 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState("");
   const [isAnyLightboxOpen, setIsAnyLightboxOpen] = useState(false);
+  const [selectedScreensTab, setSelectedScreensTab] = useState('account-access');
+  const [screenshotLightboxOpen, setScreenshotLightboxOpen] = useState(false);
+  const [currentScreenshotImage, setCurrentScreenshotImage] = useState('');
+  useBodyScrollLock(true);
 
   // Handle scroll spy for Table of Contents
   useEffect(() => {
@@ -901,6 +1201,33 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
     }
   }, [project]);
 
+  // Video autoplay on scroll into view
+  useEffect(() => {
+    const videos = document.querySelectorAll('.video-autoplay');
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {
+              // Auto-play was prevented, ignore the error
+            });
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    videos.forEach((video) => observer.observe(video));
+
+    return () => {
+      videos.forEach((video) => observer.unobserve(video));
+    };
+  }, [project]);
+
   if (!project) return null;
 
   return (
@@ -912,7 +1239,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
       />
       
       {/* Modal Content */}
-      <div className="relative w-full max-w-6xl h-[90vh] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-slide-up">
+      <div className="relative w-full max-w-7xl h-[90vh] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-slide-up">
         
         {/* Close Button */}
         <button 
@@ -932,13 +1259,13 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
         <div ref={scrollContainerRef} className="overflow-y-auto h-full scrollbar-thin scrollbar-thumb-pink-500/30 scrollbar-track-transparent">
           
           {/* Header Hero */}
-          <div className={`relative h-80 w-full bg-gradient-to-br ${project.gradient} p-8 md:p-12 flex flex-col justify-end`}>
+          <div className={`relative h-80 w-full ${project.id === 'slshub' ? 'bg-gradient-to-r from-orange-700 to-orange-600' : `bg-gradient-to-br ${project.gradient}`} p-8 md:p-12 flex flex-col justify-end`}>
             {project.image ? (
               <>
                 <img 
                   src={project.image} 
                   alt={project.title}
-                  className="absolute inset-0 w-full h-full object-cover opacity-100 transition-all duration-700"
+                  className="absolute inset-0 w-full h-full object-cover object-center opacity-100 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
               </>
@@ -1014,6 +1341,12 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 <span className="px-3 py-1 bg-black/40 backdrop-blur rounded-full text-xs font-medium text-white/90 border border-white/10">
                   {project.details.year}
                 </span>
+                {/* Additional badge for SLS Hub */}
+                {project.id === 'slshub' && (
+                  <span className="px-3 py-1 bg-green-600/80 backdrop-blur rounded-full text-xs font-semibold text-white border border-green-400/30">
+                    ✓ Live
+                  </span>
+                )}
               </div>
               <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">{project.title}</h2>
               <p className="text-white/80 text-xl max-w-2xl font-light">{project.summary}</p>
@@ -1041,7 +1374,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         }}
                         className={`text-sm transition-colors block border-l-2 pl-4 ${
                           activeSection === item.id 
-                            ? 'border-pink-500 text-white font-medium' 
+                            ? (project.id === 'slshub' ? 'border-fuchsia-400 text-white font-medium bg-gradient-to-r from-fuchsia-400/10 to-transparent' : 'border-pink-500 text-white font-medium')
                             : 'border-transparent text-slate-500 hover:text-slate-300'
                         }`}
                       >
@@ -1073,21 +1406,34 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 <div className="flex items-end">
                   <button 
                     onClick={() => {
-                      const outcomeSection = document.getElementById('outcome');
-                      if (outcomeSection) {
-                        outcomeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      // Different target sections for different projects
+                      let targetId = project.finalDesignLink || 'outcome'; // use finalDesignLink if available
+                      if (!project.finalDesignLink) {
+                        if (project.id === 'surfcom') {
+                          targetId = 'design-highlights';
+                        } else if (project.id === 'courtcanva') {
+                          targetId = 'courtcanva2-intro';
+                        } else if (project.id === 'nootee') {
+                          targetId = 'final-ui';
+                        } else if (project.id === 'jrfood') {
+                          targetId = 'final-polish';
+                        }
+                      }
+                      const targetSection = document.getElementById(targetId);
+                      if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }
                     }}
                     className="w-full py-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-pink-900/30 hover:shadow-pink-900/50 hover:scale-[1.02]"
                   >
-                    <Eye size={16} /> View Final Design
+                    <Eye size={16} /> View highlights
                   </button>
                 </div>
               </div>
 
               {/* CONDITIONAL RENDERING: FULL CASE STUDY OR STANDARD LAYOUT */}
               {project.isCaseStudy && project.details.contentSections ? (
-                <div className="space-y-20 max-w-4xl mx-auto">
+                <div className="space-y-20 max-w-6xl mx-auto">
                   {project.details.contentSections.map((section, index) => (
                     <div 
                       key={index} 
@@ -1267,6 +1613,67 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         {/* Shine effect */}
                         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Video CTA Button */}
+              {section.type === 'video-cta' && section.videoPath && (
+                <div className="w-full my-8">
+                  <a 
+                    href={section.videoPath}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white rounded-xl font-semibold text-base transition-all shadow-xl shadow-pink-900/30 hover:shadow-pink-900/50 hover:scale-[1.02] group"
+                  >
+                    <svg className="w-5 h-5 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+                    </svg>
+                    {section.buttonText || 'Watch Video'}
+                  </a>
+                </div>
+              )}
+
+              {/* Image Masonry Gallery - Waterfall Layout */}
+              {section.type === 'image-masonry' && section.images && (
+                <div className="w-full my-8">
+                  {section.title && (
+                    <h4 className="text-xl font-semibold text-slate-200 mb-3 pb-2 border-b border-slate-700/50">
+                      {section.title}
+                    </h4>
+                  )}
+                  {section.content && (
+                    <p className="text-slate-400 text-sm leading-relaxed mb-6">{section.content}</p>
+                  )}
+                  
+                  {/* Masonry Grid using CSS columns */}
+                  <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
+                    {section.images.map((img: any, idx: number) => (
+                      <div 
+                        key={idx} 
+                        className="break-inside-avoid mb-4 group cursor-pointer"
+                        onClick={() => {
+                          setScreenshotLightboxOpen(true);
+                          setCurrentScreenshotImage(img.src);
+                          setIsAnyLightboxOpen(true);
+                        }}
+                      >
+                        <div className="relative overflow-hidden rounded-lg border border-white/10 bg-slate-900/50 transition-all duration-300 hover:border-pink-500/50 hover:shadow-xl hover:shadow-pink-500/20">
+                          <img
+                            src={img.src}
+                            alt={img.caption || ''}
+                            className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+                          />
+                          {img.caption && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                              <p className="text-slate-200 text-xs leading-relaxed">
+                                {img.caption}
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -1525,6 +1932,73 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 </div>
               )}
 
+              {/* Problem & Goal Block - Custom Design */}
+              {section.type === 'problem-goal' && (
+                <div className="w-full">
+                  {section.title && (
+                    <h3 className="text-3xl font-bold text-white mb-10 flex items-center gap-3">
+                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                      {section.title}
+                    </h3>
+                  )}
+                  
+                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_60px_1fr] gap-10 lg:gap-10 items-stretch">
+                    {/* Problem Card */}
+                    <div className="group relative bg-red-500/5 border border-red-500/20 rounded-[20px] p-8 flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1 hover:z-10">
+                      {/* Scan Overlay */}
+                      <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.2)_3px)] opacity-30 rounded-[20px] pointer-events-none" />
+                      
+                      {/* Card Header */}
+                      <div className="flex items-center gap-3 border-b border-white/5 pb-4 relative z-10">
+                        <div className="w-9 h-9 rounded-lg bg-red-500/15 flex items-center justify-center text-red-500">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                          </svg>
+                        </div>
+                        <h4 className="text-lg font-bold text-red-500 m-0">Current State: Friction</h4>
+                      </div>
+                      
+                      {/* Card Text */}
+                      <div 
+                        className="text-[15px] leading-relaxed text-red-200 relative z-10 [&_strong]:text-white [&_strong]:font-semibold [&_strong]:bg-red-500/20 [&_strong]:px-1 [&_strong]:rounded-sm"
+                        dangerouslySetInnerHTML={{ __html: section.problemText || '' }}
+                      />
+                    </div>
+
+                    {/* Center Arrow */}
+                    <div className="hidden lg:flex items-center justify-center z-10">
+                      <div className="w-10 h-10 bg-slate-900 border border-white/5 rounded-full flex items-center justify-center text-slate-500 shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Goal Card */}
+                    <div className="group relative bg-blue-500/5 border border-blue-500/30 rounded-[20px] p-8 flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1 hover:z-10 shadow-[0_0_30px_rgba(59,130,246,0.05)]">
+                      {/* Card Header */}
+                      <div className="flex items-center gap-3 border-b border-white/5 pb-4 relative z-10">
+                        <div className="w-9 h-9 rounded-lg bg-blue-500/15 flex items-center justify-center text-blue-500">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                          </svg>
+                        </div>
+                        <h4 className="text-lg font-bold text-blue-500 m-0">Target State: Optimised</h4>
+                      </div>
+                      
+                      {/* Card Text */}
+                      <div 
+                        className="text-[15px] leading-relaxed text-blue-200 relative z-10 [&_strong]:text-white [&_strong]:font-semibold [&_strong]:bg-blue-500/20 [&_strong]:px-1 [&_strong]:rounded-sm"
+                        dangerouslySetInnerHTML={{ __html: section.goalText || '' }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Needs List Block */}
               {section.type === 'needs-list' && section.needs && (
                 <div className="w-full max-w-4xl mx-auto">
@@ -1647,8 +2121,11 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
               {section.type === 'wrapup-section' && section.wrapup && (
                 <div className="w-full max-w-6xl mx-auto">
                   {/* Header */}
-                  <div className="text-center mb-12">
-                    <h3 className="text-4xl font-bold text-white mb-4">{section.title}</h3>
+                  <div className="mb-12">
+                    <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500"/> 
+                      {section.title}
+                    </h3>
                     {section.content && (
                       <p className="text-slate-400 text-lg">{section.content}</p>
                     )}
@@ -1887,10 +2364,10 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
               {/* Text Block */}
                       {section.type === 'text-block' && (
-                        <div className="max-w-3xl">
+                        <div className={project.id === 'slshub' && (section.id === 'selected-screens' || section.id === 'module-coverage' || section.id === 'rules-governance' || section.id === 'design-system' || section.id === 'responsive-dark' || section.id === 'guides-enablement' || section.id === 'quality-readiness' || section.id === 'summary') ? 'max-w-full' : 'max-w-3xl'}>
                           {section.title && (
                             <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                              <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                              <span className={`inline-block ${project.id === 'slshub' ? 'h-0.5 w-6 bg-fuchsia-500' : 'w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500'}`}/> 
                               {section.title}
                             </h3>
                           )}
@@ -1899,8 +2376,1008 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                               &quot;{section.highlight}&quot;
                             </div>
                           )}
-                          {/* Special styling for CTA-style text blocks */}
-                          {section.id === 'courtcanva2-cta' ? (
+                          
+                          {/* Special rendering for SLS Hub Selected Screens - Tabbed Gallery */}
+                          {project.id === 'slshub' && section.id === 'selected-screens' ? (
+                            <div className="space-y-8 max-w-full">
+                              {(() => {
+                                const screenshotTabs = [
+                                  {
+                                    id: 'account-access',
+                                    label: 'Account & Access',
+                                    screenshots: [
+                                      { src: '/slshub/2fa-verification.png', caption: '2FA Verification' },
+                                      { src: '/slshub/change-password.png', caption: 'Change Password' },
+                                      { src: '/slshub/my-details-member.png', caption: 'My Details (Member)' },
+                                      { src: '/slshub/my-details-nonmember.png', caption: 'My Details (Non-member)' }
+                                    ]
+                                  },
+                                  {
+                                    id: 'membership-transactions',
+                                    label: 'Membership Transactions',
+                                    screenshots: [
+                                      { src: '/slshub/renew-membership.png', caption: 'Renew Membership' },
+                                      { src: '/slshub/transfer-membership.png', caption: 'Transfer Membership' },
+                                      { src: '/slshub/family-group-manage.png', caption: 'Manage Family Group' },
+                                      { src: '/slshub/family-group-add.png', caption: 'Add Family Member' }
+                                    ]
+                                  },
+                                  {
+                                    id: 'forms-submissions',
+                                    label: 'Forms & Submissions',
+                                    screenshots: [
+                                      { src: '/slshub/submit-form.png', caption: 'Submit a Form' },
+                                      { src: '/slshub/taf-reendorsement-1.png', caption: 'TAF Re-endorsement (Step 1)' },
+                                      { src: '/slshub/taf-reendorsement-2.png', caption: 'TAF Re-endorsement (Step 2)' },
+                                      { src: '/slshub/taf-reendorsement-3.png', caption: 'TAF Re-endorsement (Step 3)' }
+                                    ]
+                                  },
+                                  {
+                                    id: 'patrols-tracker',
+                                    label: 'Patrols & Nipper Tracker',
+                                    screenshots: [
+                                      { src: '/slshub/nipper-approve.png', caption: 'Nipper Award Approval' },
+                                      { src: '/slshub/nipper-unapprove.png', caption: 'Nipper Award Un-approval' },
+                                      { src: '/slshub/session-checkin.png', caption: 'Session Check-in' },
+                                      { src: '/slshub/session-checkout.png', caption: 'Session Check-out' },
+                                      { src: '/slshub/rfid-nfc.png', caption: 'RFID/NFC Check-in/out' }
+                                    ]
+                                  },
+                                  {
+                                    id: 'records-history',
+                                    label: 'Records & History',
+                                    screenshots: [
+                                      { src: '/slshub/requests-log.png', caption: 'Requests Log' },
+                                      { src: '/slshub/submissions-history.png', caption: 'Submissions History' },
+                                      { src: '/slshub/status-log.png', caption: 'Status Change Log' },
+                                      { src: '/slshub/admin-status-history.png', caption: 'Admin Status History' }
+                                    ]
+                                  },
+                                  {
+                                    id: 'admin-governance',
+                                    label: 'Admin & Governance',
+                                    screenshots: [
+                                      { src: '/slshub/find-user.png', caption: 'Find User' },
+                                      { src: '/slshub/user-permissions.png', caption: 'User Permissions' },
+                                      { src: '/slshub/process-forms.png', caption: 'Process Forms' },
+                                      { src: '/slshub/taf-settings.png', caption: 'TAF Settings' },
+                                      { src: '/slshub/sems-report.png', caption: 'SEMS Report' }
+                                    ]
+                                  }
+                                ];
+
+                                const currentTabData = screenshotTabs.find(tab => tab.id === selectedScreensTab);
+
+                                return (
+                                  <>
+                                    <p className="text-slate-300 leading-relaxed text-lg">
+                                      Below are grouped examples showing how rules, transactions, and operational workflows were handled in the UI.
+                                    </p>
+                                    
+                                    {/* Tab Navigation - Auto Wrap Layout */}
+                                    <div className="flex flex-wrap gap-2 justify-center">
+                                      {screenshotTabs.map((tab) => (
+                                        <button
+                                          key={tab.id}
+                                          onClick={() => setSelectedScreensTab(tab.id)}
+                                          className={`px-4 py-2.5 rounded-lg font-medium text-sm transition-all border ${
+                                            selectedScreensTab === tab.id
+                                              ? 'bg-gradient-to-r from-fuchsia-500/20 to-fuchsia-600/10 border-fuchsia-500 text-white shadow-lg shadow-fuchsia-500/20'
+                                              : 'bg-[#0F111A] border-white/10 text-slate-400 hover:text-white hover:border-fuchsia-500/50'
+                                          }`}
+                                        >
+                                          {tab.label}
+                                        </button>
+                                      ))}
+                                    </div>
+
+                                    {/* Screenshot Gallery */}
+                                    {currentTabData && (
+                                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                                        {currentTabData.screenshots.map((screenshot, idx) => (
+                                          <div
+                                            key={idx}
+                                            className="group relative bg-[#0F111A] border border-white/10 hover:border-fuchsia-500 rounded-lg overflow-hidden cursor-pointer transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-fuchsia-500/10"
+                                            onClick={() => {
+                                              setScreenshotLightboxOpen(true);
+                                              setCurrentScreenshotImage(screenshot.src);
+                                              setIsAnyLightboxOpen(true);
+                                            }}
+                                          >
+                                            <div className="aspect-video bg-slate-900/50 flex items-center justify-center relative">
+                                              <img
+                                                src={screenshot.src}
+                                                alt={screenshot.caption}
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                  // Fallback for missing images
+                                                  e.currentTarget.style.display = 'none';
+                                                  const parent = e.currentTarget.parentElement;
+                                                  if (parent && !parent.querySelector('.placeholder-created')) {
+                                                    const placeholder = document.createElement('div');
+                                                    placeholder.className = 'absolute inset-0 flex items-center justify-center placeholder-created';
+                                                    placeholder.innerHTML = `<div class="text-center"><div class="w-16 h-16 rounded-full bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-500 mx-auto mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div><p class="text-slate-500 text-sm">Screenshot placeholder</p></div>`;
+                                                    parent.appendChild(placeholder);
+                                                  }
+                                                }}
+                                              />
+                                              {/* Expand Icon */}
+                                              <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <Maximize2 size={16} className="text-white" />
+                                              </div>
+                                            </div>
+                                            <div className="p-3 border-t border-white/5">
+                                              <p className="text-slate-300 text-sm font-medium">{screenshot.caption}</p>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </>
+                                );
+                              })()}
+
+                              {/* Figma Prototype Embed */}
+                              {section.figmaPrototype && (
+                                <div className="mt-12 space-y-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-[2px] bg-gradient-to-r from-fuchsia-500 to-purple-500"></div>
+                                    <h4 className="text-xl font-bold text-white">{section.figmaPrototype.title}</h4>
+                                  </div>
+                                  <p className="text-slate-400 text-base">{section.figmaPrototype.description}</p>
+                                  <div className="relative w-full bg-slate-900/50 border border-white/10 rounded-xl overflow-hidden" style={{ height: '800px' }}>
+                                    <iframe
+                                      src={section.figmaPrototype.url}
+                                      className="w-full h-full"
+                                      allowFullScreen
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ) : project.id === 'slshub' && section.id === 'module-coverage' ? (
+                            /* Special rendering for SLS Hub Module Coverage - Sidebar + Main Area Layout */
+                            <div className="space-y-6 max-w-full">
+                              
+                              {/* Intro Text */}
+                              <p className="text-slate-300 leading-relaxed text-lg">
+                                SLS Hub spans a wide set of member and admin capabilities, organised into a clear navigation model (Dashboard, Applications, Account, More modules, and Admin). This coverage map reflects the scope I designed and standardised across the platform.
+                              </p>
+
+                              {/* Top Row: 2 Columns */}
+                              <div className="grid lg:grid-cols-2 gap-6">
+                                
+                                {/* Left Column: Entry & Access + My Account */}
+                                <div className="flex flex-col gap-6">
+                                  
+                                  {/* Entry & Access Panel */}
+                                  <div className="relative bg-slate-900/40 backdrop-blur-sm border border-white/8 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-teal-400 before:opacity-80">
+                                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/8">
+                                      <span className="text-xs font-semibold uppercase tracking-wider text-teal-400">Entry & Access</span>
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                      <div className="bg-white/2 rounded-lg p-3 border border-transparent hover:border-white/10 hover:bg-white/6 hover:translate-x-1 transition-all duration-200">
+                                        <span className="block text-sm font-semibold text-white mb-1">Authentication</span>
+                                        <span className="block text-xs text-slate-400">Log In, Log Out, Reset Password</span>
+                                      </div>
+                                      <div className="bg-white/2 rounded-lg p-3 border border-transparent hover:border-white/10 hover:bg-white/6 hover:translate-x-1 transition-all duration-200">
+                                        <span className="block text-sm font-semibold text-white mb-1">Sign Up Flows</span>
+                                        <span className="block text-xs text-slate-400">New Member, Current/Past Member, Academy Join</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* My Account Panel */}
+                                  <div className="relative bg-slate-900/40 backdrop-blur-sm border border-white/8 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-slate-400 before:opacity-80">
+                                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/8">
+                                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">My Account</span>
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                      <div className="bg-white/2 rounded-lg p-3 border border-transparent hover:border-white/10 hover:bg-white/6 hover:translate-x-1 transition-all duration-200">
+                                        <span className="block text-sm font-semibold text-white mb-1">Profile Settings</span>
+                                        <span className="block text-xs text-slate-400">Update Personal Details, Contact Info</span>
+                                      </div>
+                                      <div className="bg-white/2 rounded-lg p-3 border border-transparent hover:border-white/10 hover:bg-white/6 hover:translate-x-1 transition-all duration-200">
+                                        <span className="block text-sm font-semibold text-white mb-1">Security</span>
+                                        <span className="block text-xs text-slate-400">Change Password, Identity Verification</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+
+                                {/* Right Column: Administration Console */}
+                                <div className="relative bg-indigo-500/8 backdrop-blur-sm border border-indigo-500/20 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-indigo-400 before:opacity-80">
+                                  <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/8">
+                                    <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400">Administration Console</span>
+                                  </div>
+                                  <div className="grid grid-cols-1 gap-4">
+                                    <div className="bg-[#020617]/30 border border-indigo-400/20 rounded-xl p-4 hover:bg-indigo-400/10 hover:border-indigo-400 hover:-translate-y-1 transition-all duration-200">
+                                      <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">Platform Management</div>
+                                      <ul className="space-y-1.5">
+                                        <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Find User & Manage Profiles</li>
+                                        <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Manage Offers & Forms</li>
+                                        <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Approve Officials</li>
+                                        <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">SEMS Reports</li>
+                                      </ul>
+                                    </div>
+                                    <div className="bg-[#020617]/30 border border-indigo-400/20 rounded-xl p-4 hover:bg-indigo-400/10 hover:border-indigo-400 hover:-translate-y-1 transition-all duration-200">
+                                      <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">System Configuration</div>
+                                      <ul className="space-y-1.5">
+                                        <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Update State Logo</li>
+                                        <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Configure Notifications</li>
+                                        <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">TAF Settings</li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                              {/* Bottom: Member Portal & Apps - Full Width */}
+                              <div className="relative bg-slate-900/40 backdrop-blur-sm border border-white/8 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-sky-400 before:opacity-80">
+                                <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/8">
+                                  <span className="text-xs font-semibold uppercase tracking-wider text-sky-400">Member Portal & Apps</span>
+                                </div>
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                  
+                                  <div className="bg-[#020617]/30 border border-white/8 rounded-xl p-4 hover:bg-sky-400/8 hover:border-sky-400 hover:-translate-y-1 transition-all duration-200">
+                                    <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">Dashboard & Shell</div>
+                                    <ul className="space-y-1.5">
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Global Nav & App Switcher</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Dynamic Widgets (Patrols, Awards)</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Notifications & Alerts</li>
+                                    </ul>
+                                  </div>
+
+                                  <div className="bg-[#020617]/30 border border-white/8 rounded-xl p-4 hover:bg-sky-400/8 hover:border-sky-400 hover:-translate-y-1 transition-all duration-200">
+                                    <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">Membership</div>
+                                    <ul className="space-y-1.5">
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Renew & Transfer Organisations</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Family Groups Management</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Payments (One-off / Bulk)</li>
+                                    </ul>
+                                  </div>
+
+                                  <div className="bg-[#020617]/30 border border-white/8 rounded-xl p-4 hover:bg-sky-400/8 hover:border-sky-400 hover:-translate-y-1 transition-all duration-200">
+                                    <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">Patrols</div>
+                                    <ul className="space-y-1.5">
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Upcoming Roster View</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Patrol Substitutes</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Log Patrol Hours</li>
+                                    </ul>
+                                  </div>
+
+                                  <div className="bg-[#020617]/30 border border-white/8 rounded-xl p-4 hover:bg-sky-400/8 hover:border-sky-400 hover:-translate-y-1 transition-all duration-200">
+                                    <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">Applications</div>
+                                    <ul className="space-y-1.5">
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">SurfGuard, SEMS, eLearning</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Members Store</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Beach Management</li>
+                                    </ul>
+                                  </div>
+
+                                  <div className="bg-[#020617]/30 border border-white/8 rounded-xl p-4 hover:bg-sky-400/8 hover:border-sky-400 hover:-translate-y-1 transition-all duration-200">
+                                    <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">Education & Nippers</div>
+                                    <ul className="space-y-1.5">
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">My Awards & Proficiencies</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Nipper Session Tracking</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Junior Awards</li>
+                                    </ul>
+                                  </div>
+
+                                  <div className="bg-[#020617]/30 border border-white/8 rounded-xl p-4 hover:bg-sky-400/8 hover:border-sky-400 hover:-translate-y-1 transition-all duration-200">
+                                    <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">Resources & Forms</div>
+                                    <ul className="space-y-1.5">
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Apply for Awards (Long Service)</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Document Library</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Member Offers</li>
+                                    </ul>
+                                  </div>
+
+                                  <div className="bg-[#020617]/30 border border-white/8 rounded-xl p-4 hover:bg-sky-400/8 hover:border-sky-400 hover:-translate-y-1 transition-all duration-200">
+                                    <div className="text-xs font-bold text-white mb-2 pb-2 border-b border-white/5">History</div>
+                                    <ul className="space-y-1.5">
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Transaction Logs</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Request Status</li>
+                                      <li className="text-xs text-slate-400 pl-3 relative before:content-['›'] before:absolute before:left-0 before:text-white/20 before:font-bold">Archives</li>
+                                    </ul>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                            </div>
+                          ) : project.id === 'slshub' && section.id === 'rules-governance' ? (
+                            /* Special rendering for SLS Hub Rules & Governance - Split Layout */
+                            <div className="flex gap-10 max-w-full items-start">
+                              
+                              {/* Left Column: Strategy & Logic (Sticky) */}
+                              <div className="flex-1 sticky top-10 flex flex-col gap-8">
+                                
+                                {/* Header Block */}
+                                <div>
+                                  <p className="text-slate-400 text-base leading-relaxed">
+                                    To <strong className="text-white">minimise</strong> support load, I designed the UX to be transparent about <em>why</em> actions are available or restricted. The interface enforces business rules through explicit states and audit-friendly workflows.
+                                  </p>
+                                </div>
+
+                                {/* Logic List */}
+                                <div className="flex flex-col gap-4">
+                                  
+                                  <div className="bg-white/3 border-l-4 border-rose-500 p-5 rounded-r-xl hover:bg-white/6 hover:translate-x-1 transition-all duration-300">
+                                    <span className="block text-base font-bold text-white mb-1.5">Eligibility Gating</span>
+                                    <span className="block text-sm text-slate-400 leading-relaxed">Modules and actions appear only when role/award prerequisites are met, reducing confusion.</span>
+                                  </div>
+
+                                  <div className="bg-white/3 border-l-4 border-amber-500 p-5 rounded-r-xl hover:bg-white/6 hover:translate-x-1 transition-all duration-300">
+                                    <span className="block text-base font-bold text-white mb-1.5">Status-Driven Actions</span>
+                                    <span className="block text-sm text-slate-400 leading-relaxed">CTAs change dynamically (Pending → Approved) providing clear system feedback.</span>
+                                  </div>
+
+                                  <div className="bg-white/3 border-l-4 border-green-500 p-5 rounded-r-xl hover:bg-white/6 hover:translate-x-1 transition-all duration-300">
+                                    <span className="block text-base font-bold text-white mb-1.5">Multi-Step Verification</span>
+                                    <span className="block text-sm text-slate-400 leading-relaxed">Complex approvals are broken into guided steps with confirmation modals.</span>
+                                  </div>
+
+                                  <div className="bg-white/3 border-l-4 border-purple-500 p-5 rounded-r-xl hover:bg-white/6 hover:translate-x-1 transition-all duration-300">
+                                    <span className="block text-base font-bold text-white mb-1.5">Reversible Admin Controls</span>
+                                    <span className="block text-sm text-slate-400 leading-relaxed">Destructive actions are constrained and often reversible (e.g., Soft Delete).</span>
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                              {/* Right Column: Evidence Viewer (Scrollable) */}
+                              <div className="flex-[1.5] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl flex flex-col h-[800px] overflow-hidden">
+                                
+                                {/* Browser-like Header */}
+                                <div className="px-6 py-4 border-b border-white/10 bg-black/20 flex justify-between items-center">
+                                  <div className="flex gap-1.5">
+                                    <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                                    <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                                    <div className="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                                  </div>
+                                  <div className="font-mono text-xs text-slate-500">UX_Specification_Audit.pdf</div>
+                                  <div className="w-10"></div>
+                                </div>
+
+                                {/* Scrollable Content */}
+                                <div className="overflow-y-auto p-8 flex flex-col gap-10 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+                                  
+                                  {/* Screenshot 1 - Admin Access Criteria */}
+                                  <div className="flex flex-col gap-3">
+                                    <div 
+                                      className="w-full aspect-[16/10] bg-slate-800 border border-white/10 rounded-lg overflow-hidden hover:border-cyan-400 transition-colors duration-300 cursor-pointer group relative"
+                                      onClick={() => {
+                                        setScreenshotLightboxOpen(true);
+                                        setCurrentScreenshotImage('/slshub/Admin Access Criteria.png');
+                                        setIsAnyLightboxOpen(true);
+                                      }}
+                                    >
+                                      <img 
+                                        src="/slshub/Admin Access Criteria.png" 
+                                        alt="Admin Access Criteria" 
+                                        className="w-full h-full object-contain"
+                                      />
+                                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <Maximize2 size={32} className="text-white" />
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Eligibility gating</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Eligibility-gated access: Admin modules and actions appear only when specific role prerequisites are met.</div>
+                                    </div>
+                                  </div>
+
+                                  {/* Screenshot 2 - Award Gating */}
+                                  <div className="flex flex-col gap-3">
+                                    <div 
+                                      className="w-full aspect-[16/10] bg-slate-800 border border-white/10 rounded-lg overflow-hidden hover:border-cyan-400 transition-colors duration-300 cursor-pointer group relative"
+                                      onClick={() => {
+                                        setScreenshotLightboxOpen(true);
+                                        setCurrentScreenshotImage('/slshub/Award Gating.png');
+                                        setIsAnyLightboxOpen(true);
+                                      }}
+                                    >
+                                      <img 
+                                        src="/slshub/Award Gating.png" 
+                                        alt="Award Gating" 
+                                        className="w-full h-full object-contain"
+                                      />
+                                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <Maximize2 size={32} className="text-white" />
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Eligibility gating</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Award-driven access: Attendance modules require specific awards to be held by the user.</div>
+                                    </div>
+                                  </div>
+
+                                  {/* Video 1 - Approve Action */}
+                                  <div className="flex flex-col gap-3">
+                                    <div className="w-full aspect-[16/10] bg-slate-800 border border-white/10 rounded-lg overflow-hidden hover:border-cyan-400 transition-colors duration-300">
+                                      <video 
+                                        src="/slshub/Approve Action.mp4"
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-contain video-autoplay"
+                                      />
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Status-driven CTA</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Status-driven actions: CTAs change dynamically with clear system feedback (Success Toast).</div>
+                                    </div>
+                                  </div>
+
+                                  {/* Video 2 - Reversible Action */}
+                                  <div className="flex flex-col gap-3">
+                                    <div className="w-full aspect-[16/10] bg-slate-800 border border-white/10 rounded-lg overflow-hidden hover:border-cyan-400 transition-colors duration-300">
+                                      <video 
+                                        src="/slshub/Reversible Action.mp4"
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-contain video-autoplay"
+                                      />
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Status-driven CTA</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Reverse workflows: Approved items allow for &apos;Unapprove&apos; actions to correct administrative errors.</div>
+                                    </div>
+                                  </div>
+
+                                  {/* Video 3 - Multi-step Approval */}
+                                  <div className="flex flex-col gap-3">
+                                    <div className="w-full aspect-[16/10] bg-slate-800 border border-white/10 rounded-lg overflow-hidden hover:border-cyan-400 transition-colors duration-300">
+                                      <video 
+                                        src="/slshub/Multi-step Approval.mp4"
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-contain video-autoplay"
+                                      />
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Multi-step approval + confirmation</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Guided progression: Complex approvals are broken into steps with final state outcomes.</div>
+                                    </div>
+                                  </div>
+
+                                  {/* Screenshot 3 - Submission Confirmation */}
+                                  <div className="flex flex-col gap-3">
+                                    <div 
+                                      className="w-full aspect-[16/10] bg-slate-800 border border-white/10 rounded-lg overflow-hidden hover:border-cyan-400 transition-colors duration-300 cursor-pointer group relative"
+                                      onClick={() => {
+                                        setScreenshotLightboxOpen(true);
+                                        setCurrentScreenshotImage('/slshub/Submission Confirmation.png');
+                                        setIsAnyLightboxOpen(true);
+                                      }}
+                                    >
+                                      <img 
+                                        src="/slshub/Submission Confirmation.png" 
+                                        alt="Submission Confirmation" 
+                                        className="w-full h-full object-contain"
+                                      />
+                                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <Maximize2 size={32} className="text-white" />
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Multi-step approval + confirmation</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Transaction traceability: &quot;Are you sure?&quot; confirmation modals ensure intent before submission.</div>
+                                    </div>
+                                  </div>
+
+                                  {/* Screenshot 4 - Deactivate Confirm */}
+                                  <div className="flex flex-col gap-3">
+                                    <div 
+                                      className="w-full aspect-[16/10] bg-slate-800 border border-white/10 rounded-lg overflow-hidden hover:border-cyan-400 transition-colors duration-300 cursor-pointer group relative"
+                                      onClick={() => {
+                                        setScreenshotLightboxOpen(true);
+                                        setCurrentScreenshotImage('/slshub/Deactivate Confirm.png');
+                                        setIsAnyLightboxOpen(true);
+                                      }}
+                                    >
+                                      <img 
+                                        src="/slshub/Deactivate Confirm.png" 
+                                        alt="Deactivate Confirm" 
+                                        className="w-full h-full object-contain"
+                                      />
+                                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <Maximize2 size={32} className="text-white" />
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Admin reversibility + constrained action</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Admin operations: Confirmation gates prevent accidental deactivation of user accounts.</div>
+                                    </div>
+                                  </div>
+
+                                  {/* Screenshot 5 - Audit Log / Permissions */}
+                                  <div className="flex flex-col gap-3">
+                                    <div 
+                                      className="w-full aspect-[16/10] bg-slate-800 border border-white/10 rounded-lg overflow-hidden hover:border-cyan-400 transition-colors duration-300 cursor-pointer group relative"
+                                      onClick={() => {
+                                        setScreenshotLightboxOpen(true);
+                                        setCurrentScreenshotImage('/slshub/Audit Log:Permissions.png');
+                                        setIsAnyLightboxOpen(true);
+                                      }}
+                                    >
+                                      <img 
+                                        src="/slshub/Audit Log:Permissions.png" 
+                                        alt="Audit Log and Permissions" 
+                                        className="w-full h-full object-contain"
+                                      />
+                                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <Maximize2 size={32} className="text-white" />
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Audit Traceability</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Operational traceability: Permission changes and status updates are logged for governance.</div>
+                                    </div>
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+                          ) : project.id === 'slshub' && section.id === 'design-system' ? (
+                            /* Special rendering for SLS Hub Design System & Delivery */
+                            <div className="space-y-8 max-w-full">
+                              
+                              {/* Top Section: Context */}
+                              <div>
+                                <p className="text-slate-400 text-base leading-relaxed">
+                                  I bridged the gap between design and engineering by building a robust component library and delivering implementation-ready specs. My focus was on feasibility, consistency, and protecting design intent through to release.
+                                </p>
+                              </div>
+
+                              {/* Deliverables Row */}
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                
+                                <div className="flex flex-col gap-2 p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/8 hover:border-cyan-400/30 transition-all duration-200 group">
+                                  <div className="w-5 h-5 text-cyan-400 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                                  </div>
+                                  <div>
+                                    <strong className="block text-white text-xs font-semibold mb-1.5">Shared Component Library</strong>
+                                    <span className="block text-[11px] text-slate-400 leading-relaxed">Established standardised patterns (Forms, Modals, Tables) to speed up development.</span>
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-col gap-2 p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/8 hover:border-purple-400/30 transition-all duration-200 group">
+                                  <div className="w-5 h-5 text-purple-400 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+                                  </div>
+                                  <div>
+                                    <strong className="block text-white text-xs font-semibold mb-1.5">Dev Mode Specifications</strong>
+                                    <span className="block text-[11px] text-slate-400 leading-relaxed">Delivered responsive logic, spacing tokens, and field requirements for clear handoff.</span>
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-col gap-2 p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/8 hover:border-amber-400/30 transition-all duration-200 group">
+                                  <div className="w-5 h-5 text-amber-400 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                                  </div>
+                                  <div>
+                                    <strong className="block text-white text-xs font-semibold mb-1.5">Confluence Mapping</strong>
+                                    <span className="block text-[11px] text-slate-400 leading-relaxed">Mapped field requirements to UI components to handle edge cases and validation rules.</span>
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-col gap-2 p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/8 hover:border-green-400/30 transition-all duration-200 group">
+                                  <div className="w-5 h-5 text-green-400 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                                  </div>
+                                  <div>
+                                    <strong className="block text-white text-xs font-semibold mb-1.5">End-to-End Validation</strong>
+                                    <span className="block text-[11px] text-slate-400 leading-relaxed">Clickable prototypes and continuous QA to validate expected behaviours.</span>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                              {/* Bottom Section: Evidence Grid - Full Width */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                
+                                {/* Card 1 */}
+                                <div className="bg-slate-900/60 backdrop-blur-sm border border-white/10 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-white/20 before:absolute before:top-0 before:left-0 before:w-2.5 before:h-2.5 before:border-t-2 before:border-l-2 before:border-cyan-400 after:absolute after:bottom-0 after:right-0 after:w-2.5 after:h-2.5 after:border-b-2 after:border-r-2 after:border-cyan-400">
+                                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                                  <div className="px-4 py-3 border-b border-white/10 flex justify-between items-center bg-black/20">
+                                    <span className="font-mono text-[11px] uppercase tracking-wider text-cyan-400">01_Component_Architecture</span>
+                                    <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded">Figma Variables</span>
+                                  </div>
+                                  <div 
+                                    className="bg-black/10 cursor-pointer group/img relative"
+                                    onClick={() => {
+                                      setScreenshotLightboxOpen(true);
+                                      setCurrentScreenshotImage('/slshub/Component Matrix : Library.png');
+                                      setIsAnyLightboxOpen(true);
+                                    }}
+                                  >
+                                    <img 
+                                      src="/slshub/Component Matrix : Library.png" 
+                                      alt="Component Matrix Library"
+                                      className="w-full h-auto block"
+                                    />
+                                    <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
+                                      <Maximize2 size={32} className="text-white" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Card 2 */}
+                                <div className="bg-slate-900/60 backdrop-blur-sm border border-white/10 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-white/20 before:absolute before:top-0 before:left-0 before:w-2.5 before:h-2.5 before:border-t-2 before:border-l-2 before:border-purple-400 after:absolute after:bottom-0 after:right-0 after:w-2.5 after:h-2.5 after:border-b-2 after:border-r-2 after:border-purple-400">
+                                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                                  <div className="px-4 py-3 border-b border-white/10 flex justify-between items-center bg-black/20">
+                                    <span className="font-mono text-[11px] uppercase tracking-wider text-purple-400">02_Dev_Handoff_Specs</span>
+                                    <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded">Dev Mode</span>
+                                  </div>
+                                  <div 
+                                    className="bg-black/10 cursor-pointer group/img relative"
+                                    onClick={() => {
+                                      setScreenshotLightboxOpen(true);
+                                      setCurrentScreenshotImage('/slshub/Measurements : Breakpoints.png');
+                                      setIsAnyLightboxOpen(true);
+                                    }}
+                                  >
+                                    <img 
+                                      src="/slshub/Measurements : Breakpoints.png" 
+                                      alt="Measurements and Breakpoints"
+                                      className="w-full h-auto block"
+                                    />
+                                    <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
+                                      <Maximize2 size={32} className="text-white" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Card 3 */}
+                                <div className="bg-slate-900/60 backdrop-blur-sm border border-white/10 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-white/20 before:absolute before:top-0 before:left-0 before:w-2.5 before:h-2.5 before:border-t-2 before:border-l-2 before:border-amber-400 after:absolute after:bottom-0 after:right-0 after:w-2.5 after:h-2.5 after:border-b-2 after:border-r-2 after:border-amber-400">
+                                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                                  <div className="px-4 py-3 border-b border-white/10 flex justify-between items-center bg-black/20">
+                                    <span className="font-mono text-[11px] uppercase tracking-wider text-amber-400">03_Requirements_Map</span>
+                                    <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded">Confluence</span>
+                                  </div>
+                                  <div 
+                                    className="bg-black/10 cursor-pointer group/img relative"
+                                    onClick={() => {
+                                      setScreenshotLightboxOpen(true);
+                                      setCurrentScreenshotImage('/slshub/Table Screenshot.png');
+                                      setIsAnyLightboxOpen(true);
+                                    }}
+                                  >
+                                    <img 
+                                      src="/slshub/Table Screenshot.png" 
+                                      alt="Table Screenshot"
+                                      className="w-full h-auto block"
+                                    />
+                                    <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
+                                      <Maximize2 size={32} className="text-white" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Card 4 */}
+                                <div className="bg-slate-900/60 backdrop-blur-sm border border-white/10 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-white/20 before:absolute before:top-0 before:left-0 before:w-2.5 before:h-2.5 before:border-t-2 before:border-l-2 before:border-cyan-400 after:absolute after:bottom-0 after:right-0 after:w-2.5 after:h-2.5 after:border-b-2 after:border-r-2 after:border-cyan-400">
+                                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                                  <div className="px-4 py-3 border-b border-white/10 flex justify-between items-center bg-black/20">
+                                    <span className="font-mono text-[11px] uppercase tracking-wider text-cyan-400">04_Interaction_Flows</span>
+                                    <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded">Prototyping</span>
+                                  </div>
+                                  <div 
+                                    className="bg-black/10 cursor-pointer group/img relative"
+                                    onClick={() => {
+                                      setScreenshotLightboxOpen(true);
+                                      setCurrentScreenshotImage('/slshub/Flow Map.png');
+                                      setIsAnyLightboxOpen(true);
+                                    }}
+                                  >
+                                    <img 
+                                      src="/slshub/Flow Map.png" 
+                                      alt="Flow Map"
+                                      className="w-full h-auto block"
+                                    />
+                                    <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
+                                      <Maximize2 size={32} className="text-white" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Card 5 */}
+                                <div className="md:col-span-2 bg-slate-900/60 backdrop-blur-sm border border-white/10 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-white/20 before:absolute before:top-0 before:left-0 before:w-2.5 before:h-2.5 before:border-t-2 before:border-l-2 before:border-green-400 after:absolute after:bottom-0 after:right-0 after:w-2.5 after:h-2.5 after:border-b-2 after:border-r-2 after:border-green-400">
+                                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                                  <div className="px-4 py-3 border-b border-white/10 flex justify-between items-center bg-black/20">
+                                    <span className="font-mono text-[11px] uppercase tracking-wider text-green-400">05_QA_Validation</span>
+                                    <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded">Browser Stack</span>
+                                  </div>
+                                  <div 
+                                    className="bg-black/10 cursor-pointer group/img relative"
+                                    onClick={() => {
+                                      setScreenshotLightboxOpen(true);
+                                      setCurrentScreenshotImage('/slshub/Bug Fix:QA Table2.png');
+                                      setIsAnyLightboxOpen(true);
+                                    }}
+                                  >
+                                    <img 
+                                      src="/slshub/Bug Fix:QA Table2.png" 
+                                      alt="Bug Fix QA Table"
+                                      className="w-full h-auto block"
+                                    />
+                                    <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
+                                      <Maximize2 size={32} className="text-white" />
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                            </div>
+                          ) : project.id === 'slshub' && section.id === 'responsive-dark' ? (
+                            /* Special rendering for SLS Hub Responsive & Dark Mode */
+                            <ResponsiveDarkModeSection />
+                          ) : project.id === 'slshub' && section.id === 'guides-enablement' ? (
+                            /* Special rendering for SLS Hub Guides & Enablement */
+                            <div className="max-w-full">
+                              {/* Description */}
+                              <div className="mb-8">
+                                <p className="text-slate-400 text-base leading-relaxed">
+                                  Launch assets ensuring recognition across digital and physical channels.
+                                </p>
+                              </div>
+
+                              {/* Asset Grid */}
+                              <div className="grid md:grid-cols-2 gap-6">
+
+                                {/* Card 1: Favicon */}
+                                <div className="bg-slate-900/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
+                                  
+                                  {/* Preview Box - Favicon Image */}
+                                  <div className="w-full h-[180px] bg-black/30 rounded-xl mb-5 flex items-center justify-center overflow-hidden p-4">
+                                    <img 
+                                      src="/slshub/System Favicon.png" 
+                                      alt="System Favicon"
+                                      className="max-w-full max-h-full object-contain"
+                                    />
+                                  </div>
+
+                                  {/* Text Info */}
+                                  <div className="font-mono text-[10px] text-amber-400 bg-amber-400/10 px-2 py-1 rounded mb-2 uppercase tracking-wider border border-amber-400/20">
+                                    Browser Asset
+                                  </div>
+                                  <div className="text-base font-semibold text-white mb-1">
+                                    System Favicon
+                                  </div>
+                                  <div className="text-sm text-slate-400">
+                                    Ensures instant recognition in crowded tabs.
+                                  </div>
+
+                                </div>
+
+                                {/* Card 2: Brochure */}
+                                <div className="bg-slate-900/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:border-white/20 group">
+                                  
+                                  {/* Preview Box - Brochure */}
+                                  <div 
+                                    className="w-full h-[180px] bg-black/30 rounded-xl mb-5 flex items-center justify-center overflow-hidden p-4 cursor-pointer relative group/brochure"
+                                    onClick={() => {
+                                      setScreenshotLightboxOpen(true);
+                                      setCurrentScreenshotImage('/slshub/Launch Brochure.png');
+                                      setIsAnyLightboxOpen(true);
+                                    }}
+                                  >
+                                    <img 
+                                      src="/slshub/Launch Brochure.png" 
+                                      alt="Launch Brochure"
+                                      className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                    <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/brochure:opacity-100 transition-opacity duration-200">
+                                      <Maximize2 size={24} className="text-white" />
+                                    </div>
+                                  </div>
+
+                                  {/* Text Info */}
+                                  <div className="font-mono text-[10px] text-amber-400 bg-amber-400/10 px-2 py-1 rounded mb-2 uppercase tracking-wider border border-amber-400/20">
+                                    Print Asset
+                                  </div>
+                                  <div className="text-base font-semibold text-white mb-1">
+                                    Launch Brochure
+                                  </div>
+                                  <div className="text-sm text-slate-400">
+                                    Physical guide for club admin onboarding.
+                                  </div>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          ) : project.id === 'slshub' && section.id === 'quality-readiness' ? (
+                            /* Special rendering for SLS Hub Quality & Release Readiness */
+                            <div className="max-w-full">
+                              
+                              {/* Description */}
+                              <div className="mb-8">
+                                <p className="text-slate-400 text-base leading-relaxed">
+                                  Ran continuous UI QA per ticket throughout development, testing across browsers and devices and partnering with developers to confirm feasibility and correctness. This helped catch edge cases early (rule-driven visibility, status transitions, responsive regressions, modal constraints) and ensured the experience shipped consistently.
+                                </p>
+                              </div>
+
+                              {/* Section Label */}
+                              <div className="text-xs uppercase tracking-widest text-slate-500 mb-4 font-semibold">
+                                Release Quality Monitor
+                              </div>
+
+                              {/* HUD Container */}
+                              <div className="bg-green-500/5 border border-green-500/20 rounded-2xl overflow-hidden backdrop-blur-sm shadow-[0_0_40px_-10px_rgba(16,185,129,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_60px_-10px_rgba(16,185,129,0.25)] hover:border-green-500/50">
+                                
+                                <div className="flex flex-col lg:flex-row">
+                                  
+                                  {/* LEFT: Status Block */}
+                                  <div className="bg-green-500/10 p-8 lg:min-w-[200px] border-b lg:border-b-0 lg:border-r border-green-500/20 flex flex-col justify-center gap-2">
+                                    
+                                    {/* Pulse Row */}
+                                    <div className="flex items-center gap-2.5 mb-1">
+                                      <div className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.7)]"></div>
+                                      <span className="font-mono text-[11px] text-green-400 uppercase tracking-wider font-bold">
+                                        System Stable
+                                      </span>
+                                    </div>
+
+                                    {/* Big Stat */}
+                                    <div className="text-[28px] font-extrabold text-white leading-none">
+                                      Ready to Ship
+                                    </div>
+
+                                    {/* Sub Stat */}
+                                    <div className="text-sm text-white/60">
+                                      0 Critical Blockers
+                                    </div>
+
+                                  </div>
+
+                                  {/* RIGHT: Metrics Grid */}
+                                  <div className="flex-1 grid grid-cols-1 sm:grid-cols-2">
+                                    
+                                    {/* Metric 1 */}
+                                    <div className="p-6 border-b sm:border-r border-white/5 flex flex-col gap-1.5 transition-colors hover:bg-green-500/5">
+                                      <div className="text-xl mb-1">🌐</div>
+                                      <div className="text-xs text-slate-400 font-medium">Browser Matrix</div>
+                                      <div className="text-sm text-white font-bold flex items-center gap-1.5">
+                                        <span className="text-green-400 text-base">✔</span> Chrome / Safari / Edge
+                                      </div>
+                                    </div>
+
+                                    {/* Metric 2 */}
+                                    <div className="p-6 border-b border-white/5 flex flex-col gap-1.5 transition-colors hover:bg-green-500/5">
+                                      <div className="text-xl mb-1">📱</div>
+                                      <div className="text-xs text-slate-400 font-medium">Responsive Behaviours</div>
+                                      <div className="text-sm text-white font-bold flex items-center gap-1.5">
+                                        <span className="text-green-400 text-base">✔</span> Desktop / Tablet / Mobile
+                                      </div>
+                                    </div>
+
+                                    {/* Metric 3 */}
+                                    <div className="p-6 sm:border-r border-white/5 flex flex-col gap-1.5 transition-colors hover:bg-green-500/5">
+                                      <div className="text-xl mb-1">🔒</div>
+                                      <div className="text-xs text-slate-400 font-medium">Permission Logic</div>
+                                      <div className="text-sm text-white font-bold flex items-center gap-1.5">
+                                        <span className="text-green-400 text-base">✔</span> Role Gating Validated
+                                      </div>
+                                    </div>
+
+                                    {/* Metric 4 */}
+                                    <div className="p-6 flex flex-col gap-1.5 transition-colors hover:bg-green-500/5">
+                                      <div className="text-xl mb-1">✨</div>
+                                      <div className="text-xs text-slate-400 font-medium">Design Fidelity</div>
+                                      <div className="text-sm text-white font-bold flex items-center gap-1.5">
+                                        <span className="text-green-400 text-base">✔</span> Pixel-Perfect Handoff
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+                          ) : project.id === 'slshub' && section.id === 'summary' ? (
+                            /* Special rendering for SLS Hub Summary - 3 column layout */
+                            <div className="space-y-10 max-w-full">
+                              {/* Header */}
+                              <div className="border-b border-white/10 pb-6">
+                                <p className="text-slate-400 text-base leading-relaxed max-w-4xl">
+                                  A breakdown of the project scope, my individual contribution, and the key capabilities demonstrated through the SLS Hub design.
+                                </p>
+                              </div>
+
+                              {/* 3 Column Grid */}
+                              <div className="grid md:grid-cols-3 gap-8 items-start">
+                                
+                                {/* Column 1: The Objective */}
+                                <div className="flex flex-col gap-5">
+                                  <div className="flex items-center justify-between pb-3 border-b-2 border-cyan-400">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">The Objective</span>
+                                  </div>
+                                  <div className="flex flex-col gap-3">
+                                    {/* Item 1 */}
+                                    <div className="group relative border-l-2 border-transparent hover:border-cyan-400 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-cyan-400/20 group-hover:w-1 group-hover:bg-cyan-400 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
+                                      <span className="block text-base font-bold text-white mb-1.5 group-hover:text-cyan-400 transition-colors duration-300">Central Portal Transformation</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">SLS Hub replaces the legacy Members Area as the central portal for all member interactions.</span>
+                                    </div>
+                                    {/* Item 2 */}
+                                    <div className="group relative border-l-2 border-transparent hover:border-cyan-400 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-cyan-400/20 group-hover:w-1 group-hover:bg-cyan-400 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(56,189,248,0.5)]" />
+                                      <span className="block text-base font-bold text-white mb-1.5 group-hover:text-cyan-400 transition-colors duration-300">Scope of Management</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">Enabling members to manage memberships, awards, patrol participation, requests, resources, and linked services.</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Column 2: My Role */}
+                                <div className="flex flex-col gap-5">
+                                  <div className="flex items-center justify-between pb-3 border-b-2 border-purple-500">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-purple-500">My Role</span>
+                                  </div>
+                                  <div className="flex flex-col gap-3">
+                                    {/* Item 1 */}
+                                    <div className="group relative border-l-2 border-transparent hover:border-purple-500 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-purple-500/20 group-hover:w-1 group-hover:bg-purple-500 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
+                                      <span className="block text-base font-bold text-white mb-1.5 group-hover:text-purple-500 transition-colors duration-300">End-to-End Design</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">Owned UI/UX across the entire portal (desktop + responsive mobile).</span>
+                                    </div>
+                                    {/* Item 2 */}
+                                    <div className="group relative border-l-2 border-transparent hover:border-purple-500 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-purple-500/20 group-hover:w-1 group-hover:bg-purple-500 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
+                                      <span className="block text-base font-bold text-white mb-1.5 group-hover:text-purple-500 transition-colors duration-300">Delivery Artefacts</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">Delivered a shared component library, implementation-ready specs (Dev Mode), and fully clickable prototypes.</span>
+                                    </div>
+                                    {/* Item 3 */}
+                                    <div className="group relative border-l-2 border-transparent hover:border-purple-500 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-purple-500/20 group-hover:w-1 group-hover:bg-purple-500 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
+                                      <span className="block text-base font-bold text-white mb-1.5 group-hover:text-purple-500 transition-colors duration-300">Design Assurance (QA)</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">Conducted continuous cross-device QA to protect design intent through build and release.</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Column 3: What This Demonstrates */}
+                                <div className="flex flex-col gap-5">
+                                  <div className="flex items-center justify-between pb-3 border-b-2 border-pink-400">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-pink-400">What This Demonstrates</span>
+                                  </div>
+                                  <div className="flex flex-col gap-3">
+                                    {/* Item 1 */}
+                                    <div className="group relative border-l-2 border-transparent hover:border-pink-400 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-pink-400/20 group-hover:w-1 group-hover:bg-pink-400 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(244,114,182,0.5)]" />
+                                      <span className="block text-base font-bold text-white mb-1.5 group-hover:text-pink-400 transition-colors duration-300">System-Level UX</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">Portal architecture with role- and eligibility-driven visibility (member vs admin, award-gated access).</span>
+                                    </div>
+                                    {/* Item 2 */}
+                                    <div className="group relative border-l-2 border-transparent hover:border-pink-400 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-pink-400/20 group-hover:w-1 group-hover:bg-pink-400 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(244,114,182,0.5)]" />
+                                      <span className="block text-base font-bold text-white mb-1.5 group-hover:text-pink-400 transition-colors duration-300">Complex Workflows</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">Rules-heavy transactional flows including renewals, transfers, submissions, approvals, and payments.</span>
+                                    </div>
+                                    {/* Item 3 */}
+                                    <div className="group relative border-l-2 border-transparent hover:border-pink-400 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-pink-400/20 group-hover:w-1 group-hover:bg-pink-400 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(244,114,182,0.5)]" />
+                                      <span className="block text-base font-bold text-white mb-1.5 group-hover:text-pink-400 transition-colors duration-300">Operational Traceability</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">Comprehensive history logs, records, data exports, and audit-friendly status changes.</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          ) : section.id === 'courtcanva2-cta' ? (
                             <div className="flex items-center justify-center my-8 py-6 px-8 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border border-emerald-500/20 rounded-2xl backdrop-blur-sm">
                               <div 
                                 className="text-slate-200 text-lg leading-relaxed text-center whitespace-pre-line"
@@ -1926,96 +3403,96 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
                           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
                             {/* Card 1: Homepage */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20">
+                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
                               <img src="/courtcanva/landing webpage.png" alt="Homepage" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-all duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-10">
+                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
+                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <Home size={20} />
                               </div>
                               <div className="relative z-10 p-6">
                                 <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">01</span>
-                                <h3 className="text-xl font-bold text-white mb-3 transition-all duration-200 group-hover:text-emerald-400 drop-shadow-lg">Homepage</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Homepage</h3>
+                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Eye-catching banner showcasing platform capabilities with clear CTAs for starting designs or exploring the gallery.
                                 </p>
                               </div>
                             </div>
 
                             {/* Card 2: Design Interface */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20">
+                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
                               <img src="/courtcanva/3D Preview Access Button.png" alt="Design Interface" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-all duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-10">
+                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
+                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <Edit3 size={20} />
                               </div>
                               <div className="relative z-10 p-6">
                                 <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">02</span>
-                                <h3 className="text-xl font-bold text-white mb-3 transition-all duration-200 group-hover:text-emerald-400 drop-shadow-lg">Design Interface</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Design Interface</h3>
+                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Intuitive drag-and-drop tool with extensive court elements, customization options, and real-time 3D preview.
                                 </p>
                               </div>
                             </div>
 
                             {/* Card 3: Quote Request */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20">
+                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
                               <img src="/courtcanva/Order Generation Page.png" alt="Quote Request" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-all duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-10">
+                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
+                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <FileText size={20} />
                               </div>
                               <div className="relative z-10 p-6">
                                 <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">03</span>
-                                <h3 className="text-xl font-bold text-white mb-3 transition-all duration-200 group-hover:text-emerald-400 drop-shadow-lg">Quote Request</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Quote Request</h3>
+                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Submit custom designs with project details like location and materials. Quotes sent directly via email or platform messaging.
                                 </p>
                               </div>
                             </div>
 
                             {/* Card 4: Templates */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20">
+                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
                               <img src="/courtcanva/My Template Page.png" alt="Templates" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-all duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-10">
+                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
+                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <Grid size={20} />
                               </div>
                               <div className="relative z-10 p-6">
                                 <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">04</span>
-                                <h3 className="text-xl font-bold text-white mb-3 transition-all duration-200 group-hover:text-emerald-400 drop-shadow-lg">Templates</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Templates</h3>
+                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Diverse collection of user-created designs offering inspiration with social sharing options for favorite designs.
                                 </p>
                               </div>
                             </div>
 
                             {/* Card 5: User Account */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20">
+                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
                               <img src="/courtcanva/My Account.png" alt="User Account" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-all duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-10">
+                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
+                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <User size={20} />
                               </div>
                               <div className="relative z-10 p-6">
                                 <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">05</span>
-                                <h3 className="text-xl font-bold text-white mb-3 transition-all duration-200 group-hover:text-emerald-400 drop-shadow-lg">User Account</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">User Account</h3>
+                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Personal dashboard for managing saved designs, accessing quotes, and tracking project progress.
                                 </p>
                               </div>
                             </div>
 
                             {/* Card 6: Place Order */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20">
+                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
                               <img src="/courtcanva/Order Placed Successful Page.png" alt="Place Order" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-all duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 z-10">
+                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
+                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <ShoppingCart size={20} />
                               </div>
                               <div className="relative z-10 p-6">
                                 <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">06</span>
-                                <h3 className="text-xl font-bold text-white mb-3 transition-all duration-200 group-hover:text-emerald-400 drop-shadow-lg">Place Order</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-all duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Place Order</h3>
+                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Secure payment with detailed order summaries and real-time status updates from court builders.
                                 </p>
                               </div>
@@ -2283,10 +3760,43 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         </div>
                       )}
 
+                      {/* Hub Highlights Tabs (SLS Hub) */}
+                      {section.type === 'hub-highlights-tabs' && section.hubHighlightsTabs && (
+                        <div className="w-full my-12">
+                          <HubHighlightsTabsComponent 
+                            tabs={section.hubHighlightsTabs}
+                            onLightboxChange={setIsAnyLightboxOpen}
+                          />
+                        </div>
+                      )}
+
+                      {/* Info Cards (compact 3-column cards for key highlights) */}
+                      {section.type === 'info-cards' && section.infoCards && (
+                        <div className="w-full max-w-6xl mx-auto my-12">
+                          {section.title && (
+                            <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                              <span className="w-6 h-[2px] bg-gradient-to-r from-yellow-500 to-orange-600 inline-block"/> 
+                              {section.title}
+                            </h3>
+                          )}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {section.infoCards.map((card, idx) => (
+                              <div 
+                                key={idx}
+                                className="bg-slate-900/40 border border-white/10 rounded-xl p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-orange-500/30 hover:shadow-lg hover:shadow-orange-500/10"
+                              >
+                                <h4 className="text-base font-semibold text-orange-400 mb-3">{card.title}</h4>
+                                <p className="text-sm text-slate-300 leading-relaxed">{card.content}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       {/* Video Block */}
                       {section.type === 'video' && (
                         <div className="w-full my-12 flex flex-col items-center">
-                          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block">
+                          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block max-w-xs">
                             {section.src?.includes('youtube.com') || section.src?.includes('youtu.be') ? (
                               <iframe
                                 src={section.src}
@@ -2321,7 +3831,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                 loop
                                 muted
                                 playsInline
-                                className="h-auto"
+                                className="h-auto w-full"
                                 style={{ maxWidth: '100%' }}
                               >
                                 Your browser does not support the video tag.
@@ -2436,6 +3946,190 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         </div>
                       )}
 
+                      {/* Flip Cards Blueprint Layout */}
+                      {section.type === 'flip-cards' && section.cards && (
+                        <div className="w-full max-w-[960px] mx-auto">
+                          {/* Header */}
+                          <div className="mb-10">
+                            <div className="flex justify-between items-end mb-3">
+                              <h3 className="text-3xl font-bold text-white m-0 flex items-center gap-3">
+                                <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                                {section.title}
+                              </h3>
+                              {section.hint && (
+                                <div className="flex items-center gap-2 text-[10px] text-slate-400">
+                                  <svg className="w-3 h-3 animate-spin" style={{ animationDuration: '4s' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                  </svg>
+                                  <span>{section.hint}</span>
+                                </div>
+                              )}
+                            </div>
+                            <p className="text-slate-400 text-base ml-11">
+                              A breakdown of deliverables across ecosystems, culminating in final validation.
+                            </p>
+                          </div>
+
+                          {/* Cards Grid */}
+                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[260px] lg:h-[260px] mb-6" style={{ perspective: '1000px' }}>
+                            {section.cards.map((card: any, cardIdx: number) => {
+                              const colorMap: Record<string, string> = {
+                                cyan: '#38bdf8',
+                                pink: '#f472b6',
+                                emerald: '#34d399'
+                              };
+                              const accentColor = colorMap[card.color] || '#38bdf8';
+
+                              const iconMap: Record<string, React.ReactElement> = {
+                                globe: (
+                                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M2 12h20"/>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                  </svg>
+                                ),
+                                users: (
+                                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                  </svg>
+                                ),
+                                shield: (
+                                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                  </svg>
+                                )
+                              };
+
+                              return (
+                                <div key={cardIdx} className="h-full cursor-pointer group/flip" style={{ perspective: '1000px' }}>
+                                  <div className="relative w-full h-full transition-transform duration-500 group-hover/flip:[transform:rotateY(180deg)]" style={{ transformStyle: 'preserve-3d' }}>
+                                    {/* Front Face */}
+                                    <div 
+                                      className="absolute w-full h-full rounded-xl p-4 flex flex-col border shadow-lg"
+                                      style={{ 
+                                        backfaceVisibility: 'hidden',
+                                        backgroundColor: '#0f172a',
+                                        borderColor: 'rgba(255,255,255,0.1)',
+                                        borderTopColor: accentColor,
+                                        borderTopWidth: '3px'
+                                      }}
+                                    >
+                                      <div className="flex items-start gap-2.5 mb-4">
+                                        <div className="mt-0.5" style={{ color: accentColor }}>
+                                          {iconMap[card.icon]}
+                                        </div>
+                                        <div className="flex flex-col gap-0.5">
+                                          <div className="text-lg font-bold text-white leading-tight">{card.system}</div>
+                                          <div className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded w-fit font-mono" style={{ color: accentColor, backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                                            {card.tag}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="flex flex-col gap-1.5 flex-grow">
+                                        {card.scope.map((item: any, idx: number) => (
+                                          <div key={idx} className="flex gap-2 text-xs text-slate-400 px-1.5 py-1 rounded transition-colors hover:bg-white/5 hover:text-white items-center leading-tight">
+                                            <span className="font-mono text-[11px] font-bold opacity-80 flex-shrink-0" style={{ color: accentColor }}>{item.id}</span>
+                                            <span>{item.text}</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                      <div className="text-[9px] text-slate-400 opacity-50 border border-white/10 px-2 py-0.5 rounded-full text-center mt-auto">
+                                        ↺ Logic
+                                      </div>
+                                    </div>
+
+                                    {/* Back Face */}
+                                    <div 
+                                      className="absolute w-full h-full rounded-xl p-4 flex flex-col border shadow-lg"
+                                      style={{ 
+                                        backfaceVisibility: 'hidden',
+                                        transform: 'rotateY(180deg)',
+                                        backgroundColor: '#1e293b',
+                                        borderColor: 'rgba(255,255,255,0.1)',
+                                        borderTopColor: accentColor,
+                                        borderTopWidth: '3px',
+                                        backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+                                        backgroundSize: '12px 12px'
+                                      }}
+                                    >
+                                      <span className="text-[11px] uppercase tracking-wider font-bold mb-2.5 block border-b border-white/10 pb-1.5" style={{ color: accentColor }}>
+                                        {card.logic.title}
+                                      </span>
+                                      
+                                      {card.logic.dualColumn ? (
+                                        <div className="flex gap-1.5 h-full">
+                                          {card.logic.dualColumn.map((col: any, colIdx: number) => (
+                                            <div key={colIdx} className="flex-1 flex flex-col gap-1">
+                                              <div className="text-[9px] text-slate-400 mb-0.5">{col.label}</div>
+                                              {col.steps.map((step: string, sIdx: number) => (
+                                                <div key={sIdx} className="bg-white/5 px-1.5 py-0.5 rounded text-[9px] text-center border-l-2" style={{ borderLeftColor: accentColor }}>
+                                                  {step}
+                                                </div>
+                                              ))}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      ) : (
+                                        <div className="flex flex-col gap-1.5">
+                                          {card.logic.steps.map((step: string, sIdx: number) => {
+                                            const [mainText, subText] = step.split('|');
+                                            const isHighlighted = sIdx === 1;
+                                            return (
+                                              <div key={sIdx}>
+                                                <div 
+                                                  className="border rounded px-2 py-1 text-[11px] text-center relative"
+                                                  style={{ 
+                                                    borderColor: isHighlighted ? accentColor : 'rgba(255,255,255,0.1)',
+                                                    backgroundColor: 'rgba(0,0,0,0.3)',
+                                                    color: '#e2e8f0'
+                                                  }}
+                                                >
+                                                  <strong>{mainText}</strong>
+                                                  {subText && <><br/><span className="text-[9px] text-slate-400">{subText}</span></>}
+                                                </div>
+                                                {sIdx < card.logic.steps.length - 1 && (
+                                                  <div className="text-center text-slate-400 text-[11px] my-[-3px]">↓</div>
+                                                )}
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+
+                          {/* UAT Bar */}
+                          {section.uatBar && (
+                            <div className="bg-purple-500/5 border border-purple-500/30 rounded-xl px-4 py-2.5 flex items-center justify-between transition-all hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:border-purple-400 hover:-translate-y-0.5">
+                              <div className="flex items-center gap-3">
+                                <svg width="20" height="20" fill="none" stroke="#a855f7" strokeWidth="2" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div className="font-mono text-sm font-extrabold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">
+                                  {section.uatBar.badge}
+                                </div>
+                                <div className="text-[13px] font-bold text-white">
+                                  {section.uatBar.title}
+                                </div>
+                                <div className="text-[10px] text-slate-400 border-l border-white/10 pl-2.5">
+                                  {section.uatBar.subtitle}
+                                </div>
+                              </div>
+                              <svg width="18" height="18" stroke="#a855f7" strokeWidth="2" fill="none" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"/>
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
                       {/* Impact Section */}
                       {section.type === 'impact' && (
                         <div className="bg-gradient-to-r from-pink-900/20 to-purple-900/20 p-8 md:p-12 rounded-3xl border border-pink-500/20 text-center shadow-2xl shadow-pink-900/10">
@@ -2443,6 +4137,109 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                           <p className="text-slate-200 text-xl leading-relaxed max-w-4xl mx-auto">
                             {section.content}
                           </p>
+                        </div>
+                      )}
+
+                      {/* Wrap-up Section */}
+                      {section.type === 'wrapup-section' && (
+                        <div className="w-full max-w-5xl mx-auto">
+                          {/* Title */}
+                          <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                            <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                            {section.title || 'Wrap-up'}
+                          </h3>
+
+                          {/* Hero Card with Overview */}
+                          {section.heroText && (
+                            <div className="relative bg-slate-900/40 border border-white/10 rounded-2xl p-8 mb-6 overflow-hidden">
+                              <p className="text-base text-slate-200 leading-relaxed max-w-4xl">
+                                {section.heroText}
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Outcomes Grid */}
+                          {section.outcomes && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                              {section.outcomes.map((outcome: any, idx: number) => {
+                                const iconMap: any = {
+                                  'link': <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>,
+                                  'shield': <Shield size={16} />,
+                                  'credit-card': <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>,
+                                  'package': <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                };
+                                const colorMap: any = {
+                                  'blue': { border: 'border-blue-500/30', text: 'text-blue-400', bg: 'bg-blue-500/5' },
+                                  'orange': { border: 'border-orange-500/30', text: 'text-orange-400', bg: 'bg-orange-500/5' },
+                                  'green': { border: 'border-green-500/30', text: 'text-green-400', bg: 'bg-green-500/5' },
+                                  'purple': { border: 'border-purple-500/30', text: 'text-purple-400', bg: 'bg-purple-500/5' }
+                                };
+                                const colors = colorMap[outcome.color] || colorMap.blue;
+                                
+                                return (
+                                  <div key={idx} className="group bg-slate-900/40 border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 flex flex-col gap-1">
+                                    <div className={`w-8 h-8 rounded-lg ${colors.bg} border ${colors.border} flex items-center justify-center ${colors.text} mb-1`}>
+                                      {iconMap[outcome.icon]}
+                                    </div>
+                                    <h4 className="text-sm font-bold text-white leading-tight">{outcome.title}</h4>
+                                    <p className="text-xs text-slate-400 leading-relaxed">{outcome.desc}</p>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+
+                          {/* Status Bar */}
+                          {section.statusBar && (
+                            <div className="bg-slate-900/40 border border-white/10 rounded-2xl p-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                              <div className="flex flex-col gap-0.5">
+                                <span className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold">{section.statusBar.label}</span>
+                                <span className="text-xs font-mono text-white">{section.statusBar.value}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                {section.statusBar.badges.map((badge: any, idx: number) => (
+                                  <div 
+                                    key={idx}
+                                    className={`px-3 py-1 rounded-md text-[10px] font-semibold border ${
+                                      badge.type === 'done' 
+                                        ? 'bg-green-500/10 text-green-400 border-green-500/30' 
+                                        : 'bg-slate-500/10 text-slate-400 border-slate-500/30'
+                                    }`}
+                                  >
+                                    {badge.text}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* CTA Footer */}
+                          <div className="flex flex-col items-center text-center gap-8 pt-8 border-t border-white/10">
+                            {section.content && (
+                              <p className="text-base text-slate-300 max-w-2xl">
+                                {section.content}
+                              </p>
+                            )}
+                            
+                            <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                              <a 
+                                href="mailto:huweina98@gmail.com"
+                                className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white rounded-lg font-semibold transition-all shadow-lg shadow-pink-900/40 hover:shadow-pink-900/60 hover:-translate-y-0.5"
+                              >
+                                <Mail size={18} />
+                                Contact Me
+                              </a>
+                              <button 
+                                onClick={() => {
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                                className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-white/20 hover:border-white hover:bg-white/5 text-white rounded-lg font-semibold transition-all"
+                              >
+                                <ChevronLeft size={18} className="rotate-90" />
+                                Back to Top
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -2490,19 +4287,21 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     </div>
 
                     {/* Key Decisions */}
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-6">Key UX Decisions</h3>
-                      <ul className="space-y-4">
-                        {project.details.keyDecisions.map((decision, idx) => (
-                          <li key={idx} className="flex gap-4 p-4 bg-slate-900 rounded-lg border border-white/5">
-                            <span className="flex-shrink-0 w-8 h-8 bg-pink-500/20 text-pink-400 flex items-center justify-center rounded-full font-bold text-sm">
-                              {idx + 1}
-                            </span>
-                            <p className="text-slate-300 text-sm mt-1">{decision}</p>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {project.details.keyDecisions && (
+                      <div>
+                        <h3 className="text-2xl font-bold text-white mb-6">Key UX Decisions</h3>
+                        <ul className="space-y-4">
+                          {project.details.keyDecisions.map((decision, idx) => (
+                            <li key={idx} className="flex gap-4 p-4 bg-slate-900 rounded-lg border border-white/5">
+                              <span className="flex-shrink-0 w-8 h-8 bg-pink-500/20 text-pink-400 flex items-center justify-center rounded-full font-bold text-sm">
+                                {idx + 1}
+                              </span>
+                              <p className="text-slate-300 text-sm mt-1">{decision}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
                     {/* Outcome */}
                     <div className="bg-gradient-to-r from-pink-900/20 to-purple-900/20 p-8 rounded-2xl border border-pink-500/20">
@@ -2524,6 +4323,22 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
           </div>
         </div>
       </div>
+      
+      {/* Lightbox for Selected Screens */}
+      {screenshotLightboxOpen && (
+        <Lightbox
+          isOpen={screenshotLightboxOpen}
+          images={[currentScreenshotImage]}
+          currentIndex={0}
+          onClose={() => {
+            setScreenshotLightboxOpen(false);
+            setIsAnyLightboxOpen(false);
+          }}
+          onNext={() => {}}
+          onPrev={() => {}}
+          alt="SLS Hub Screenshot"
+        />
+      )}
     </div>
   );
 };
