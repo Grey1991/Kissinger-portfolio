@@ -2332,7 +2332,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
               {/* Text Block */}
                       {section.type === 'text-block' && (
-                        <div className={project.id === 'slshub' && (section.id === 'selected-screens' || section.id === 'module-coverage' || section.id === 'rules-governance' || section.id === 'design-system' || section.id === 'responsive-dark' || section.id === 'guides-enablement' || section.id === 'quality-readiness' || section.id === 'summary') ? 'max-w-full' : 'max-w-3xl'}>
+                        <div className={project.id === 'slshub' && (section.id === 'selected-screens' || section.id === 'interactive-prototype' || section.id === 'module-coverage' || section.id === 'rules-governance' || section.id === 'design-system' || section.id === 'responsive-dark' || section.id === 'guides-enablement' || section.id === 'quality-readiness' || section.id === 'summary') ? 'max-w-full' : 'max-w-3xl'}>
                           {section.title && (
                             <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
                               <span className={`inline-block ${project.id === 'slshub' ? 'h-0.5 w-6 bg-fuchsia-500' : 'w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500'}`}/> 
@@ -2354,62 +2354,58 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                     id: 'account-access',
                                     label: 'Account & Access',
                                     screenshots: [
-                                      { src: '/slshub/2fa-verification.png', caption: '2FA Verification' },
-                                      { src: '/slshub/change-password.png', caption: 'Change Password' },
-                                      { src: '/slshub/my-details-member.png', caption: 'My Details (Member)' },
-                                      { src: '/slshub/my-details-nonmember.png', caption: 'My Details (Non-member)' }
+                                      { src: '/slshub/Selected Screens /2FA Verification. png.png', caption: '2FA Verification' },
+                                      { src: '/slshub/Selected Screens /Change Password.png', caption: 'Change Password' },
+                                      { src: '/slshub/Selected Screens /My Details(Member).png', caption: 'My Details (Member)' },
+                                      { src: '/slshub/Selected Screens /My Details(Non-Member).png', caption: 'My Details (Non-member)' }
                                     ]
                                   },
                                   {
                                     id: 'membership-transactions',
                                     label: 'Membership Transactions',
                                     screenshots: [
-                                      { src: '/slshub/renew-membership.png', caption: 'Renew Membership' },
-                                      { src: '/slshub/transfer-membership.png', caption: 'Transfer Membership' },
-                                      { src: '/slshub/family-group-manage.png', caption: 'Manage Family Group' },
-                                      { src: '/slshub/family-group-add.png', caption: 'Add Family Member' }
+                                      { src: '/slshub/Selected Screens /Manage Family Group.png', caption: 'Manage Family Group' },
+                                      { src: '/slshub/Selected Screens /Manage Organisation.png', caption: 'Manage Organisation' }
                                     ]
                                   },
                                   {
                                     id: 'forms-submissions',
                                     label: 'Forms & Submissions',
                                     screenshots: [
-                                      { src: '/slshub/submit-form.png', caption: 'Submit a Form' },
-                                      { src: '/slshub/taf-reendorsement-1.png', caption: 'TAF Re-endorsement (Step 1)' },
-                                      { src: '/slshub/taf-reendorsement-2.png', caption: 'TAF Re-endorsement (Step 2)' },
-                                      { src: '/slshub/taf-reendorsement-3.png', caption: 'TAF Re-endorsement (Step 3)' }
+                                      { src: '/slshub/Selected Screens /Submit a Form.png', caption: 'Submit a Form' },
+                                      { src: '/slshub/Selected Screens /TAF Re-Endorsement.png', caption: 'TAF Re-endorsement' },
+                                      { src: '/slshub/Selected Screens /National Medal.png', caption: 'National Medal' },
+                                      { src: '/slshub/Selected Screens /TAF Long Service Award.png', caption: 'TAF Long Service Award' }
                                     ]
                                   },
                                   {
                                     id: 'patrols-tracker',
                                     label: 'Patrols & Nipper Tracker',
                                     screenshots: [
-                                      { src: '/slshub/nipper-approve.png', caption: 'Nipper Award Approval' },
-                                      { src: '/slshub/nipper-unapprove.png', caption: 'Nipper Award Un-approval' },
-                                      { src: '/slshub/session-checkin.png', caption: 'Session Check-in' },
-                                      { src: '/slshub/session-checkout.png', caption: 'Session Check-out' },
-                                      { src: '/slshub/rfid-nfc.png', caption: 'RFID/NFC Check-in/out' }
+                                      { src: '/slshub/Selected Screens /Nipper Award Approval.png', caption: 'Nipper Award Approval' },
+                                      { src: '/slshub/Selected Screens /Session Check-in.png', caption: 'Session Check-in' },
+                                      { src: '/slshub/Selected Screens /RFID:NFC Check-in:out.png', caption: 'RFID/NFC Check-in/out' },
+                                      { src: '/slshub/Selected Screens /Upcoming Patrols.png', caption: 'Upcoming Patrols' },
+                                      { src: '/slshub/Selected Screens /Patrol Substitutes Needed.png', caption: 'Patrol Substitutes Needed' }
                                     ]
                                   },
                                   {
                                     id: 'records-history',
                                     label: 'Records & History',
                                     screenshots: [
-                                      { src: '/slshub/requests-log.png', caption: 'Requests Log' },
-                                      { src: '/slshub/submissions-history.png', caption: 'Submissions History' },
-                                      { src: '/slshub/status-log.png', caption: 'Status Change Log' },
-                                      { src: '/slshub/admin-status-history.png', caption: 'Admin Status History' }
+                                      { src: '/slshub/Selected Screens /Requests Log.png', caption: 'Requests Log' },
+                                      { src: '/slshub/Selected Screens /Status Change Log.png', caption: 'Status Change Log' }
                                     ]
                                   },
                                   {
                                     id: 'admin-governance',
                                     label: 'Admin & Governance',
                                     screenshots: [
-                                      { src: '/slshub/find-user.png', caption: 'Find User' },
-                                      { src: '/slshub/user-permissions.png', caption: 'User Permissions' },
-                                      { src: '/slshub/process-forms.png', caption: 'Process Forms' },
-                                      { src: '/slshub/taf-settings.png', caption: 'TAF Settings' },
-                                      { src: '/slshub/sems-report.png', caption: 'SEMS Report' }
+                                      { src: '/slshub/Selected Screens /Find User.png', caption: 'Find User' },
+                                      { src: '/slshub/Selected Screens /User Permissions.png', caption: 'User Permissions' },
+                                      { src: '/slshub/Selected Screens /Process Forms.png', caption: 'Process Forms' },
+                                      { src: '/slshub/Selected Screens /TAF Setting.png', caption: 'TAF Settings' },
+                                      { src: '/slshub/Selected Screens /SEMS Report.png', caption: 'SEMS Report' }
                                     ]
                                   }
                                 ];
@@ -2484,16 +2480,17 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                   </>
                                 );
                               })()}
-
-                              {/* Figma Prototype Embed */}
+                            </div>
+                          ) : project.id === 'slshub' && section.id === 'interactive-prototype' ? (
+                            /* Special rendering for SLS Hub Interactive Prototype */
+                            <div className="space-y-6 max-w-full">
+                              <p className="text-slate-300 leading-relaxed text-lg">
+                                {section.content}
+                              </p>
+                              
                               {section.figmaPrototype && (
-                                <div className="mt-12 space-y-4">
-                                  <div className="flex items-center gap-3">
-                                    <div className="w-8 h-[2px] bg-gradient-to-r from-fuchsia-500 to-purple-500"></div>
-                                    <h4 className="text-xl font-bold text-white">{section.figmaPrototype.title}</h4>
-                                  </div>
-                                  <p className="text-slate-400 text-base">{section.figmaPrototype.description}</p>
-                                  <div className="relative w-full bg-slate-900/50 border border-white/10 rounded-xl overflow-hidden" style={{ height: '800px' }}>
+                                <div className="mt-8">
+                                  <div className="relative w-full bg-slate-900/50 border border-white/10 rounded-xl overflow-hidden" style={{ height: '600px' }}>
                                     <iframe
                                       src={section.figmaPrototype.url}
                                       className="w-full h-full"
@@ -4199,7 +4196,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                               </a>
                               <button 
                                 onClick={() => {
-                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                  scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
                                 }}
                                 className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-white/20 hover:border-white hover:bg-white/5 text-white rounded-lg font-semibold transition-all"
                               >

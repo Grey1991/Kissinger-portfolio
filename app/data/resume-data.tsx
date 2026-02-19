@@ -140,6 +140,7 @@ export const RESUME_DATA: ResumeData = {
           { id: "guides-enablement", label: "Guides & Enablement" },
           { id: "quality-readiness", label: "Quality & Release Readiness" },
           { id: "selected-screens", label: "Selected Screens" },
+          { id: "interactive-prototype", label: "Interactive Prototype" },
           { id: "wrap-up", label: "Wrap-up" }
         ],
 
@@ -190,9 +191,15 @@ export const RESUME_DATA: ResumeData = {
             id: "selected-screens",
             type: "text-block",
             title: "Selected Screens",
-            content: "Below are grouped examples showing how rules, transactions, and operational workflows were handled in the UI.",
+            content: "Below are grouped examples showing how rules, transactions, and operational workflows were handled in the UI."
+          },
+          {
+            id: "interactive-prototype",
+            type: "text-block",
+            title: "Interactive Prototype",
+            content: "Explore the clickable prototype to experience the full user flows and interactions.",
             figmaPrototype: {
-              url: "https://embed.figma.com/proto/t7rvIQsmnlsL9LOJcQF1OR/SLS-HUB-Clickable-Prototype?page-id=0%3A1&node-id=1652-284737&viewport=2482%2C36040%2C0.33&scaling=contain&content-scaling=fixed&starting-point-node-id=1652%3A284737&show-proto-sidebar=1&embed-host=share",
+              url: "https://embed.figma.com/proto/B0IlwtwutamxC08o2Zph3B/SLS-HUB-Clickable-Prototype--Copy-?page-id=0%3A1&node-id=1652-284737&p=f&viewport=1700%2C1346%2C0.02&t=7tsiTSA7G5HURs50-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1652%3A284737&show-proto-sidebar=1&embed-host=share",
               title: "Interactive Prototype",
               description: "Explore the clickable prototype to experience the full user flows and interactions."
             }
@@ -200,8 +207,8 @@ export const RESUME_DATA: ResumeData = {
           {
             id: "wrap-up",
             type: "wrapup-section",
-            title: "Wrap-up",
-            heroText: "SLS Hub is a live national portal that balances self-serve member journeys with governance, traceability, and operational workflows. My contribution focused on scalable UI patterns, rules-driven actions, cross-system linking, and delivery-quality specs and QA to ensure the experience ships consistently across devices.",
+            title: "",
+            heroText: "",
             outcomes: [],
             statusBar: {
               label: "Project Status",
