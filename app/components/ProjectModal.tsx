@@ -13,7 +13,7 @@ function useBodyScrollLock(isOpen: boolean) {
 }
 
 import { useEffect, useRef, useState } from 'react';
-import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, LogIn, LayoutDashboard, RefreshCw, UserPlus, History, Wifi, Building, Edit2, ArrowLeftRight, ClipboardList, Database, Box, Layers, GitBranch, Play, CheckCircle, Lock, ArrowUpDown } from 'lucide-react';
+import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, LogIn, LayoutDashboard, RefreshCw, UserPlus, History, Wifi, Building, Edit2, ArrowLeftRight, ClipboardList, Database, Box, Layers, GitBranch, Play, CheckCircle, Lock, ArrowUpDown, ExternalLink } from 'lucide-react';
 import { Project } from '../types';
 import { ScrollytellingBlock } from './ScrollytellingBlock';
 import { Carousel3D } from './Carousel3D';
@@ -93,7 +93,7 @@ const FeaturesInteractive = ({ features }: { features: Array<{ icon: string; tit
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="flex gap-12 items-start mt-8">
+    <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start mt-8">
       {/* Left: Feature List */}
       <div className="flex-1 flex flex-col gap-4">
         {features.map((feature, idx) => {
@@ -109,6 +109,7 @@ const FeaturesInteractive = ({ features }: { features: Array<{ icon: string; tit
                   : 'bg-transparent border-transparent hover:bg-slate-800/30 hover:border-slate-700/50'
               }`}
               onMouseEnter={() => setActiveIndex(idx)}
+              onClick={() => setActiveIndex(idx)}
             >
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                 isActive 
@@ -133,8 +134,22 @@ const FeaturesInteractive = ({ features }: { features: Array<{ icon: string; tit
         })}
       </div>
 
+      {/* Mobile: Image preview below feature list */}
+      <div className="lg:hidden w-full rounded-2xl overflow-hidden border border-white/10 bg-slate-900/50 shadow-xl">
+        {features.map((feature, idx) => (
+          <img
+            key={idx}
+            src={feature.image}
+            alt={feature.title}
+            className={`w-full h-auto transition-all duration-500 ${
+              idx === activeIndex ? 'block' : 'hidden'
+            }`}
+          />
+        ))}
+      </div>
+
       {/* Right: Sticky Preview */}
-      <div className="flex-1 sticky top-10">
+      <div className="flex-1 hidden lg:block lg:sticky lg:top-10">
         <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-white/5 rounded-3xl p-3 shadow-2xl overflow-hidden">
           {/* Device Frame Decoration */}
           <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm border-b border-white/5 flex items-center px-4 gap-2 z-10">
@@ -217,7 +232,7 @@ const InteractiveFlowDiagram = ({
       </div>
 
       {/* Diagram Container */}
-      <div className="relative w-full h-[380px] bg-slate-950/50 rounded-2xl border border-cyan-500/20 overflow-visible shadow-xl shadow-cyan-500/10">
+      <div className="relative w-full h-[380px] bg-slate-950/50 rounded-2xl border border-cyan-500/20 overflow-hidden shadow-xl shadow-cyan-500/10">
         {flowDiagrams.map((flow, idx) => {
           // Define custom connections for flow-1 (branching structure)
           const connections = flow.id === 'flow-1' ? [
@@ -338,7 +353,7 @@ const InterviewImage = ({ src, alt, caption, className, hasTitle, onLightboxChan
   return (
     <>
       <div 
-        className={`cursor-zoom-in group relative ${hasTitle ? 'max-w-md' : ''}`}
+        className={`cursor-zoom-in group relative w-full ${hasTitle ? 'max-w-md' : ''}`}
         onClick={openLightbox}
       >
         <img 
@@ -1174,6 +1189,222 @@ const ResponsiveDarkModeSection = () => {
   );
 };
 
+// ─── HubX Role Flip Card ──────────────────────────────────────────────────────
+// Hover on desktop (hover:hover) · Tap to toggle on touch devices (hover:none)
+const HubXFlipCard = ({
+  card,
+  ProblemIcon,
+  GoalIcon,
+}: {
+  card: any;
+  ProblemIcon: LucideIcon;
+  GoalIcon: LucideIcon;
+}) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(window.matchMedia('(hover: none)').matches);
+  }, []);
+
+  return (
+    <div
+      className="flip-card-container perspective-1000"
+      style={{ height: '400px' }}
+      onMouseEnter={() => { if (!isTouchDevice) setIsFlipped(true); }}
+      onMouseLeave={() => { if (!isTouchDevice) setIsFlipped(false); }}
+      onClick={() => { if (isTouchDevice) setIsFlipped(f => !f); }}
+    >
+      <div
+        className="flip-card-inner relative w-full h-full transition-transform duration-700 ease-in-out transform-style-3d"
+        style={{ transform: isFlipped ? 'rotateY(180deg)' : 'none', transformStyle: 'preserve-3d' }}
+      >
+        {/* Front - Problem */}
+        <div className="flip-card-face absolute w-full h-full backface-hidden bg-slate-900/50 border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
+          <div className="absolute top-4 right-4 text-xs text-slate-500 border border-slate-700 px-3 py-1 rounded-full flex items-center gap-2">
+            {isTouchDevice ? 'Tap to flip ↻' : 'Hover to flip ↻'}
+          </div>
+          <div className="w-16 h-16 rounded-full bg-red-500/10 border-2 border-red-500/30 flex items-center justify-center mb-6">
+            <ProblemIcon size={32} className="text-red-400" strokeWidth={2} />
+          </div>
+          <h4 className="text-lg font-bold text-white mb-3">{card.problemTitle}</h4>
+          <p className="text-slate-400 text-center leading-relaxed text-sm">{card.problemDesc}</p>
+        </div>
+
+        {/* Back - Goal */}
+        <div
+          className="flip-card-face absolute w-full h-full backface-hidden bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 flex flex-col items-center justify-center shadow-2xl shadow-blue-900/50"
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+        >
+          {isTouchDevice && (
+            <div className="absolute top-4 right-4 text-xs text-white/50 border border-white/20 px-2 py-0.5 rounded-full">
+              tap to close
+            </div>
+          )}
+          <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center mb-4">
+            <GoalIcon size={28} className="text-white" strokeWidth={2} />
+          </div>
+          <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wide opacity-90">{card.goalTitle}</h4>
+          <div className="w-full space-y-2.5">
+            {card.goals.map((goal: string, gIdx: number) => (
+              <div key={gIdx} className="flex items-start gap-2.5 text-white/90">
+                <Check size={16} className="text-green-300 flex-shrink-0 mt-0.5" strokeWidth={3} />
+                <span className="text-sm leading-relaxed">{goal}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+// ───────────────────────────────────────────────────────────────────────────────
+
+// ─── Flip Card Item ────────────────────────────────────────────────────────────
+// Hover on desktop · Click/tap to toggle on touch devices
+const FlipCardItem = ({
+  card,
+  accentColor,
+  iconElement,
+}: {
+  card: any;
+  accentColor: string;
+  iconElement: React.ReactElement;
+}) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(window.matchMedia('(hover: none)').matches);
+  }, []);
+
+  return (
+    <div
+      className="h-full cursor-pointer"
+      style={{ perspective: '1000px' }}
+      onMouseEnter={() => { if (!isTouchDevice) setIsFlipped(true); }}
+      onMouseLeave={() => { if (!isTouchDevice) setIsFlipped(false); }}
+      onClick={() => { if (isTouchDevice) setIsFlipped(f => !f); }}
+    >
+      <div
+        className="relative w-full h-full transition-transform duration-500"
+        style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'none' }}
+      >
+        {/* Front Face */}
+        <div
+          className="absolute w-full h-full rounded-xl p-4 flex flex-col border shadow-lg"
+          style={{
+            backfaceVisibility: 'hidden',
+            backgroundColor: '#0f172a',
+            borderColor: 'rgba(255,255,255,0.1)',
+            borderTopColor: accentColor,
+            borderTopWidth: '3px',
+          }}
+        >
+          <div className="flex items-start gap-2.5 mb-4">
+            <div className="mt-0.5" style={{ color: accentColor }}>{iconElement}</div>
+            <div className="flex flex-col gap-0.5">
+              <div className="text-lg font-bold text-white leading-tight">{card.system}</div>
+              <div
+                className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded w-fit font-mono"
+                style={{ color: accentColor, backgroundColor: 'rgba(255,255,255,0.05)' }}
+              >
+                {card.tag}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-1.5 flex-grow">
+            {card.scope.map((item: any, idx: number) => (
+              <div
+                key={idx}
+                className="flex gap-2 text-xs text-slate-400 px-1.5 py-1 rounded items-center leading-tight"
+              >
+                <span className="font-mono text-[11px] font-bold opacity-80 flex-shrink-0" style={{ color: accentColor }}>{item.id}</span>
+                <span>{item.text}</span>
+              </div>
+            ))}
+          </div>
+          <div className="text-[9px] text-slate-400 opacity-50 border border-white/10 px-2 py-0.5 rounded-full text-center mt-auto">
+            {isTouchDevice ? '↺ Tap to reveal' : '↺ Logic'}
+          </div>
+        </div>
+
+        {/* Back Face */}
+        <div
+          className="absolute w-full h-full rounded-xl p-4 flex flex-col border shadow-lg"
+          style={{
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+            backgroundColor: '#1e293b',
+            borderColor: 'rgba(255,255,255,0.1)',
+            borderTopColor: accentColor,
+            borderTopWidth: '3px',
+            backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+            backgroundSize: '12px 12px',
+          }}
+        >
+          {isTouchDevice && (
+            <div className="absolute top-2 right-2 text-[9px] text-slate-500 border border-white/10 px-1.5 py-0.5 rounded-full">
+              tap to close
+            </div>
+          )}
+          <span
+            className="text-[11px] uppercase tracking-wider font-bold mb-2.5 block border-b border-white/10 pb-1.5"
+            style={{ color: accentColor }}
+          >
+            {card.logic.title}
+          </span>
+
+          {card.logic.dualColumn ? (
+            <div className="flex gap-1.5 h-full">
+              {card.logic.dualColumn.map((col: any, colIdx: number) => (
+                <div key={colIdx} className="flex-1 flex flex-col gap-1">
+                  <div className="text-[9px] text-slate-400 mb-0.5">{col.label}</div>
+                  {col.steps.map((step: string, sIdx: number) => (
+                    <div
+                      key={sIdx}
+                      className="bg-white/5 px-1.5 py-0.5 rounded text-[9px] text-center border-l-2"
+                      style={{ borderLeftColor: accentColor }}
+                    >
+                      {step}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-1.5">
+              {card.logic.steps.map((step: string, sIdx: number) => {
+                const [mainText, subText] = step.split('|');
+                const isHighlighted = sIdx === 1;
+                return (
+                  <div key={sIdx}>
+                    <div
+                      className="border rounded px-2 py-1 text-[11px] text-center relative"
+                      style={{
+                        borderColor: isHighlighted ? accentColor : 'rgba(255,255,255,0.1)',
+                        backgroundColor: 'rgba(0,0,0,0.3)',
+                        color: '#e2e8f0',
+                      }}
+                    >
+                      <strong>{mainText}</strong>
+                      {subText && <><br /><span className="text-[9px] text-slate-400">{subText}</span></>}
+                    </div>
+                    {sIdx < card.logic.steps.length - 1 && (
+                      <div className="text-center text-slate-400 text-[11px] my-[-3px]">↓</div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+// ───────────────────────────────────────────────────────────────────────────────
+
 interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
@@ -1267,10 +1498,10 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
         </button>
 
         {/* Scrollable Area */}
-        <div ref={scrollContainerRef} className="overflow-y-auto h-full scrollbar-thin scrollbar-thumb-pink-500/30 scrollbar-track-transparent">
+        <div ref={scrollContainerRef} className="overflow-y-auto overflow-x-hidden h-full scrollbar-thin scrollbar-thumb-pink-500/30 scrollbar-track-transparent">
           
           {/* Header Hero */}
-          <div className={`relative h-80 w-full ${project.id === 'slshub' ? 'bg-gradient-to-r from-orange-700 to-orange-600' : `bg-gradient-to-br ${project.gradient}`} p-8 md:p-12 flex flex-col justify-end`}>
+          <div className={`relative min-h-[20rem] w-full ${project.id === 'slshub' ? 'bg-gradient-to-r from-orange-700 to-orange-600' : `bg-gradient-to-br ${project.gradient}`} p-5 md:p-8 lg:p-12 flex flex-col justify-end`}>
             {/* Background Image Layer */}
             {project.backgroundImage && (
               <>
@@ -1375,8 +1606,8 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   </span>
                 )}
               </div>
-              <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">{project.title}</h2>
-              <p className="text-white/80 text-xl max-w-2xl font-light">{project.summary}</p>
+              <h2 className="text-2xl md:text-4xl lg:text-6xl font-bold text-white tracking-tight">{project.title}</h2>
+              <p className="text-white/80 text-sm md:text-xl max-w-2xl font-light">{project.summary}</p>
             </div>
           </div>
 
@@ -1414,10 +1645,10 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
             )}
 
             {/* Main Content Body */}
-            <div className="flex-grow p-8 md:p-12 space-y-16">
+            <div className="flex-grow p-4 sm:p-8 md:p-12 space-y-16">
               
               {/* Meta Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 border-b border-white/10 pb-12">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-b border-white/10 pb-12">
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-slate-500 mb-2">Role</h4>
                   <p className="text-white font-medium">{project.details.role}</p>
@@ -1481,42 +1712,16 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
                           {/* Cards Grid */}
                           <div className="grid md:grid-cols-3 gap-8">
-                            {section.flipCards.map((card, idx) => {
+                            {section.flipCards.map((card: any, idx: number) => {
                               const ProblemIcon = iconMap[card.problemIcon] || UserX;
                               const GoalIcon = iconMap[card.goalIcon] || Check;
-                              
                               return (
-                                <div key={idx} className="flip-card-container group perspective-1000" style={{ height: '400px' }}>
-                                  <div className="flip-card-inner relative w-full h-full transition-transform duration-700 ease-in-out transform-style-3d group-hover:rotate-y-180">
-                                    {/* Front - Problem */}
-                                    <div className="flip-card-face absolute w-full h-full backface-hidden bg-slate-900/50 border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center">
-                                      <div className="absolute top-4 right-4 text-xs text-slate-500 border border-slate-700 px-3 py-1 rounded-full flex items-center gap-2">
-                                        Hover to flip ↻
-                                      </div>
-                                      <div className="w-16 h-16 rounded-full bg-red-500/10 border-2 border-red-500/30 flex items-center justify-center mb-6 group-hover:scale-90 transition-transform">
-                                        <ProblemIcon size={32} className="text-red-400" strokeWidth={2} />
-                                      </div>
-                                      <h4 className="text-lg font-bold text-white mb-3">{card.problemTitle}</h4>
-                                      <p className="text-slate-400 text-center leading-relaxed text-sm">{card.problemDesc}</p>
-                                    </div>
-
-                                    {/* Back - Goal */}
-                                    <div className="flip-card-face absolute w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 flex flex-col items-center justify-center shadow-2xl shadow-blue-900/50">
-                                      <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center mb-4">
-                                        <GoalIcon size={28} className="text-white" strokeWidth={2} />
-                                      </div>
-                                      <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wide opacity-90">{card.goalTitle}</h4>
-                                      <div className="w-full space-y-2.5">
-                                        {card.goals.map((goal, gIdx) => (
-                                          <div key={gIdx} className="flex items-start gap-2.5 text-white/90">
-                                            <Check size={16} className="text-green-300 flex-shrink-0 mt-0.5" strokeWidth={3} />
-                                            <span className="text-sm leading-relaxed">{goal}</span>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                                <HubXFlipCard
+                                  key={idx}
+                                  card={card}
+                                  ProblemIcon={ProblemIcon}
+                                  GoalIcon={GoalIcon}
+                                />
                               );
                             })}
                           </div>
@@ -2199,6 +2404,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         // Core Competencies Demonstrated
                       </div>
                       <div className="flex flex-wrap gap-3">
+                        {/* @ts-ignore */}
                         {section.badges.map((badge, idx) => {
                           const BadgeIcon = iconMap[badge.icon] || Activity;
                           return (
@@ -2245,12 +2451,35 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         </div>
                       )}
                     </div>
-                    {/* Right: Device Mockups */}
+                    {/* Right: Device Mockups — mobile stacked layout */}
+                    <div className="flex-1 flex lg:hidden gap-4 w-full">
+                      {section.deviceImages?.tablet && (
+                        <div className="flex-1 flex flex-col gap-2">
+                          <span className="font-mono text-[10px] text-slate-500 tracking-widest uppercase flex items-center gap-1.5">
+                            <Tablet size={12}/> Tablet
+                          </span>
+                          <div className="rounded-xl border border-white/10 bg-slate-900/80 overflow-hidden shadow-xl aspect-[3/4]">
+                            <img src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover object-top" />
+                          </div>
+                        </div>
+                      )}
+                      {section.deviceImages?.phone && (
+                        <div className="flex-1 flex flex-col gap-2">
+                          <span className="font-mono text-[10px] text-slate-500 tracking-widest uppercase flex items-center gap-1.5">
+                            <Smartphone size={12}/> Mobile
+                          </span>
+                          <div className="rounded-xl border border-white/10 bg-slate-800/90 overflow-hidden shadow-xl aspect-[3/4]">
+                            <img src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover object-top" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {/* Right: Device Mockups — desktop overlapping layout */}
                     <div className="flex-1 relative h-[420px] min-w-[280px] hidden lg:flex items-center justify-center">
                       {/* Tablet */}
                       <div className="absolute right-4 top-0 w-[72%] h-[90%] rounded-2xl border border-white/10 bg-slate-900/80 overflow-hidden shadow-2xl">
                         {section.deviceImages?.tablet ? (
-                          <img src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover" />
+                          <img src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover object-top" />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-600">
                             <Tablet size={32} className="opacity-30" />
@@ -2261,7 +2490,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                       {/* Phone */}
                       <div className="absolute left-0 bottom-4 w-[36%] h-[76%] rounded-2xl border border-white/15 bg-slate-800/90 overflow-hidden shadow-2xl z-10">
                         {section.deviceImages?.phone ? (
-                          <img src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover" />
+                          <img src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover object-top" />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-600">
                             <Smartphone size={24} className="opacity-30" />
@@ -2269,6 +2498,51 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                           </div>
                         )}
                       </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* QA Console Block */}
+              {section.type === 'qa-console' && section.qaItems && (
+                <div className="w-full max-w-5xl mx-auto">
+                  <div className="flex flex-col lg:flex-row items-start gap-12">
+                    {/* Left: Text Panel */}
+                    <div className="flex-1 flex flex-col gap-6">
+                      {section.title && (
+                        <h3 className="text-3xl font-bold text-white flex items-center gap-3">
+                          <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/>
+                          {section.title}
+                        </h3>
+                      )}
+                      {section.content && (
+                        <p className="text-slate-300 leading-relaxed text-base">{section.content}</p>
+                      )}
+                    </div>
+                    {/* Right: Console Panel */}
+                    <div className="flex-[1.1] rounded-2xl border border-white/10 bg-slate-900/80 overflow-hidden shadow-2xl">
+                      {/* Console header */}
+                      <div className="flex items-center justify-between px-5 py-3 bg-black/20 border-b border-white/10">
+                        <div className="flex gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-red-500"/>
+                          <span className="w-2.5 h-2.5 rounded-full bg-yellow-400"/>
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"/>
+                        </div>
+                        <span className="font-mono text-xs text-slate-500 tracking-widest uppercase">Continuous_Validation.sh</span>
+                        <div className="w-10"/>
+                      </div>
+                      {/* QA list */}
+                      <ul className="flex flex-col divide-y divide-white/[0.04]">
+                        {section.qaItems.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-4 px-5 py-5 hover:bg-white/[0.02] transition-colors">
+                            <span className="font-mono text-xs font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2 py-1 rounded mt-0.5 flex-shrink-0">PASS</span>
+                            <div className="flex flex-col gap-1">
+                              <h4 className="text-sm font-semibold text-slate-100">{item.title}</h4>
+                              <p className="text-xs text-slate-400 leading-relaxed">{item.description}</p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -2295,12 +2569,25 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         {/* Artifact label + text */}
                         <div className="flex flex-col gap-1">
                           <span className="font-mono text-xs text-slate-500 tracking-widest uppercase">// {artifact.label}</span>
-                          <h4 className="text-base font-semibold text-white">{artifact.title}</h4>
+                          <div className="flex items-center gap-3">
+                            <h4 className="text-base font-semibold text-white">{artifact.title}</h4>
+                            {artifact.linkUrl && (
+                              <a
+                                href={artifact.linkUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-pink-400 border border-white/10 hover:border-pink-500/40 px-2.5 py-1 rounded-full transition-all duration-200"
+                              >
+                                <ExternalLink size={11} />
+                                Open in Figma
+                              </a>
+                            )}
+                          </div>
                           <p className="text-sm text-slate-400 leading-relaxed">{artifact.description}</p>
                         </div>
                         {/* Image, Figma embed, or placeholder */}
                         {artifact.figmaUrl ? (
-                          <div className={`rounded-xl overflow-hidden border border-white/10 bg-slate-900/60 ${artifact.fullWidth ? 'aspect-[16/9]' : 'aspect-[16/10]'}`}>
+                          <div className={`rounded-xl overflow-hidden border border-white/10 bg-slate-900/60 ${artifact.fullWidth ? 'h-[660px]' : 'aspect-[16/10]'}`}>
                             <iframe
                               src={artifact.figmaUrl}
                               className="w-full h-full"
@@ -2310,9 +2597,12 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                             />
                           </div>
                         ) : artifact.image ? (
-                          <div className="rounded-xl overflow-hidden border border-white/10">
-                            <img src={artifact.image} alt={artifact.title} className="w-full h-auto block" />
-                          </div>
+                          <InterviewImage
+                            src={artifact.image}
+                            alt={artifact.title}
+                            hasTitle={false}
+                            onLightboxChange={setIsAnyLightboxOpen}
+                          />
                         ) : (
                           <div className={`rounded-xl border border-white/10 bg-slate-900/60 flex flex-col items-center justify-center gap-3 text-slate-600 ${artifact.fullWidth ? 'aspect-[21/9]' : 'aspect-[16/10]'}`}>
                             <span className="text-3xl opacity-40">{artifact.placeholder}</span>
@@ -2871,7 +3161,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                               
                               {section.figmaPrototype && (
                                 <div className="mt-8">
-                                  <div className="relative w-full bg-slate-900/50 border border-white/10 rounded-xl overflow-hidden" style={{ height: '600px' }}>
+                                  <div className="relative w-full bg-slate-900/50 border border-white/10 rounded-xl overflow-hidden" style={{ height: 'clamp(360px, 60vh, 600px)' }}>
                                     <iframe
                                       src={section.figmaPrototype.url}
                                       className="w-full h-full"
@@ -3036,10 +3326,10 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                             </div>
                           ) : project.id === 'slshub' && section.id === 'rules-governance' ? (
                             /* Special rendering for SLS Hub Rules & Governance - Split Layout */
-                            <div className="flex gap-10 max-w-full items-start">
+                            <div className="flex flex-col lg:flex-row gap-10 max-w-full items-start">
                               
                               {/* Left Column: Strategy & Logic (Sticky) */}
-                              <div className="flex-1 sticky top-10 flex flex-col gap-8">
+                              <div className="flex-1 lg:sticky lg:top-10 flex flex-col gap-8">
                                 
                                 {/* Header Block */}
                                 <div>
@@ -3076,7 +3366,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                               </div>
 
                               {/* Right Column: Evidence Viewer (Scrollable) */}
-                              <div className="flex-[1.5] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl flex flex-col h-[800px] overflow-hidden">
+                              <div className="flex-[1.5] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl flex flex-col h-[560px] lg:h-[800px] overflow-hidden">
                                 
                                 {/* Browser-like Header */}
                                 <div className="px-6 py-4 border-b border-white/10 bg-black/20 flex justify-between items-center">
@@ -4192,6 +4482,62 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         </div>
                       )}
 
+                      {/* Video Multi Block */}
+                      {section.type === 'video-multi' && section.videoItems && (() => {
+                        const [activeVideo, setActiveVideo] = useState(0);
+                        return (
+                          <div className="w-full my-8 flex flex-col items-center gap-6">
+                            {/* Tab switcher */}
+                            <div className="flex flex-wrap justify-center gap-2">
+                              {section.videoItems.map((v, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => setActiveVideo(idx)}
+                                  className={`px-5 py-2 rounded-full text-sm font-medium border transition-all ${
+                                    activeVideo === idx
+                                      ? 'bg-gradient-to-r from-pink-500/20 to-purple-600/10 border-pink-500 text-white shadow-lg shadow-pink-500/20'
+                                      : 'bg-slate-900/40 border-white/10 text-slate-400 hover:text-white hover:border-pink-500/50'
+                                  }`}
+                                >
+                                  {v.label}
+                                </button>
+                              ))}
+                            </div>
+                            {/* Active video */}
+                            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block max-w-xs w-full">
+                              <video
+                                key={section.videoItems[activeVideo].src}
+                                ref={(el) => {
+                                  if (el) {
+                                    const observer = new IntersectionObserver(
+                                      (entries) => {
+                                        entries.forEach((entry) => {
+                                          if (entry.isIntersecting) el.play().catch(() => {});
+                                          else el.pause();
+                                        });
+                                      },
+                                      { threshold: 0.5 }
+                                    );
+                                    observer.observe(el);
+                                  }
+                                }}
+                                src={section.videoItems[activeVideo].src}
+                                controls
+                                loop
+                                muted
+                                playsInline
+                                className="h-auto w-full"
+                              >
+                                Your browser does not support the video tag.
+                              </video>
+                            </div>
+                            {section.caption && (
+                              <p className="text-center text-slate-500 text-sm italic">{section.caption}</p>
+                            )}
+                          </div>
+                        );
+                      })()}
+
                       {/* React Component */}
                       {section.type === 'react-component' && section.component === 'CourtCanva2' && (
                         <div className="w-full max-w-3xl my-12">
@@ -4297,7 +4643,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         <div className="w-full max-w-[960px] mx-auto">
                           {/* Header */}
                           <div className="mb-10">
-                            <div className="flex justify-between items-end mb-3">
+                            <div className="flex flex-wrap gap-2 justify-between items-end mb-3">
                               <h3 className="text-3xl font-bold text-white m-0 flex items-center gap-3">
                                 <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                                 {section.title}
@@ -4307,7 +4653,8 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                   <svg className="w-3 h-3 animate-spin" style={{ animationDuration: '4s' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                                   </svg>
-                                  <span>{section.hint}</span>
+                                  <span className="[@media(hover:hover)]:inline hidden">{section.hint}</span>
+                                  <span className="[@media(hover:none)]:inline hidden">Tap cards to reveal logic</span>
                                 </div>
                               )}
                             </div>
@@ -4317,7 +4664,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                           </div>
 
                           {/* Cards Grid */}
-                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[260px] lg:h-[260px] mb-6" style={{ perspective: '1000px' }}>
+                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6" style={{ perspective: '1000px', gridAutoRows: '260px' }}>
                             {section.cards.map((card: any, cardIdx: number) => {
                               const colorMap: Record<string, string> = {
                                 cyan: '#38bdf8',
@@ -4326,7 +4673,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                               };
                               const accentColor = colorMap[card.color] || '#38bdf8';
 
-                              const iconMap: Record<string, React.ReactElement> = {
+                              const svgIconMap: Record<string, React.ReactElement> = {
                                 globe: (
                                   <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <circle cx="12" cy="12" r="10"/>
@@ -4350,125 +4697,34 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                               };
 
                               return (
-                                <div key={cardIdx} className="h-full cursor-pointer group/flip" style={{ perspective: '1000px' }}>
-                                  <div className="relative w-full h-full transition-transform duration-500 group-hover/flip:[transform:rotateY(180deg)]" style={{ transformStyle: 'preserve-3d' }}>
-                                    {/* Front Face */}
-                                    <div 
-                                      className="absolute w-full h-full rounded-xl p-4 flex flex-col border shadow-lg"
-                                      style={{ 
-                                        backfaceVisibility: 'hidden',
-                                        backgroundColor: '#0f172a',
-                                        borderColor: 'rgba(255,255,255,0.1)',
-                                        borderTopColor: accentColor,
-                                        borderTopWidth: '3px'
-                                      }}
-                                    >
-                                      <div className="flex items-start gap-2.5 mb-4">
-                                        <div className="mt-0.5" style={{ color: accentColor }}>
-                                          {iconMap[card.icon]}
-                                        </div>
-                                        <div className="flex flex-col gap-0.5">
-                                          <div className="text-lg font-bold text-white leading-tight">{card.system}</div>
-                                          <div className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded w-fit font-mono" style={{ color: accentColor, backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                                            {card.tag}
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="flex flex-col gap-1.5 flex-grow">
-                                        {card.scope.map((item: any, idx: number) => (
-                                          <div key={idx} className="flex gap-2 text-xs text-slate-400 px-1.5 py-1 rounded transition-colors hover:bg-white/5 hover:text-white items-center leading-tight">
-                                            <span className="font-mono text-[11px] font-bold opacity-80 flex-shrink-0" style={{ color: accentColor }}>{item.id}</span>
-                                            <span>{item.text}</span>
-                                          </div>
-                                        ))}
-                                      </div>
-                                      <div className="text-[9px] text-slate-400 opacity-50 border border-white/10 px-2 py-0.5 rounded-full text-center mt-auto">
-                                        ↺ Logic
-                                      </div>
-                                    </div>
-
-                                    {/* Back Face */}
-                                    <div 
-                                      className="absolute w-full h-full rounded-xl p-4 flex flex-col border shadow-lg"
-                                      style={{ 
-                                        backfaceVisibility: 'hidden',
-                                        transform: 'rotateY(180deg)',
-                                        backgroundColor: '#1e293b',
-                                        borderColor: 'rgba(255,255,255,0.1)',
-                                        borderTopColor: accentColor,
-                                        borderTopWidth: '3px',
-                                        backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
-                                        backgroundSize: '12px 12px'
-                                      }}
-                                    >
-                                      <span className="text-[11px] uppercase tracking-wider font-bold mb-2.5 block border-b border-white/10 pb-1.5" style={{ color: accentColor }}>
-                                        {card.logic.title}
-                                      </span>
-                                      
-                                      {card.logic.dualColumn ? (
-                                        <div className="flex gap-1.5 h-full">
-                                          {card.logic.dualColumn.map((col: any, colIdx: number) => (
-                                            <div key={colIdx} className="flex-1 flex flex-col gap-1">
-                                              <div className="text-[9px] text-slate-400 mb-0.5">{col.label}</div>
-                                              {col.steps.map((step: string, sIdx: number) => (
-                                                <div key={sIdx} className="bg-white/5 px-1.5 py-0.5 rounded text-[9px] text-center border-l-2" style={{ borderLeftColor: accentColor }}>
-                                                  {step}
-                                                </div>
-                                              ))}
-                                            </div>
-                                          ))}
-                                        </div>
-                                      ) : (
-                                        <div className="flex flex-col gap-1.5">
-                                          {card.logic.steps.map((step: string, sIdx: number) => {
-                                            const [mainText, subText] = step.split('|');
-                                            const isHighlighted = sIdx === 1;
-                                            return (
-                                              <div key={sIdx}>
-                                                <div 
-                                                  className="border rounded px-2 py-1 text-[11px] text-center relative"
-                                                  style={{ 
-                                                    borderColor: isHighlighted ? accentColor : 'rgba(255,255,255,0.1)',
-                                                    backgroundColor: 'rgba(0,0,0,0.3)',
-                                                    color: '#e2e8f0'
-                                                  }}
-                                                >
-                                                  <strong>{mainText}</strong>
-                                                  {subText && <><br/><span className="text-[9px] text-slate-400">{subText}</span></>}
-                                                </div>
-                                                {sIdx < card.logic.steps.length - 1 && (
-                                                  <div className="text-center text-slate-400 text-[11px] my-[-3px]">↓</div>
-                                                )}
-                                              </div>
-                                            );
-                                          })}
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
+                                <FlipCardItem
+                                  key={cardIdx}
+                                  card={card}
+                                  accentColor={accentColor}
+                                  iconElement={svgIconMap[card.icon]}
+                                />
                               );
                             })}
                           </div>
 
                           {/* UAT Bar */}
                           {section.uatBar && (
-                            <div className="bg-purple-500/5 border border-purple-500/30 rounded-xl px-4 py-2.5 flex items-center justify-between transition-all hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:border-purple-400 hover:-translate-y-0.5">
-                              <div className="flex items-center gap-3">
-                                <svg width="20" height="20" fill="none" stroke="#a855f7" strokeWidth="2" viewBox="0 0 24 24">
+                            <div className="bg-purple-500/5 border border-purple-500/30 rounded-xl px-4 py-3 flex flex-wrap items-center gap-3 justify-between transition-all hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:border-purple-400 hover:-translate-y-0.5">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <svg width="20" height="20" fill="none" stroke="#a855f7" strokeWidth="2" viewBox="0 0 24 24" className="flex-shrink-0">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                <div className="font-mono text-sm font-extrabold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">
+                                <div className="font-mono text-sm font-extrabold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded flex-shrink-0">
                                   {section.uatBar.badge}
                                 </div>
                                 <div className="text-[13px] font-bold text-white">
                                   {section.uatBar.title}
                                 </div>
-                                <div className="text-[10px] text-slate-400 border-l border-white/10 pl-2.5">
+                                <div className="text-[10px] text-slate-400 border-l border-white/10 pl-2">
                                   {section.uatBar.subtitle}
                                 </div>
                               </div>
-                              <svg width="18" height="18" stroke="#a855f7" strokeWidth="2" fill="none" viewBox="0 0 24 24">
+                              <svg width="18" height="18" stroke="#a855f7" strokeWidth="2" fill="none" viewBox="0 0 24 24" className="flex-shrink-0">
                                 <polyline points="20 6 9 17 4 12"/>
                               </svg>
                             </div>

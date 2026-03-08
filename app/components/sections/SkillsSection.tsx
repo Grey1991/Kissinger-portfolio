@@ -1,16 +1,13 @@
 'use client';
 
-import { GraduationCap } from 'lucide-react';
-import { Education } from '../../types';
 import { GlassCard } from '../ui/GlassCard';
 
 interface SkillsSectionProps {
   skills: string[];
   tools: string[];
-  education: Education[];
 }
 
-export const SkillsSection = ({ skills, tools, education }: SkillsSectionProps) => {
+export const SkillsSection = ({ skills, tools }: SkillsSectionProps) => {
   return (
     <section id="skills" className="py-24 bg-slate-900/50 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-6">
@@ -37,22 +34,6 @@ export const SkillsSection = ({ skills, tools, education }: SkillsSectionProps) 
                   <span className="font-medium text-slate-200">{tool}</span>
                 </GlassCard>
               ))}
-            </div>
-            <div className="mt-12 pt-8 border-t border-slate-800">
-              <h4 className="text-lg uppercase tracking-widest text-slate-500 font-semibold mb-6 flex items-center gap-2">
-                <GraduationCap size={20} /> Education
-              </h4>
-              <div className="space-y-4">
-                {education.map((edu, idx) => (
-                  <div key={idx} className="flex justify-between items-center text-sm">
-                    <div>
-                      <div className="text-white font-medium">{edu.degree}</div>
-                      <div className="text-slate-500">{edu.school}</div>
-                    </div>
-                    <div className="text-slate-600 font-mono">{edu.year}</div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>

@@ -97,7 +97,7 @@ export const RESUME_DATA: ResumeData = {
       image: "/surfguard/SLS Hub Hero.png",
       icon: <Shield />,
       isCaseStudy: true,
-      finalDesignLink: "key-highlights",
+      finalDesignLink: "design-system",
       details: {
         role: "UI/UX Designer",
         year: "2023-present",
@@ -118,7 +118,9 @@ export const RESUME_DATA: ResumeData = {
             id: "summary",
             type: "bento-cards",
             title: "Summary",
+
             cards: [
+
               {
                 icon: "database",
                 iconColor: "#60a5fa",
@@ -210,13 +212,15 @@ export const RESUME_DATA: ResumeData = {
                 label: "ARTIFACT 01",
                 title: "Shared Component Library",
                 description: "Reusable UI patterns ensuring visual and behavioural consistency across modules.",
-                placeholder: "🧩"
+                image: "/surfguard/Ul Design System SG.png",
+                linkUrl: "https://www.figma.com/design/keE51vjv5xu2WiNnVObf5c/UI-Design-System---SG?node-id=2-39&t=SHainmf0XnJxPm78-1"
               },
               {
                 label: "ARTIFACT 02",
                 title: "Dev Mode Specs",
                 description: "Implementation-ready handoff with spacing, tokens, and interaction annotations.",
-                placeholder: "💻"
+                image: "/surfguard/SurfGuard Dev Mode.png",
+                linkUrl: "https://www.figma.com/design/PtpQ1q57zmzz7pZWRQuDwX/SurfGuard-Dev-Mode?node-id=426-50&t=wrBP4Gh8oJtX5R2G-1"
               },
               {
                 label: "ARTIFACT 03",
@@ -242,13 +246,35 @@ export const RESUME_DATA: ResumeData = {
               "Mobile/tablet-friendly forms and step progression.",
               "Table/list responsiveness — priority columns, inline actions, overflow rules.",
               "Modal/overlay behaviour and safe touch targets."
-            ]
+            ],
+            deviceImages: {
+              tablet: "/surfguard/SG Tablet screenshot.png",
+              phone: "/surfguard/SG Mobile screenshot.png"
+            }
           },
           {
             id: "qa-support",
-            type: "text-block",
+            type: "qa-console",
             title: "QA & Implementation Support",
-            content: "Throughout development, I performed UI QA per ticket and captured actionable feedback based on real device/browser behaviour—supporting iterative refinement and stable delivery quality.\n\nWhat I did continuously:\n• UI testing per ticket + recorded feedback for iteration\n• Cross-browser checks (Chrome / Edge / Safari) and responsive verification\n• Flow consistency checks (edge cases, invalid states, empty states)\n• Visual regressions + interaction accuracy validation against specs"
+            content: "Throughout development, I performed UI QA per ticket and captured actionable feedback based on real device/browser behaviour—supporting iterative refinement and stable delivery quality.",
+            qaItems: [
+              {
+                title: "UI Ticket Testing",
+                description: "Performed testing per ticket + recorded feedback for continuous iteration."
+              },
+              {
+                title: "Cross-browser & Responsive",
+                description: "Verified layout integrity across Chrome, Edge, Safari and multiple viewports."
+              },
+              {
+                title: "Flow Consistency",
+                description: "Validated edge cases, invalid states, and empty states logic."
+              },
+              {
+                title: "Visual Regression",
+                description: "Ensured interaction accuracy and protected design fidelity against specs."
+              }
+            ]
           },
           {
             id: "wrap-up",
@@ -418,10 +444,22 @@ export const RESUME_DATA: ResumeData = {
         contentSections: [
           {
             id: "demo-video",
-            type: "video",
-            src: "/member%20join%20slsa/Member%20Join%20Process(Join%20as%20Family%20Membership)_Video%20walkthrough.mp4",
-            alt: "Member Join Process Demo Walkthrough",
-            caption: "Full walkthrough demonstrating the family membership join process"
+            type: "video-multi",
+            caption: "Full walkthrough demonstrating the family membership join process",
+            videoItems: [
+              {
+                src: "/member join slsa/Member Join Process Desktop Demo V2.1.mp4",
+                label: "Desktop"
+              },
+              {
+                src: "/member join slsa/Member Join Process Tablet Demo V2.1.mp4",
+                label: "Tablet"
+              },
+              {
+                src: "/member join slsa/Member Join Process Mobile Demo V2.1 Mobile.mp4",
+                label: "Mobile"
+              }
+            ]
           },
           {
             id: "overview",
@@ -442,6 +480,7 @@ export const RESUME_DATA: ResumeData = {
             title: "Project Blueprint",
             hint: "Hover cards to reveal logic",
             cards: [
+              // @ts
               {
                 system: "SLSA Website",
                 tag: "PUBLIC FACING",
@@ -525,7 +564,7 @@ export const RESUME_DATA: ResumeData = {
             title: "SLSA Website — Guided Logic Flow",
             content: "Users are guided through key decision points before being redirected to the Hub:",
             images: [
-              { src: "/member%20join%20slsa/Website%20Landing%20Page.png", caption: "Website Landing Page" },
+              { src: "/member join slsa/Website Landing Page v2.png", caption: "Website Landing Page" },
               { src: "/member%20join%20slsa/Logic%20Flow%20Step%201.%20Choose%20the%20type%20of%20membership.png", caption: "Step 1: Membership Type" },
               { src: "/member%20join%20slsa/Logic%20Flow%20Step%202.%20Choose%20Type%20of%20Action.png", caption: "Step 2: Action" },
               { src: "/member%20join%20slsa/Logic%20Flow%20Step%203.%20Select%20a%20club.png", caption: "Step 3: Select Club" },
@@ -541,16 +580,11 @@ export const RESUME_DATA: ResumeData = {
               { src: "/member%20join%20slsa/Redirected%20to%20SLS%20Hub%20-%20start%20by%20creating%20an%20account%20(check%20for%20existing%20account%20done).png", caption: "Redirected to SLS Hub — Start by creating an account (check for existing account done)" },
               { src: "/member%20join%20slsa/Complete%20the%20Hub%20account%20creation%20(welcome%20email%20sent).png", caption: "Complete the Hub account creation (welcome email sent)" },
               { src: "/member%20join%20slsa/Overview%20of%20what%20will%20be%20required%20to%20complete%20the%20process.png", caption: "Overview of what will be required to complete the process" },
-              { src: "/member%20join%20slsa/Earlier%20club%20choice%20selected%20automatically.png", caption: "Earlier scenario choice selected automatically" },
-              { src: "/member%20join%20slsa/Confirm%20or%20select%20different%20club.png", caption: "Confirm or select different club" },
-              { src: "/member%20join%20slsa/Add%20member(s)%20details%20where%20relevant%20to%20membership%20type.png", caption: "Add member(s) details where relevant to membership type" },
-              { src: "/member%20join%20slsa/Add%20contact%20details%20for%20each%20member%2C%20inc.%20Guardian%20details%20where%20necessary.png", caption: "Add contact details for each member, inc. Guardian details where necessary" },
-              { src: "/member%20join%20slsa/Capture%20other%20required%20info%20where%20necessary%2C%20inc.%20demographic%20and%20diversity%20information.png", caption: "Capture other required info where necessary, inc. demographic and diversity information" },
-              { src: "/member%20join%20slsa/Sign%20declaration(s).png", caption: "Sign declaration(s)" },
-              { src: "/member%20join%20slsa/Choose%20fees%20and%20add%20on%20services%20(summary).png", caption: "Choose fees and add on services (summary)" },
-              { src: "/member%20join%20slsa/Expanded%20%27cart%27%20showing%20selected%20fees.png", caption: "Expanded 'cart' showing selected fees" },
-              { src: "/member%20join%20slsa/Check%20summary%20of%20order%20and%20choose%20payment%20method%20inc.%20promo%20code%20and%3Aor%20sports%20vouchers.png", caption: "Check summary of order and choose payment method inc. promo code and/or sports vouchers" },
-              { src: "/member%20join%20slsa/Confirmation%20of%20payment%20and%20receipt%20options%20plus%20return%20to%20home.png", caption: "Confirmation of payment and receipt options plus return to home" }
+              { src: "/member join slsa/Family Group Name and Member Details.png", caption: "Family Group Name and Member Details" },
+              { src: "/member join slsa/Membership and Guardian (where req.) Declarations.png", caption: "Membership and Guardian (where req.) Declarations" },
+              { src: "/member join slsa/Payment Summary.png", caption: "Payment Summary" },
+              { src: "/member join slsa/Complete Payment.png", caption: "Complete Payment" },
+              { src: "/member join slsa/Confirmation.png", caption: "Confirmation" }
             ]
           },
           {
@@ -1421,7 +1455,7 @@ export const RESUME_DATA: ResumeData = {
             type: "image",
             src: "/nootee/empathy-map.png",
             caption: "Empathy map synthesizing user thoughts, feelings, and behaviors",
-            imageClass: "max-w-2xl mx-auto"
+            imageClass: "w-full block max-w-2xl mx-auto rounded-xl border border-white/10 shadow-2xl"
           },
           {
             id: "survey",
@@ -1926,7 +1960,7 @@ export const RESUME_DATA: ResumeData = {
             src: "https://i.postimg.cc/SNH9LtqF/Logo-Design-Process.avif",
             alt: "Logo Design Process",
             caption: "Iterative process of creating the JR Food Court logo.",
-            imageClass: "max-w-[500px] mx-auto"
+            imageClass: "w-full block max-w-[500px] mx-auto rounded-xl border border-white/10 shadow-2xl"
           },
           {
             id: "iterations",

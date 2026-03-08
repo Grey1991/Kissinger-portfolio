@@ -12,7 +12,7 @@ interface AboutSectionProps {
 export const AboutSection = ({ summary, location, email }: AboutSectionProps) => {
   return (
     <section id="about" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-      <div className="grid md:grid-cols-2 gap-16 items-center">
+      <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
         <div className="space-y-6">
           <h3 className="text-3xl font-bold text-white flex items-center gap-3">
             <span className="w-12 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"></span>

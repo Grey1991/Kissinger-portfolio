@@ -10,11 +10,11 @@ interface ContactSectionProps {
 
 export const ContactSection = ({ email, linkedin, website }: ContactSectionProps) => {
   return (
-    <section id="contact" className="py-32 px-6 text-center relative overflow-hidden">
+    <section id="contact" className="py-16 md:py-32 px-6 text-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent pointer-events-none"></div>
       
       <div className="max-w-2xl mx-auto relative z-10 space-y-8">
-        <h2 className="text-5xl font-bold text-white tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
           Let&apos;s build something <br/>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">extraordinary.</span>
         </h2>
@@ -30,8 +30,8 @@ export const ContactSection = ({ email, linkedin, website }: ContactSectionProps
             <Mail size={18} /> Contact Me
           </a>
           <a 
-            href="/Kissinger_Hu_Resume.pdf" 
-            download
+            href="/cv/Kissinger Hu-Resume-2026.pdf" 
+            download="Kissinger Hu-Resume-2026.pdf"
             className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2"
           >
             <Download size={18} /> Download CV
@@ -39,8 +39,6 @@ export const ContactSection = ({ email, linkedin, website }: ContactSectionProps
         </div>
 
         <div className="pt-16 flex justify-center gap-8 text-slate-500">
-          <a href={linkedin} className="hover:text-pink-400 transition-colors"><Linkedin size={24}/></a>
-          <a href={website} className="hover:text-pink-400 transition-colors"><Globe size={24}/></a>
         </div>
         
         <footer className="pt-12 text-xs text-slate-600">

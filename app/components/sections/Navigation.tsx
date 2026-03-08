@@ -16,8 +16,8 @@ export const Navigation = ({ email, linkedin }: NavigationProps) => {
         </div>
         <span className="opacity-90 tracking-wide text-base group-hover:text-pink-300 transition-colors">Kissinger Hu</span>
       </div>
-      <div className="hidden md:flex gap-8 text-sm font-medium tracking-wide">
-        {['Works', 'Skills', 'Experience', 'Contact'].map((item) => (
+      <div className="flex gap-4 md:gap-8 text-xs md:text-sm font-medium tracking-wide">
+        {['Works', 'Skills', 'Contact'].map((item) => (
           <a 
             key={item} 
             href={`#${item.toLowerCase()}`}

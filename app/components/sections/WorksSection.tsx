@@ -23,11 +23,11 @@ export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) =>
   }, [activeFilter, projects]);
 
   return (
-    <section id="works" className="py-32 px-6 bg-slate-950 relative">
+    <section id="works" className="py-16 md:py-32 px-6 bg-slate-950 relative">
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Index Header */}
         <div className="flex flex-col items-start mb-16 gap-6">
-          <h3 className="text-5xl font-bold text-white mb-2">Working Projects</h3>
+          <h3 className="text-3xl md:text-5xl font-bold text-white mb-2">Working Projects</h3>
           <p className="text-slate-400 max-w-2xl text-lg leading-relaxed">
             Selected product and UX work across enterprise platforms, regulated workflows, and modernisation projects.
           </p>

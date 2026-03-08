@@ -1,12 +1,27 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export const IncidentScenario = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [logs, setLogs] = useState<Array<{ time: string; message: string }>>([]);
   const [activeNodes, setActiveNodes] = useState<Set<string>>(new Set(['mop']));
   const [activeSignals, setActiveSignals] = useState<Set<string>>(new Set());
+
+  // Responsive scale: shrink the fixed 900px canvas to fit container
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const updateScale = () => {
+      if (wrapperRef.current) {
+        const w = wrapperRef.current.offsetWidth;
+        setScale(Math.min(1, w / 900));
+      }
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   const log = (message: string) => {
     const time = new Date().toLocaleTimeString([], { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" });
@@ -82,8 +97,9 @@ export const IncidentScenario = () => {
         <p className="text-slate-400">Multi-agency collaboration via ICEMS</p>
       </div>
 
-      {/* Scene Container */}
-      <div className="relative w-full max-w-[900px] h-[500px] mx-auto border border-white/10 rounded-3xl bg-slate-950/30 backdrop-blur-md overflow-hidden shadow-2xl">
+      {/* Scene Container — scales down to fit narrow viewports */}
+      <div ref={wrapperRef} className="relative w-full max-w-[900px] mx-auto" style={{ height: `${500 * scale}px` }}>
+      <div className="relative border border-white/10 rounded-3xl bg-slate-950/30 backdrop-blur-md overflow-hidden shadow-2xl" style={{ width: '900px', height: '500px', transform: `scale(${scale})`, transformOrigin: 'top left' }}>
         
         {/* Background Grid */}
         <div 
@@ -261,9 +277,10 @@ export const IncidentScenario = () => {
           }
         `}</style>
       </div>
+      </div>
 
       {/* Controls */}
-      <div className="flex gap-5 mt-8 max-w-[900px] mx-auto items-start">
+      <div className="flex flex-col sm:flex-row gap-4 mt-8 max-w-[900px] mx-auto items-start">
         <button 
           onClick={startScenario}
           disabled={isRunning}

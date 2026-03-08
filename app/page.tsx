@@ -11,7 +11,6 @@ import { ParticleDonut } from './components/ui/ParticleDonut';
 import { Navigation } from './components/sections/Navigation';
 import { HeroSection } from './components/sections/HeroSection';
 import { AboutSection } from './components/sections/AboutSection';
-import { ExperienceSection } from './components/sections/ExperienceSection';
 import { SkillsSection } from './components/sections/SkillsSection';
 import { WorksSection } from './components/sections/WorksSection';
 import { ContactSection } from './components/sections/ContactSection';
@@ -59,11 +58,7 @@ export default function Portfolio() {
         <SkillsSection 
           skills={RESUME_DATA.skills}
           tools={RESUME_DATA.tools}
-          education={RESUME_DATA.education}
         />
-
-        {/* Experience Section */}
-        <ExperienceSection experience={RESUME_DATA.experience} />
 
         {/* Contact Section */}
         <ContactSection 

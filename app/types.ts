@@ -27,7 +27,7 @@ export interface Education {
 // 内容区块类型
 export interface ContentSection {
   id: string;
-  type: 'text-block' | 'image' | 'video' | 'video-cta' | 'image-masonry' | 'gallery' | 'stats-grid' | 'feature-list' | 'impact' | 'scrollytelling' | 'carousel-3d' | 'process-steps' | 'product-users' | 'survey-tabs' | 'hub-highlights-tabs' | 'info-cards' | 'chat-interview' | 'dual-image' | 'needs-list' | 'flow-images' | 'features-interactive' | 'next-steps' | 'wrapup-section' | 'flip-cards' | 'strategy-roadmap' | 'interactive-flow' | 'testing-refinement' | 'context-panel' | 'requirements-list' | 'structure-cards' | 'react-component' | 'reflection-dual' | 'feature-showcase' | 'hud-ribbon' | 'ecosystem-diagram' | 'console-nav' | 'before-after-slider' | 'hotspot-doc' | 'incident-scenario' | 'goals-interactive' | 'pattern-cards' | 'safety-rails' | 'problem-goal' | 'deliverables-circuit' | 'editorial-list' | 'artifact-delivery' | 'responsive-device';
+  type: 'text-block' | 'image' | 'video' | 'video-cta' | 'image-masonry' | 'gallery' | 'stats-grid' | 'feature-list' | 'impact' | 'scrollytelling' | 'carousel-3d' | 'process-steps' | 'product-users' | 'survey-tabs' | 'hub-highlights-tabs' | 'info-cards' | 'chat-interview' | 'dual-image' | 'needs-list' | 'flow-images' | 'features-interactive' | 'next-steps' | 'wrapup-section' | 'flip-cards' | 'strategy-roadmap' | 'interactive-flow' | 'testing-refinement' | 'context-panel' | 'requirements-list' | 'structure-cards' | 'react-component' | 'reflection-dual' | 'feature-showcase' | 'hud-ribbon' | 'ecosystem-diagram' | 'console-nav' | 'before-after-slider' | 'hotspot-doc' | 'incident-scenario' | 'goals-interactive' | 'pattern-cards' | 'safety-rails' | 'problem-goal' | 'deliverables-circuit' | 'editorial-list' | 'artifact-delivery' | 'responsive-device' | 'qa-console' | 'video-multi';
   title?: string;
   content?: string;
   highlight?: string;
@@ -105,6 +105,10 @@ export interface ContentSection {
     tag: string;
     color: string;
     icon: string;
+    iconColor: string;
+    number: string;
+    title: string;
+    description: string;
     scope: Array<{ id: string; text: string }>;
     logic: {
       title: string;
@@ -249,6 +253,7 @@ export interface ContentSection {
     fullWidth?: boolean;
     image?: string;
     figmaUrl?: string;
+    linkUrl?: string;
   }>;
   processItems?: string[];
   checkItems?: string[];
@@ -256,6 +261,14 @@ export interface ContentSection {
     tablet?: string;
     phone?: string;
   };
+  qaItems?: Array<{
+    title: string;
+    description: string;
+  }>;
+  videoItems?: Array<{
+    src: string;
+    label: string;
+  }>;
 }
 
 // 功能特性类型
