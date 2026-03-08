@@ -27,7 +27,7 @@ export interface Education {
 // 内容区块类型
 export interface ContentSection {
   id: string;
-  type: 'text-block' | 'image' | 'video' | 'video-cta' | 'image-masonry' | 'gallery' | 'stats-grid' | 'feature-list' | 'impact' | 'scrollytelling' | 'carousel-3d' | 'process-steps' | 'product-users' | 'survey-tabs' | 'hub-highlights-tabs' | 'info-cards' | 'chat-interview' | 'dual-image' | 'needs-list' | 'flow-images' | 'features-interactive' | 'next-steps' | 'wrapup-section' | 'flip-cards' | 'strategy-roadmap' | 'interactive-flow' | 'testing-refinement' | 'context-panel' | 'requirements-list' | 'structure-cards' | 'react-component' | 'reflection-dual' | 'feature-showcase' | 'hud-ribbon' | 'ecosystem-diagram' | 'console-nav' | 'before-after-slider' | 'hotspot-doc' | 'incident-scenario' | 'goals-interactive' | 'pattern-cards' | 'safety-rails' | 'problem-goal' | 'deliverables-circuit';
+  type: 'text-block' | 'image' | 'video' | 'video-cta' | 'image-masonry' | 'gallery' | 'stats-grid' | 'feature-list' | 'impact' | 'scrollytelling' | 'carousel-3d' | 'process-steps' | 'product-users' | 'survey-tabs' | 'hub-highlights-tabs' | 'info-cards' | 'chat-interview' | 'dual-image' | 'needs-list' | 'flow-images' | 'features-interactive' | 'next-steps' | 'wrapup-section' | 'flip-cards' | 'strategy-roadmap' | 'interactive-flow' | 'testing-refinement' | 'context-panel' | 'requirements-list' | 'structure-cards' | 'react-component' | 'reflection-dual' | 'feature-showcase' | 'hud-ribbon' | 'ecosystem-diagram' | 'console-nav' | 'before-after-slider' | 'hotspot-doc' | 'incident-scenario' | 'goals-interactive' | 'pattern-cards' | 'safety-rails' | 'problem-goal' | 'deliverables-circuit' | 'editorial-list' | 'artifact-delivery' | 'responsive-device';
   title?: string;
   content?: string;
   highlight?: string;
@@ -235,6 +235,27 @@ export interface ContentSection {
     caption: string;
     chips?: string[];
   }>;
+  eyebrow?: string;
+  editorialItems?: Array<{
+    icon: string;
+    title: string;
+    description: string;
+  }>;
+  artifacts?: Array<{
+    label: string;
+    title: string;
+    description: string;
+    placeholder?: string;
+    fullWidth?: boolean;
+    image?: string;
+    figmaUrl?: string;
+  }>;
+  processItems?: string[];
+  checkItems?: string[];
+  deviceImages?: {
+    tablet?: string;
+    phone?: string;
+  };
 }
 
 // 功能特性类型
@@ -296,6 +317,7 @@ export interface Project {
   gradient: string;
   icon: ReactNode;
   image?: string;
+  backgroundImage?: string;
   isCaseStudy?: boolean;
   finalDesignLink?: string;
   details: ProjectDetails;

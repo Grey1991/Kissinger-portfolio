@@ -13,7 +13,7 @@ function useBodyScrollLock(isOpen: boolean) {
 }
 
 import { useEffect, useRef, useState } from 'react';
-import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, LogIn, LayoutDashboard, RefreshCw, UserPlus, History, Wifi, Building, Edit2, ArrowLeftRight, ClipboardList } from 'lucide-react';
+import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, LogIn, LayoutDashboard, RefreshCw, UserPlus, History, Wifi, Building, Edit2, ArrowLeftRight, ClipboardList, Database, Box, Layers, GitBranch, Play, CheckCircle, Lock, ArrowUpDown } from 'lucide-react';
 import { Project } from '../types';
 import { ScrollytellingBlock } from './ScrollytellingBlock';
 import { Carousel3D } from './Carousel3D';
@@ -75,6 +75,17 @@ const iconMap: Record<string, LucideIcon> = {
   'shopping-cart': ShoppingCart,
   'user': User,
   'archive': Archive,
+  'database': Database,
+  'box': Box,
+  'layers': Layers,
+  'git-branch': GitBranch,
+  'play': Play,
+  'check-circle': CheckCircle,
+  'edit3': Edit3,
+  'lock': Lock,
+  'arrow-up-down': ArrowUpDown,
+  'file-text': FileText,
+  'grid': Grid,
 };
 
 // Features Interactive Component
@@ -1260,18 +1271,34 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
           
           {/* Header Hero */}
           <div className={`relative h-80 w-full ${project.id === 'slshub' ? 'bg-gradient-to-r from-orange-700 to-orange-600' : `bg-gradient-to-br ${project.gradient}`} p-8 md:p-12 flex flex-col justify-end`}>
+            {/* Background Image Layer */}
+            {project.backgroundImage && (
+              <>
+                <img 
+                  src={project.backgroundImage} 
+                  alt={`${project.title} background`}
+                  className="absolute inset-0 w-full h-full object-cover object-center brightness-[0.4]"
+                />
+              </>
+            )}
+            
+            {/* Foreground/Hero Image Layer */}
             {project.image ? (
               <>
                 <img 
                   src={project.image} 
                   alt={project.title}
-                  className="absolute inset-0 w-full h-full object-cover object-center opacity-100 transition-all duration-700"
+                  className={`absolute inset-0 w-full h-full opacity-100 transition-all duration-700 ${
+                    project.id === 'jrfood'
+                      ? 'object-contain object-[left_70%] scale-110'
+                      : 'object-cover object-center'
+                  }`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
               </>
-            ) : (
+            ) : !project.backgroundImage ? (
               <div className="absolute inset-0 bg-black/20" />
-            )}
+            ) : null}
             
             {/* Ecosystem Diagram Overlay (only for HubX) */}
             {project.id === 'hubx' && (
@@ -2033,6 +2060,360 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   </div>
                 </div>
               )}
+
+              {/* Spotlight Grid Block */}
+              {section.type === 'spotlight-grid' && section.cards && (
+                <div className="w-full max-w-6xl mx-auto">
+                  {section.title && (
+                    <h3 className="text-3xl font-bold text-white mb-10 flex items-center gap-3">
+                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                      {section.title}
+                    </h3>
+                  )}
+                  
+                  {/* Spotlight Cards Grid */}
+                  <div 
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
+                    onMouseMove={(e) => {
+                      const cards = e.currentTarget.querySelectorAll('.spotlight-card');
+                      cards.forEach((card) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
+                        (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
+                      });
+                    }}
+                  >
+                    {section.cards.map((card, idx) => {
+                      const CardIcon = iconMap[card.icon] || Edit;
+                      return (
+                        <div 
+                          key={idx}
+                          className="spotlight-card group bg-white/[0.02] border border-white/[0.05] rounded-2xl p-6 relative overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+                          style={{
+                            ['--mouse-x' as any]: '0px',
+                            ['--mouse-y' as any]: '0px'
+                          }}
+                        >
+                          {/* Watermark Number */}
+                          <div className="absolute top-[-10px] right-[-5px] text-[64px] font-mono font-bold text-white/[0.03] group-hover:text-pink-500/10 transition-colors duration-300 pointer-events-none z-[1]">
+                            {card.number}
+                          </div>
+                          
+                          {/* Spotlight Glow Background */}
+                          <div 
+                            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0"
+                            style={{
+                              background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(217, 70, 239, 0.1), transparent 40%)`
+                            }}
+                          />
+                          
+                          {/* Spotlight Glow Border */}
+                          <div 
+                            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-[1]"
+                            style={{
+                              padding: '1px',
+                              background: `radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(217, 70, 239, 0.5), transparent 40%)`,
+                              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                              WebkitMaskComposite: 'xor',
+                              maskComposite: 'exclude'
+                            }}
+                          />
+                          
+                          {/* Card Content */}
+                          <div className="relative z-[2] flex flex-col gap-3">
+                            {/* Icon */}
+                            <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-pink-500/15 group-hover:text-pink-500 group-hover:scale-110 transition-all duration-300">
+                              <CardIcon size={20} />
+                            </div>
+                            
+                            {/* Title */}
+                            <h4 className="text-base font-semibold text-white">
+                              {card.title}
+                            </h4>
+                            
+                            {/* Description */}
+                            <p className="text-[13px] text-slate-400 leading-relaxed">
+                              {card.description}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Bento Cards Block */}
+              {section.type === 'bento-cards' && section.cards && (
+                <div className="w-full max-w-5xl mx-auto">
+                  {section.title && (
+                    <h3 className="text-3xl font-bold text-white mb-10 flex items-center gap-3">
+                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                      {section.title}
+                    </h3>
+                  )}
+                  
+                  {/* Cards Grid */}
+                  <div className="grid md:grid-cols-3 gap-6 mb-6">
+                    {section.cards.map((card, idx) => {
+                      const CardIcon = iconMap[card.icon] || Layout;
+                      return (
+                        <div 
+                          key={idx}
+                          className="group bg-slate-900/40 backdrop-blur-sm border border-white/10 rounded-2xl p-8 transition-all duration-400 hover:bg-slate-800/50 hover:border-white/20 hover:-translate-y-2 hover:shadow-xl hover:shadow-black/40 relative overflow-hidden"
+                        >
+                          {/* Hover gradient line */}
+                          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                          
+                          {/* Icon */}
+                          <div 
+                            className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110"
+                            style={{ 
+                              backgroundColor: `${card.iconColor}15`,
+                              color: card.iconColor
+                            }}
+                          >
+                            <CardIcon size={24} />
+                          </div>
+                          
+                          {/* Title */}
+                          <h4 className="text-lg font-bold text-white mb-3">
+                            {card.title}
+                          </h4>
+                          
+                          {/* Description */}
+                          <p className="text-slate-400 text-sm leading-relaxed">
+                            {card.description}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Badges Banner */}
+                  {section.badges && (
+                    <div className="bg-slate-950/60 border border-white/10 rounded-2xl p-6">
+                      <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-4">
+                        // Core Competencies Demonstrated
+                      </div>
+                      <div className="flex flex-wrap gap-3">
+                        {section.badges.map((badge, idx) => {
+                          const BadgeIcon = iconMap[badge.icon] || Activity;
+                          return (
+                            <div 
+                              key={idx}
+                              className="group flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm font-medium text-slate-300 hover:bg-pink-500/10 hover:border-pink-500 hover:text-white hover:-translate-y-1 transition-all duration-200"
+                            >
+                              <BadgeIcon size={14} className="text-pink-500" />
+                              {badge.label}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Highlights Section with Filter Pills */}
+              {/* Responsive Device Block */}
+              {section.type === 'responsive-device' && (
+                <div className="w-full max-w-5xl mx-auto">
+                  <div className="flex flex-col lg:flex-row items-start gap-12">
+                    {/* Left: Text Panel */}
+                    <div className="flex-1 flex flex-col gap-8">
+                      {section.title && (
+                        <h3 className="text-3xl font-bold text-white flex items-center gap-3">
+                          <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/>
+                          {section.title}
+                        </h3>
+                      )}
+                      {section.content && (
+                        <p className="text-slate-300 leading-relaxed text-base">{section.content}</p>
+                      )}
+                      {section.checkItems && section.checkItems.length > 0 && (
+                        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6 flex flex-col gap-4">
+                          <span className="font-mono text-xs text-slate-500 tracking-widest uppercase">// What was addressed</span>
+                          {section.checkItems.map((item, idx) => (
+                            <div key={idx} className="flex items-start gap-3">
+                              <CheckCircle size={18} className="text-sky-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                              <span className="text-sm text-slate-300 leading-relaxed">{item}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {/* Right: Device Mockups */}
+                    <div className="flex-1 relative h-[420px] min-w-[280px] hidden lg:flex items-center justify-center">
+                      {/* Tablet */}
+                      <div className="absolute right-4 top-0 w-[72%] h-[90%] rounded-2xl border border-white/10 bg-slate-900/80 overflow-hidden shadow-2xl">
+                        {section.deviceImages?.tablet ? (
+                          <img src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-600">
+                            <Tablet size={32} className="opacity-30" />
+                            <span className="text-xs italic opacity-30">Tablet screenshot</span>
+                          </div>
+                        )}
+                      </div>
+                      {/* Phone */}
+                      <div className="absolute left-0 bottom-4 w-[36%] h-[76%] rounded-2xl border border-white/15 bg-slate-800/90 overflow-hidden shadow-2xl z-10">
+                        {section.deviceImages?.phone ? (
+                          <img src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-600">
+                            <Smartphone size={24} className="opacity-30" />
+                            <span className="text-xs italic opacity-30">Mobile screenshot</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Artifact Delivery Block */}
+              {section.type === 'artifact-delivery' && section.artifacts && (
+                <div className="w-full max-w-5xl mx-auto">
+                  {/* Title */}
+                  {section.title && (
+                    <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/>
+                      {section.title}
+                    </h3>
+                  )}
+                  {/* Description */}
+                  {section.content && (
+                    <p className="text-slate-300 leading-relaxed text-base mb-10 max-w-3xl">{section.content}</p>
+                  )}
+                  {/* Artifact Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                    {section.artifacts.map((artifact, idx) => (
+                      <div key={idx} className={`flex flex-col gap-4 ${artifact.fullWidth ? 'sm:col-span-2' : ''}`}>
+                        {/* Artifact label + text */}
+                        <div className="flex flex-col gap-1">
+                          <span className="font-mono text-xs text-slate-500 tracking-widest uppercase">// {artifact.label}</span>
+                          <h4 className="text-base font-semibold text-white">{artifact.title}</h4>
+                          <p className="text-sm text-slate-400 leading-relaxed">{artifact.description}</p>
+                        </div>
+                        {/* Image, Figma embed, or placeholder */}
+                        {artifact.figmaUrl ? (
+                          <div className={`rounded-xl overflow-hidden border border-white/10 bg-slate-900/60 ${artifact.fullWidth ? 'aspect-[16/9]' : 'aspect-[16/10]'}`}>
+                            <iframe
+                              src={artifact.figmaUrl}
+                              className="w-full h-full"
+                              allowFullScreen
+                              loading="lazy"
+                              title={artifact.title}
+                            />
+                          </div>
+                        ) : artifact.image ? (
+                          <div className="rounded-xl overflow-hidden border border-white/10">
+                            <img src={artifact.image} alt={artifact.title} className="w-full h-auto block" />
+                          </div>
+                        ) : (
+                          <div className={`rounded-xl border border-white/10 bg-slate-900/60 flex flex-col items-center justify-center gap-3 text-slate-600 ${artifact.fullWidth ? 'aspect-[21/9]' : 'aspect-[16/10]'}`}>
+                            <span className="text-3xl opacity-40">{artifact.placeholder}</span>
+                            <span className="text-xs italic opacity-40">Screenshot coming soon</span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  {/* Process & Alignment footer */}
+                  {section.processItems && section.processItems.length > 0 && (
+                    <div className="rounded-xl border border-white/10 bg-slate-900/50 px-6 py-5 flex flex-col gap-4">
+                      <span className="text-xs font-semibold text-white uppercase tracking-widest">Process & Alignment</span>
+                      <div className="flex flex-col gap-3">
+                        {section.processItems.map((item, idx) => (
+                          <div key={idx} className="flex items-start gap-3 text-sm text-slate-400 leading-relaxed">
+                            <span className="text-emerald-400 font-bold mt-0.5 flex-shrink-0">✓</span>
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Editorial List Block */}
+              {section.type === 'editorial-list' && section.editorialItems && (
+                <div className="w-full max-w-5xl mx-auto">
+                  {/* Title */}
+                  {section.title && (
+                    <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                      <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/>
+                      {section.title}
+                    </h3>
+                  )}
+                  {/* Description */}
+                  {section.content && (
+                    <p className="text-slate-400 text-base leading-relaxed mb-10 max-w-2xl">{section.content}</p>
+                  )}
+                  {/* 2-col editorial grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10">
+                    {section.editorialItems.map((item, idx) => (
+                      <div key={idx} className="flex flex-col gap-2">
+                        <h4 className="text-base font-semibold text-pink-400 leading-snug">{item.title}</h4>
+                        <p className="text-sm text-slate-400 leading-relaxed">{item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {section.type === 'highlights-section' && section.highlights && (() => {
+                const [activeHighlight, setActiveHighlight] = useState(section.highlights[0]?.id || '');
+                const currentHighlight = section.highlights.find(h => h.id === activeHighlight);
+                
+                return (
+                  <div className="w-full max-w-5xl mx-auto">
+                    {section.title && (
+                      <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                        {section.title}
+                      </h3>
+                    )}
+                    {section.description && (
+                      <p className="text-slate-300 leading-relaxed text-lg mb-8">
+                        {section.description}
+                      </p>
+                    )}
+                    
+                    {/* Filter Pills */}
+                    <div className="flex flex-wrap gap-3 justify-center mb-10">
+                      {section.highlights.map((highlight) => (
+                        <button
+                          key={highlight.id}
+                          onClick={() => setActiveHighlight(highlight.id)}
+                          className={`px-5 py-2.5 rounded-full font-medium text-sm transition-all border ${
+                            activeHighlight === highlight.id
+                              ? 'bg-gradient-to-r from-pink-500/20 to-purple-600/10 border-pink-500 text-white shadow-lg shadow-pink-500/20'
+                              : 'bg-slate-900/40 border-white/10 text-slate-400 hover:text-white hover:border-pink-500/50'
+                          }`}
+                        >
+                          {highlight.label}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    {/* Active Highlight Content */}
+                    {currentHighlight && (
+                      <div className="bg-slate-900/40 border border-white/10 rounded-2xl p-8 transition-all duration-300">
+                        <h4 className="text-2xl font-bold text-white mb-4">
+                          {currentHighlight.title}
+                        </h4>
+                        <p className="text-slate-300 leading-relaxed text-lg">
+                          {currentHighlight.description}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* Flow Images Block */}
               {section.type === 'flow-images' && section.flows && (

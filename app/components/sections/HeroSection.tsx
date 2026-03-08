@@ -24,7 +24,7 @@ export const HeroSection = ({ name }: HeroSectionProps) => {
           <span>I am a</span>
           <span className="text-white font-normal border-b border-pink-500">
             <Typewriter 
-              texts={['Senior UI/UX Designer', 'Complex System Architect', 'Experience Crafter', 'Problem Solver']} 
+              texts={['UI/UX Designer', 'Complex System Designer', 'Problem Solver']} 
             />
           </span>
         </div>

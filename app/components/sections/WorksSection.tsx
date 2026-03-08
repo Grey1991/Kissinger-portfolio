@@ -63,6 +63,16 @@ export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) =>
               <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden p-6`}>
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
                 
+                {/* Background Image Layer */}
+                {project.backgroundImage && (
+                  <img 
+                    src={project.backgroundImage} 
+                    alt={`${project.title} background`}
+                    className="absolute inset-0 w-full h-full object-cover brightness-[0.4]"
+                  />
+                )}
+                
+                {/* Foreground Image Layer */}
                 {project.image ? (
                   <>
                     <img 
@@ -71,14 +81,16 @@ export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) =>
                       className={`absolute inset-0 w-full h-full opacity-100 transition-all duration-700 ${
                         project.id === 'slshub' 
                           ? 'object-cover object-[120%_220%] scale-[1.3] group-hover:scale-[1.43]' 
+                          : project.id === 'surfguard'
+                          ? 'object-cover object-[80%_center] group-hover:scale-110'
                           : 'object-cover object-top group-hover:scale-110'
                       }`}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
                   </>
-                ) : (
+                ) : !project.backgroundImage ? (
                   <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-                )}
+                ) : null}
 
                 <div className="relative z-10 flex justify-between items-start">
                   <span className="px-3 py-1 bg-black/30 backdrop-blur-md rounded-full text-xs font-medium text-white/90 border border-white/10 shadow-sm">

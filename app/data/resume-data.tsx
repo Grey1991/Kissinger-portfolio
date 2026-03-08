@@ -89,28 +89,184 @@ export const RESUME_DATA: ResumeData = {
     {
       id: "surfguard",
       title: "SurfGuard (SLSA)",
-      subtitle: "Legacy System Rewrite",
-      category: "Enterprise",
-      summary: "Modernising a critical nationwide operational database into a scalable, user-friendly React application.",
-      tags: ["Enterprise Admin", "Legacy Modernisation", "Design System", "Complex Workflows"],
+      subtitle: "Legacy Modernisation · In Development",
+      category: "Legacy Modernisation",
+      summary: "A full rewrite and modernisation of a legacy SurfGuard system, bringing the platform in-house and transitioning it to a modern cloud architecture and security model.",
+      tags: ["Enterprise", "Legacy Modernisation", "Design System", "Multi-device"],
       gradient: "from-blue-700 to-cyan-600",
+      image: "/surfguard/SLS Hub Hero.png",
       icon: <Shield />,
+      isCaseStudy: true,
+      finalDesignLink: "key-highlights",
       details: {
-        role: "Sole Lead Designer",
-        year: "2023 - Present",
-        platform: "Web Application (Desktop Focus)",
-        tools: "Figma, React, Storybook",
-        type: "Enterprise B2B",
-        overview: "SurfGuard is the core operational database for Surf Life Saving Australia. The legacy system suffered from outdated UI, poor accessibility, and convoluted workflows. The goal was to rewrite the system to improve data integrity and user efficiency for administrators nationwide.",
-        myRole: "I led the complete UX redesign, translating complex legacy table-based logic into modern, component-based patterns. I built the shared design system from scratch.",
-        constraints: "Strict data compliance requirements, need to support power-users accustomed to legacy workflows, and a complex permission hierarchy.",
-        approach: "I started by auditing the existing workflows, mapping out the information architecture, and then creating low-fidelity wireframes to validate logic with BAs. I then moved to high-fidelity prototypes for stakeholder sign-off before delivering dev-ready specs.",
-        keyDecisions: [
-          "Introduced a 'Drawer' pattern for editing records to keep context, rather than full-page reloads.",
-          "Standardised data tables with sticky headers and customisable columns to handle dense information.",
-          "Created a 'Status Badge' system to quickly communicate member compliance status."
+        role: "UI/UX Designer",
+        year: "2023-present",
+        platform: "Web (Desktop + Mobile + Tablet)",
+        tools: "Figma, Jira, Confluence",
+        
+        toc: [
+          { id: "summary", label: "Summary" },
+          { id: "what-i-owned", label: "What I Owned" },
+          { id: "design-system", label: "Design System & Delivery" },
+          { id: "responsive", label: "Mobile & Tablet Coverage" },
+          { id: "qa-support", label: "QA & Implementation Support" },
+          { id: "wrap-up", label: "Wrap-up" }
         ],
-        outcome: "A modernized, accessible platform that significantly reduced training time for new administrators and improved data entry accuracy."
+
+        contentSections: [
+          {
+            id: "summary",
+            type: "bento-cards",
+            title: "Summary",
+            cards: [
+              {
+                icon: "database",
+                iconColor: "#60a5fa",
+                title: "The Platform",
+                description: "SurfGuard is a national, web-based core platform used by Surf Life Saving Australia staff and volunteers to manage member information, awards, patrols, and broader organisational records."
+              },
+              {
+                icon: "box",
+                iconColor: "#4ade80",
+                title: "The Mission",
+                description: "A complete rewrite and modernisation of a legacy PHP system. The objective: bring the platform in-house and transition it to a robust, modern cloud architecture and security model."
+              },
+              {
+                icon: "layout",
+                iconColor: "#d946ef",
+                title: "My Role: UI/UX Designer",
+                description: "Led end-to-end UX across core modules. Partnered closely with devs, BAs, and Solution Architects to translate complex business rules, edge cases, and data integrity needs into a seamless cross-device experience."
+              }
+            ],
+            badges: [
+              { icon: "activity", label: "Enterprise Workflow Modernisation" },
+              { icon: "shield", label: "Rule-Rich UX & Permissions" },
+              { icon: "layers", label: "Shared Design System Delivery" },
+              { icon: "git-branch", label: "Cross-Functional Collaboration" }
+            ]
+          },
+          {
+            id: "what-i-owned",
+            type: "spotlight-grid",
+            title: "What I Owned",
+            cards: [
+              {
+                number: "01",
+                icon: "edit3",
+                title: "End-to-end UI/UX Design",
+                description: "Complete UI/UX design for SurfGuard rewrite across multiple modules."
+              },
+              {
+                number: "02",
+                icon: "grid",
+                title: "Shared SG UI Design System",
+                description: "Built and maintained components library and design guidelines."
+              },
+              {
+                number: "03",
+                icon: "code",
+                title: "Developer Handoff",
+                description: "Dev Mode-ready specs with detailed interaction notes."
+              },
+              {
+                number: "04",
+                icon: "play",
+                title: "Clickable Prototypes",
+                description: "Full-flow prototypes for validation with dev teams and stakeholders."
+              },
+              {
+                number: "05",
+                icon: "smartphone",
+                title: "Multi-device Designs",
+                description: "Mobile and tablet designs covering responsive behaviours and interaction density."
+              },
+              {
+                number: "06",
+                icon: "users",
+                title: "Cross-team Collaboration",
+                description: "Continuous design iteration with BA, Solution Architect, and stakeholders."
+              },
+              {
+                number: "07",
+                icon: "check-circle",
+                title: "UI QA & Testing",
+                description: "Ongoing UI QA per ticket across browsers/devices with tracked feedback loops."
+              },
+              {
+                number: "08",
+                icon: "star",
+                title: "Brand Assets",
+                description: "Supporting brand asset: SurfGuard favicon."
+              }
+            ]
+          },
+          {
+            id: "design-system",
+            type: "artifact-delivery",
+            title: "Design System & Delivery",
+            content: "Built and maintained a shared component library and design guidelines to support consistent implementation across modules. Provided developer-ready Dev Mode specs and fully clickable prototypes to validate end-to-end flows with engineering and stakeholders.",
+            artifacts: [
+              {
+                label: "ARTIFACT 01",
+                title: "Shared Component Library",
+                description: "Reusable UI patterns ensuring visual and behavioural consistency across modules.",
+                placeholder: "🧩"
+              },
+              {
+                label: "ARTIFACT 02",
+                title: "Dev Mode Specs",
+                description: "Implementation-ready handoff with spacing, tokens, and interaction annotations.",
+                placeholder: "💻"
+              },
+              {
+                label: "ARTIFACT 03",
+                title: "Clickable Prototypes",
+                description: "Full flow validation for developers and stakeholders across end-to-end journeys.",
+                figmaUrl: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/9LLFJrvwoOhqIXs0xgAJbs/SG-Clickable-Prototype--Copy-?page-id=0%3A1&node-id=35110-523921&p=f&viewport=640%2C1683%2C0.02&t=0GkjNPDEeVsAUXCE-1&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=36365%3A1519657&show-proto-sidebar=1",
+                fullWidth: true
+              }
+            ],
+            processItems: [
+              "Continuous alignment with BA and Solution Architects to validate expected behaviours.",
+              "Ongoing refinement and UI QA to protect design intent during the build phase."
+            ]
+          },
+
+          {
+            id: "responsive",
+            type: "responsive-device",
+            title: "Mobile & Tablet Coverage",
+            content: "SurfGuard is being rebuilt to support mobile device usage as a first-class requirement. I delivered responsive layouts across key workflows to ensure operational tasks remain usable under smaller viewports and real-world constraints.",
+            checkItems: [
+              "Navigation density and action placement across breakpoints.",
+              "Mobile/tablet-friendly forms and step progression.",
+              "Table/list responsiveness — priority columns, inline actions, overflow rules.",
+              "Modal/overlay behaviour and safe touch targets."
+            ]
+          },
+          {
+            id: "qa-support",
+            type: "text-block",
+            title: "QA & Implementation Support",
+            content: "Throughout development, I performed UI QA per ticket and captured actionable feedback based on real device/browser behaviour—supporting iterative refinement and stable delivery quality.\n\nWhat I did continuously:\n• UI testing per ticket + recorded feedback for iteration\n• Cross-browser checks (Chrome / Edge / Safari) and responsive verification\n• Flow consistency checks (edge cases, invalid states, empty states)\n• Visual regressions + interaction accuracy validation against specs"
+          },
+          {
+            id: "wrap-up",
+            type: "wrapup-section",
+              title: "Wrap-up",
+            heroText: "",
+            outcomes: [],
+            statusBar: {
+              label: "Project Status",
+              value: "In Development",
+              badges: [
+                { text: "🚧 In Development", type: "pending" },
+                { text: "⚙️ Incremental Rollout", type: "pending" }
+              ]
+            },
+            content: ""
+          }
+        ]
       }
     },
     {
@@ -592,7 +748,7 @@ export const RESUME_DATA: ResumeData = {
           { id: "overview", label: "Overview" },
           { id: "context", label: "Context & Constraints" },
           { id: "role", label: "My Role" },
-          { id: "decisions", label: "Key Design Decisions" },
+          { id: "decisions", 墙label: "Key Design Decisions" },
           { id: "before-after", label: "Before → After" },
           { id: "requirements", label: "Requirements & Specifications" },
           { id: "outcome", label: "Outcome" },
@@ -1155,6 +1311,7 @@ export const RESUME_DATA: ResumeData = {
       summary: "A note-taking app designed to solve collaboration gaps, media limitations, and organisation challenges in existing tools.",
       tags: ["Product Design", "UX Research", "Desktop App"],
       gradient: "from-violet-600 to-fuchsia-600",
+      backgroundImage: "/nootee/NooTee Hero BG.png",
       image: "/nootee/hero-1.png",
       icon: <PenTool />,
       isCaseStudy: true,
@@ -1594,6 +1751,7 @@ export const RESUME_DATA: ResumeData = {
       summary: "An O2O mobile application streamlining the lunch rush for office workers through pre-ordering and smart table booking.",
       tags: ["Mobile UX", "O2O Service", "Efficiency", "Full Case Study"], 
       gradient: "from-orange-500 to-amber-600",
+      backgroundImage: "/jr food court/JR Food Court Hero BG.png",
       image: "https://i.postimg.cc/x1Hz6yTM/JR-Landing-img-mv2.avif",
       icon: <Utensils />,
       isCaseStudy: true,
