@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { RESUME_DATA } from './data/resume-data';
-import { Project } from './types';
 
 // UI Components
 import { ParticleDonut } from './components/ui/ParticleDonut';
@@ -22,7 +21,7 @@ import { ProjectModal } from './components/ProjectModal';
 import './styles/animations.css';
 
 export default function Portfolio() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-pink-500/30">

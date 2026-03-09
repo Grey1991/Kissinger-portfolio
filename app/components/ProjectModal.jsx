@@ -1,6 +1,6 @@
 "use client";
 // 禁止body滚动的hook
-function useBodyScrollLock(isOpen: boolean) {
+function useBodyScrollLock(isOpen) {
   useEffect(() => {
     if (isOpen) {
       const original = document.body.style.overflow;
@@ -45,7 +45,7 @@ if (typeof document !== 'undefined') {
 }
 
 // Icon mapping for features
-const iconMap: Record<string, LucideIcon> = {
+const iconMap = {
   'smile': Smile,
   'edit': Edit,
   'cloud': Cloud,
@@ -89,7 +89,7 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 // Features Interactive Component
-const FeaturesInteractive = ({ features }: { features: Array<{ icon: string; title: string; description: string; image: string }> }) => {
+const FeaturesInteractive = ({ features }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
@@ -184,20 +184,6 @@ const InteractiveFlowDiagram = ({
   title, 
   content, 
   flowDiagrams 
-}: { 
-  title?: string; 
-  content?: string; 
-  flowDiagrams: Array<{
-    id: string;
-    label: string;
-    caption: string;
-    nodes: Array<{
-      label: string;
-      x: number;
-      y: number;
-      type?: 'start' | 'end' | 'normal';
-    }>;
-  }>;
 }) => {
   const [activeFlowIndex, setActiveFlowIndex] = useState(0);
 
@@ -246,7 +232,7 @@ const InteractiveFlowDiagram = ({
             [6, 7], // Check Out -> Place Order
             [7, 8], // Place Order -> Finish
             [8, 9]  // Finish -> Review
-          ] : flow.nodes.map((_, i) => i < flow.nodes.length - 1 ? [i, i + 1] : null).filter(Boolean) as number[][];
+          ] : flow.nodes.map((_, i) => i < flow.nodes.length - 1 ? [i, i + 1] : null).filter(Boolean);
 
           return (
             <div
@@ -337,7 +323,7 @@ const InteractiveFlowDiagram = ({
 };
 
 // Interview Image Component with click-to-enlarge
-const InterviewImage = ({ src, alt, caption, className, hasTitle, onLightboxChange }: { src: string; alt: string; caption?: string; className?: string; hasTitle?: boolean; onLightboxChange?: (isOpen: boolean) => void }) => {
+const InterviewImage = ({ src, alt, caption, className, hasTitle, onLightboxChange }) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
 
   const openLightbox = () => {
@@ -388,14 +374,14 @@ const InterviewImage = ({ src, alt, caption, className, hasTitle, onLightboxChan
 };
 
 // Survey Tabs Component
-const SurveyTabsComponent = ({ tabs, caption, onLightboxChange }: { tabs: Array<{label: string; images: string[]}>; caption?: string; onLightboxChange?: (isOpen: boolean) => void }) => {
+const SurveyTabsComponent = ({ tabs, caption, onLightboxChange }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
 
   const currentImages = tabs[activeTab]?.images || [];
 
-  const openLightbox = (index: number) => {
+  const openLightbox = (index) => {
     setLightboxImageIndex(index);
     setIsLightboxOpen(true);
     onLightboxChange?.(true);
@@ -476,15 +462,7 @@ const SurveyTabsComponent = ({ tabs, caption, onLightboxChange }: { tabs: Array<
 };
 
 // Hub Highlights Tabs Component (for SLS Hub project)
-const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }: { 
-  tabs: Array<{
-    label: string; 
-    whyItMatters: string; 
-    primaryGallery: Array<{src: string; caption: string}>; 
-    moreScreenshots?: Array<{src: string; caption: string}>
-  }>; 
-  onLightboxChange?: (isOpen: boolean) => void 
-}) => {
+const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
@@ -496,7 +474,7 @@ const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }: {
     ? currentTab?.primaryGallery || [] 
     : currentTab?.moreScreenshots || [];
 
-  const openLightbox = (index: number, galleryType: 'primary' | 'more') => {
+  const openLightbox = (index, galleryType) => {
     setCurrentGalleryType(galleryType);
     setLightboxImageIndex(index);
     setIsLightboxOpen(true);
@@ -517,7 +495,7 @@ const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }: {
   };
 
   // Reset accordion state when changing tabs
-  const handleTabChange = (idx: number) => {
+  const handleTabChange = (idx) => {
     setActiveTab(idx);
     setExpandedAccordion(false);
   };
@@ -666,11 +644,11 @@ const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }: {
 };
 
 // Gallery Component with Lightbox
-const GalleryComponent = ({ images, caption, onLightboxChange }: { images: string[]; caption?: string; onLightboxChange?: (isOpen: boolean) => void }) => {
+const GalleryComponent = ({ images, caption, onLightboxChange }) => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
 
-  const openLightbox = (index: number) => {
+  const openLightbox = (index) => {
     setLightboxImageIndex(index);
     setIsLightboxOpen(true);
     onLightboxChange?.(true);
@@ -738,7 +716,7 @@ const GalleryComponent = ({ images, caption, onLightboxChange }: { images: strin
 };
 
 // Before/After Slider Component
-const BeforeAfterSlider: React.FC<{ section: any }> = ({ section }) => {
+const BeforeAfterSlider = ({ section }) => {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [activeComparison, setActiveComparison] = useState(0);
@@ -746,7 +724,7 @@ const BeforeAfterSlider: React.FC<{ section: any }> = ({ section }) => {
 
   const comparisons = section.beforeAfterSlider.comparisons || [];
 
-  const handleMove = (clientX: number) => {
+  const handleMove = (clientX) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     let position = ((clientX - rect.left) / rect.width) * 100;
@@ -755,13 +733,13 @@ const BeforeAfterSlider: React.FC<{ section: any }> = ({ section }) => {
   };
 
   const handleMouseDown = () => setIsDragging(true);
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e) => {
     if (isDragging) handleMove(e.clientX);
   };
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = (e) => {
     if (isDragging) handleMove(e.touches[0].clientX);
   };
-  const handleClick = (e: React.MouseEvent) => handleMove(e.clientX);
+  const handleClick = (e) => handleMove(e.clientX);
 
   useEffect(() => {
     const handleGlobalMouseUp = () => setIsDragging(false);
@@ -795,7 +773,7 @@ const BeforeAfterSlider: React.FC<{ section: any }> = ({ section }) => {
 
       {comparisons.length > 1 && (
         <div className="flex justify-center gap-4 mb-6">
-          {comparisons.map((comp: any, idx: number) => (
+          {comparisons.map((comp, idx) => (
             <button
               key={idx}
               onClick={() => setActiveComparison(idx)}
@@ -868,7 +846,7 @@ const BeforeAfterSlider: React.FC<{ section: any }> = ({ section }) => {
       </div>
 
       <div className="grid md:grid-cols-2 gap-8 pt-8 border-t border-white/10">
-        {section.beforeAfterSlider.improvements.map((item: any, idx: number) => (
+        {section.beforeAfterSlider.improvements.map((item, idx) => (
           <div key={idx} className="p-6 rounded-xl bg-white/[0.02] border border-transparent hover:border-white/10 hover:bg-white/[0.04] transition-all hover:-translate-y-0.5">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
@@ -885,9 +863,9 @@ const BeforeAfterSlider: React.FC<{ section: any }> = ({ section }) => {
 };
 
 // Console Navigation Component  
-const ConsoleNavigation: React.FC<{ section: any }> = ({ section }) => {
+const ConsoleNavigation = ({ section }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const navRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const navRefs = useRef([]);
 
   return (
     <div className="w-full max-w-5xl mx-auto">
@@ -903,7 +881,7 @@ const ConsoleNavigation: React.FC<{ section: any }> = ({ section }) => {
             className="hidden md:block absolute right-[-2.5rem] w-0.5 h-6 bg-cyan-400 transition-all duration-300 ease-out"
             style={{ boxShadow: '0 0 10px rgb(34 211 238)', top: navRefs.current[activeIndex]?.offsetTop || 0 }}
           />
-          {section.consoleNav.items.map((item: any, idx: number) => (
+          {section.consoleNav.items.map((item, idx) => (
             <div
               key={idx}
               ref={el => { navRefs.current[idx] = el; }}
@@ -922,7 +900,7 @@ const ConsoleNavigation: React.FC<{ section: any }> = ({ section }) => {
           ))}
         </div>
         <div className="relative min-h-[220px] flex items-center">
-          {section.consoleNav.items.map((item: any, idx: number) => (
+          {section.consoleNav.items.map((item, idx) => (
             <div
               key={idx}
               className={`absolute top-1/2 left-0 w-full transition-all duration-400 ease-out ${
@@ -1195,10 +1173,6 @@ const HubXFlipCard = ({
   card,
   ProblemIcon,
   GoalIcon,
-}: {
-  card: any;
-  ProblemIcon: LucideIcon;
-  GoalIcon: LucideIcon;
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
@@ -1246,7 +1220,7 @@ const HubXFlipCard = ({
           </div>
           <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wide opacity-90">{card.goalTitle}</h4>
           <div className="w-full space-y-2.5">
-            {card.goals.map((goal: string, gIdx: number) => (
+            {card.goals.map((goal, gIdx) => (
               <div key={gIdx} className="flex items-start gap-2.5 text-white/90">
                 <Check size={16} className="text-green-300 flex-shrink-0 mt-0.5" strokeWidth={3} />
                 <span className="text-sm leading-relaxed">{goal}</span>
@@ -1266,10 +1240,6 @@ const FlipCardItem = ({
   card,
   accentColor,
   iconElement,
-}: {
-  card: any;
-  accentColor: string;
-  iconElement: React.ReactElement;
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
@@ -1314,7 +1284,7 @@ const FlipCardItem = ({
             </div>
           </div>
           <div className="flex flex-col gap-1.5 flex-grow">
-            {card.scope.map((item: any, idx: number) => (
+            {card.scope.map((item, idx) => (
               <div
                 key={idx}
                 className="flex gap-2 text-xs text-slate-400 px-1.5 py-1 rounded items-center leading-tight"
@@ -1357,10 +1327,10 @@ const FlipCardItem = ({
 
           {card.logic.dualColumn ? (
             <div className="flex gap-1.5 h-full">
-              {card.logic.dualColumn.map((col: any, colIdx: number) => (
+              {card.logic.dualColumn.map((col, colIdx) => (
                 <div key={colIdx} className="flex-1 flex flex-col gap-1">
                   <div className="text-[9px] text-slate-400 mb-0.5">{col.label}</div>
-                  {col.steps.map((step: string, sIdx: number) => (
+                  {col.steps.map((step, sIdx) => (
                     <div
                       key={sIdx}
                       className="bg-white/5 px-1.5 py-0.5 rounded text-[9px] text-center border-l-2"
@@ -1374,7 +1344,7 @@ const FlipCardItem = ({
             </div>
           ) : (
             <div className="flex flex-col gap-1.5">
-              {card.logic.steps.map((step: string, sIdx: number) => {
+              {card.logic.steps.map((step, sIdx) => {
                 const [mainText, subText] = step.split('|');
                 const isHighlighted = sIdx === 1;
                 return (
@@ -1405,13 +1375,113 @@ const FlipCardItem = ({
 };
 // ───────────────────────────────────────────────────────────────────────────────
 
-interface ProjectModalProps {
-  project: Project | null;
-  onClose: () => void;
-}
+const HighlightSection = ({ section }) => {
+                const [activeHighlight, setActiveHighlight] = useState(section.highlights[0]?.id || '');
+                const currentHighlight = section.highlights.find(h => h.id === activeHighlight);
+                
+                return (
+                  <div className="w-full max-w-5xl mx-auto">
+                    {section.title && (
+                      <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                        <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
+                        {section.title}
+                      </h3>
+                    )}
+                    {section.description && (
+                      <p className="text-slate-300 leading-relaxed text-lg mb-8">
+                        {section.description}
+                      </p>
+                    )}
+                    
+                    {/* Filter Pills */}
+                    <div className="flex flex-wrap gap-3 justify-center mb-10">
+                      {section.highlights.map((highlight) => (
+                        <button
+                          key={highlight.id}
+                          onClick={() => setActiveHighlight(highlight.id)}
+                          className={`px-5 py-2.5 rounded-full font-medium text-sm transition-all border ${
+                            activeHighlight === highlight.id
+                              ? 'bg-gradient-to-r from-pink-500/20 to-purple-600/10 border-pink-500 text-white shadow-lg shadow-pink-500/20'
+                              : 'bg-slate-900/40 border-white/10 text-slate-400 hover:text-white hover:border-pink-500/50'
+                          }`}
+                        >
+                          {highlight.label}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    {/* Active Highlight Content */}
+                    {currentHighlight && (
+                      <div className="bg-slate-900/40 border border-white/10 rounded-2xl p-8 transition-all duration-300">
+                        <h4 className="text-2xl font-bold text-white mb-4">
+                          {currentHighlight.title}
+                        </h4>
+                        <p className="text-slate-300 leading-relaxed text-lg">
+                          {currentHighlight.description}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
 
-export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+const VedioMulti = ({ section }) => {
+                        const [activeVideo, setActiveVideo] = useState(0);
+                        return (
+                          <div className="w-full my-8 flex flex-col items-center gap-6">
+                            {/* Tab switcher */}
+                            <div className="flex flex-wrap justify-center gap-2">
+                              {section.videoItems.map((v, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => setActiveVideo(idx)}
+                                  className={`px-5 py-2 rounded-full text-sm font-medium border transition-all ${
+                                    activeVideo === idx
+                                      ? 'bg-gradient-to-r from-pink-500/20 to-purple-600/10 border-pink-500 text-white shadow-lg shadow-pink-500/20'
+                                      : 'bg-slate-900/40 border-white/10 text-slate-400 hover:text-white hover:border-pink-500/50'
+                                  }`}
+                                >
+                                  {v.label}
+                                </button>
+                              ))}
+                            </div>
+                            {/* Active video */}
+                            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block max-w-xs w-full">
+                              <video
+                                key={section.videoItems[activeVideo].src}
+                                ref={(el) => {
+                                  if (el) {
+                                    const observer = new IntersectionObserver(
+                                      (entries) => {
+                                        entries.forEach((entry) => {
+                                          if (entry.isIntersecting) el.play().catch(() => {});
+                                          else el.pause();
+                                        });
+                                      },
+                                      { threshold: 0.5 }
+                                    );
+                                    observer.observe(el);
+                                  }
+                                }}
+                                src={section.videoItems[activeVideo].src}
+                                controls
+                                loop
+                                muted
+                                playsInline
+                                className="h-auto w-full"
+                              >
+                                Your browser does not support the video tag.
+                              </video>
+                            </div>
+                            {section.caption && (
+                              <p className="text-center text-slate-500 text-sm italic">{section.caption}</p>
+                            )}
+                          </div>
+                        );
+                      }
+
+export const ProjectModal = ({ project, onClose }) => {
+  const scrollContainerRef = useRef(null);
   const [activeSection, setActiveSection] = useState("");
   const [isAnyLightboxOpen, setIsAnyLightboxOpen] = useState(false);
   const [selectedScreensTab, setSelectedScreensTab] = useState('account-access');
@@ -1450,7 +1520,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const video = entry.target as HTMLVideoElement;
+          const video = entry.target;
           if (entry.isIntersecting) {
             video.play().catch(() => {
               // Auto-play was prevented, ignore the error
@@ -1712,7 +1782,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
                           {/* Cards Grid */}
                           <div className="grid md:grid-cols-3 gap-8">
-                            {section.flipCards.map((card: any, idx: number) => {
+                            {section.flipCards.map((card, idx) => {
                               const ProblemIcon = iconMap[card.problemIcon] || UserX;
                               const GoalIcon = iconMap[card.goalIcon] || Check;
                               return (
@@ -1883,7 +1953,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   
                   {/* Masonry Grid using CSS columns */}
                   <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
-                    {section.images.map((img: any, idx: number) => (
+                    {section.images.map((img, idx) => (
                       <div 
                         key={idx} 
                         className="break-inside-avoid mb-4 group cursor-pointer"
@@ -2285,8 +2355,8 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         const rect = card.getBoundingClientRect();
                         const x = e.clientX - rect.left;
                         const y = e.clientY - rect.top;
-                        (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
-                        (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
+                        card.style.setProperty('--mouse-x', `${x}px`);
+                        card.style.setProperty('--mouse-y', `${y}px`);
                       });
                     }}
                   >
@@ -2297,8 +2367,8 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                           key={idx}
                           className="spotlight-card group bg-white/[0.02] border border-white/[0.05] rounded-2xl p-6 relative overflow-hidden transition-transform duration-300 hover:-translate-y-1"
                           style={{
-                            ['--mouse-x' as any]: '0px',
-                            ['--mouse-y' as any]: '0px'
+                            ['--mouse-x']: '0px',
+                            ['--mouse-y']: '0px'
                           }}
                         >
                           {/* Watermark Number */}
@@ -2404,7 +2474,6 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         // Core Competencies Demonstrated
                       </div>
                       <div className="flex flex-wrap gap-3">
-                        {/* @ts-ignore */}
                         {section.badges.map((badge, idx) => {
                           const BadgeIcon = iconMap[badge.icon] || Activity;
                           return (
@@ -2655,55 +2724,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 </div>
               )}
 
-              {section.type === 'highlights-section' && section.highlights && (() => {
-                const [activeHighlight, setActiveHighlight] = useState(section.highlights[0]?.id || '');
-                const currentHighlight = section.highlights.find(h => h.id === activeHighlight);
-                
-                return (
-                  <div className="w-full max-w-5xl mx-auto">
-                    {section.title && (
-                      <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                        <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
-                        {section.title}
-                      </h3>
-                    )}
-                    {section.description && (
-                      <p className="text-slate-300 leading-relaxed text-lg mb-8">
-                        {section.description}
-                      </p>
-                    )}
-                    
-                    {/* Filter Pills */}
-                    <div className="flex flex-wrap gap-3 justify-center mb-10">
-                      {section.highlights.map((highlight) => (
-                        <button
-                          key={highlight.id}
-                          onClick={() => setActiveHighlight(highlight.id)}
-                          className={`px-5 py-2.5 rounded-full font-medium text-sm transition-all border ${
-                            activeHighlight === highlight.id
-                              ? 'bg-gradient-to-r from-pink-500/20 to-purple-600/10 border-pink-500 text-white shadow-lg shadow-pink-500/20'
-                              : 'bg-slate-900/40 border-white/10 text-slate-400 hover:text-white hover:border-pink-500/50'
-                          }`}
-                        >
-                          {highlight.label}
-                        </button>
-                      ))}
-                    </div>
-                    
-                    {/* Active Highlight Content */}
-                    {currentHighlight && (
-                      <div className="bg-slate-900/40 border border-white/10 rounded-2xl p-8 transition-all duration-300">
-                        <h4 className="text-2xl font-bold text-white mb-4">
-                          {currentHighlight.title}
-                        </h4>
-                        <p className="text-slate-300 leading-relaxed text-lg">
-                          {currentHighlight.description}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
+              {section.type === 'highlights-section' && section.highlights && <HighlightSection section={section} />}
 
               {/* Flow Images Block */}
               {section.type === 'flow-images' && section.flows && (
@@ -2779,7 +2800,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
                       {section.nextSteps.roadmap.map((item, idx) => {
                         const Icon = iconMap[item.icon] || Star;
-                        const isLast = idx === section.nextSteps!.roadmap.length - 1;
+                        const isLast = idx === section.nextSteps.roadmap.length - 1;
                         return (
                           <div key={idx} className="relative">
                             <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-2 group">
@@ -4157,7 +4178,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                           <div className="grid lg:grid-cols-2 gap-5 w-full">
                             {section.featureShowcase.features.map((feature, idx) => {
                               const IconComponent = iconMap[feature.icon];
-                              const isLastItem = idx === section.featureShowcase!.features.length - 1;
+                              const isLastItem = idx === section.featureShowcase.features.length - 1;
                               
                               return (
                                 <div
@@ -4319,7 +4340,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         <div className="w-full my-16">
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 max-w-5xl mx-auto">
                             {section.processSteps.map((step, idx) => {
-                              const svgIcons: Record<string, string> = {
+                              const svgIcons = {
                                 'Discover': 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.12 14.12l-6.06 2.02a1 1 0 0 1-1.26-1.26l2.02-6.06a1 1 0 0 1 .58-.58l6.06-2.02a1 1 0 0 1 1.26 1.26l-2.02 6.06a1 1 0 0 1-.58.58z',
                                 'Define': 'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z',
                                 'Ideate': 'M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z',
@@ -4352,7 +4373,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                             <p className="text-lg text-slate-300 mb-12 leading-relaxed">
                               {section.productUsers.description.split(/the ages of \d+ and \d+/).map((part, idx, arr) => {
                                 if (idx < arr.length - 1) {
-                                  const match = section.productUsers!.description.match(/the ages of (\d+) and (\d+)/);
+                                  const match = section.productUsers.description.match(/the ages of (\d+) and (\d+)/);
                                   return (
                                     <span key={idx}>
                                       {part}
@@ -4483,60 +4504,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                       )}
 
                       {/* Video Multi Block */}
-                      {section.type === 'video-multi' && section.videoItems && (() => {
-                        const [activeVideo, setActiveVideo] = useState(0);
-                        return (
-                          <div className="w-full my-8 flex flex-col items-center gap-6">
-                            {/* Tab switcher */}
-                            <div className="flex flex-wrap justify-center gap-2">
-                              {section.videoItems.map((v, idx) => (
-                                <button
-                                  key={idx}
-                                  onClick={() => setActiveVideo(idx)}
-                                  className={`px-5 py-2 rounded-full text-sm font-medium border transition-all ${
-                                    activeVideo === idx
-                                      ? 'bg-gradient-to-r from-pink-500/20 to-purple-600/10 border-pink-500 text-white shadow-lg shadow-pink-500/20'
-                                      : 'bg-slate-900/40 border-white/10 text-slate-400 hover:text-white hover:border-pink-500/50'
-                                  }`}
-                                >
-                                  {v.label}
-                                </button>
-                              ))}
-                            </div>
-                            {/* Active video */}
-                            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block max-w-xs w-full">
-                              <video
-                                key={section.videoItems[activeVideo].src}
-                                ref={(el) => {
-                                  if (el) {
-                                    const observer = new IntersectionObserver(
-                                      (entries) => {
-                                        entries.forEach((entry) => {
-                                          if (entry.isIntersecting) el.play().catch(() => {});
-                                          else el.pause();
-                                        });
-                                      },
-                                      { threshold: 0.5 }
-                                    );
-                                    observer.observe(el);
-                                  }
-                                }}
-                                src={section.videoItems[activeVideo].src}
-                                controls
-                                loop
-                                muted
-                                playsInline
-                                className="h-auto w-full"
-                              >
-                                Your browser does not support the video tag.
-                              </video>
-                            </div>
-                            {section.caption && (
-                              <p className="text-center text-slate-500 text-sm italic">{section.caption}</p>
-                            )}
-                          </div>
-                        );
-                      })()}
+                      {section.type === 'video-multi' && section.videoItems && <VedioMulti section={section} />}
 
                       {/* React Component */}
                       {section.type === 'react-component' && section.component === 'CourtCanva2' && (
@@ -4550,7 +4518,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                       {/* Gallery Grid */}
                       {section.type === 'gallery' && section.images && (
                         <GalleryComponent 
-                          images={section.images.filter((img): img is string => typeof img === 'string')}
+                          images={section.images.filter((img) => typeof img === 'string')}
                           caption={section.caption}
                           onLightboxChange={setIsAnyLightboxOpen}
                         />
@@ -4665,15 +4633,15 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
                           {/* Cards Grid */}
                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6" style={{ perspective: '1000px', gridAutoRows: '260px' }}>
-                            {section.cards.map((card: any, cardIdx: number) => {
-                              const colorMap: Record<string, string> = {
+                            {section.cards.map((card, cardIdx) => {
+                              const colorMap = {
                                 cyan: '#38bdf8',
                                 pink: '#f472b6',
                                 emerald: '#34d399'
                               };
                               const accentColor = colorMap[card.color] || '#38bdf8';
 
-                              const svgIconMap: Record<string, React.ReactElement> = {
+                              const svgIconMap = {
                                 globe: (
                                   <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <circle cx="12" cy="12" r="10"/>
@@ -4763,14 +4731,14 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                           {/* Outcomes Grid */}
                           {section.outcomes && (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                              {section.outcomes.map((outcome: any, idx: number) => {
-                                const iconMap: any = {
+                              {section.outcomes.map((outcome, idx) => {
+                                const iconMap = {
                                   'link': <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>,
                                   'shield': <Shield size={16} />,
                                   'credit-card': <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>,
                                   'package': <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                                 };
-                                const colorMap: any = {
+                                const colorMap = {
                                   'blue': { border: 'border-blue-500/30', text: 'text-blue-400', bg: 'bg-blue-500/5' },
                                   'orange': { border: 'border-orange-500/30', text: 'text-orange-400', bg: 'bg-orange-500/5' },
                                   'green': { border: 'border-green-500/30', text: 'text-green-400', bg: 'bg-green-500/5' },
@@ -4799,7 +4767,7 @@ export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                                 <span className="text-xs font-mono text-white">{section.statusBar.value}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                {section.statusBar.badges.map((badge: any, idx: number) => (
+                                {section.statusBar.badges.map((badge, idx) => (
                                   <div 
                                     key={idx}
                                     className={`px-3 py-1 rounded-md text-[10px] font-semibold border ${

@@ -307,7 +307,7 @@ export interface ProjectDetails {
   year: string;
   platform: string;
   tools: string;
-  type: string;
+  type?: string;
   overview?: string;
   myRole?: string;
   constraints?: string;

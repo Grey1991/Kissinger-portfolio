@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
-  "exclude": ["node_modules","./app/data/resume-data.tsx"]
+, "app/components/ProjectModal.jsx", "app/data/resume-data.jsx", "app/page.jsx"  ],
+  "exclude": ["node_modules","app/data/resume-data.jsx"]
 }

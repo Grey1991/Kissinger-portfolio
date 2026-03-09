@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { ResumeData } from '../types';
 
-export const RESUME_DATA: ResumeData = {
+export const RESUME_DATA = {
   name: "Kissinger Hu",
   role: "Senior UI/UX Designer",
   location: "Sydney, NSW",
