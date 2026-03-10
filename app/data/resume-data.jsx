@@ -768,7 +768,7 @@ export const RESUME_DATA = {
       summary: "HubX is a portfolio management system for fund managers and clients. It supports managed funds, asset management, and forex copy trading on one platform.",
       tags: ["Trading Platform", "Fintech", "Data-heavy UI"],
       gradient: "from-slate-700 to-indigo-900",
-      image: "/hubx/hero.png",
+      image: "/hubx/Hero.png",
       icon: <Layers />,
       isCaseStudy: true,
       details: {
