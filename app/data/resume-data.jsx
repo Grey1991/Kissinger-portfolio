@@ -782,7 +782,7 @@ export const RESUME_DATA = {
           { id: "overview", label: "Overview" },
           { id: "context", label: "Context & Constraints" },
           { id: "role", label: "My Role" },
-          { id: "decisions", 墙label: "Key Design Decisions" },
+          { id: "decisions", label: "Key Design Decisions" },
           { id: "before-after", label: "Before → After" },
           { id: "requirements", label: "Requirements & Specifications" },
           { id: "outcome", label: "Outcome" },
