@@ -720,7 +720,7 @@ const BeforeAfterSlider = ({ section }) => {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [activeComparison, setActiveComparison] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef(null);
 
   const comparisons = section.beforeAfterSlider.comparisons || [];
 
