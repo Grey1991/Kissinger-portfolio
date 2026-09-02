@@ -16,7 +16,7 @@ export const RESUME_DATA = {
     linkedin: "https://www.linkedin.com/in/kissingerhu",
     website: "https://www.kissingerhu.com"
   },
-  summary: "Senior UI/UX Designer with 5+ years of experience specialised in modernising legacy systems and designing complex enterprise platforms. Currently the sole designer at Surf Life Saving Australia, leading digital transformation across desktop and mobile. Expert in translating heavy data and compliance workflows into clear, human-centred experiences.",
+  summary: "Senior UI/UX Designer with 5+ years of experience modernising legacy systems and designing complex enterprise platforms. Most recently, I worked as the sole designer across Surf Life Saving Australia’s national platforms—turning member, operational and compliance requirements into clearer workflows, reusable systems and implementation-ready product design.",
   skills: [
     "End-to-End Product & UI/UX Design",
     "Complex Workflow & Form Design",
@@ -25,20 +25,21 @@ export const RESUME_DATA = {
     "Interaction Design & Prototyping",
     "Stakeholder & Cross-functional Collaboration",
     "Accessibility-minded Responsive Design (web & mobile)",
-    "QA Support & UI Validation"
+    "QA Support & UI Validation",
+    "AI-Assisted Product Design"
   ],
   tools: ["Figma", "Adobe XD", "Adobe Photoshop", "Adobe Illustrator"],
   experience: [
     {
       company: "Surf Life Saving Australia (SLSA)",
       role: "Senior UI Designer (Sole Designer)",
-      period: "05/2023 - Present",
-      description: "Leading the end-to-end design and modernization of core digital platforms supporting nationwide operations.",
+      period: "05/2023 - 05/2026",
+      description: "Led end-to-end design across national platforms supporting 200,000+ members and 316 clubs.",
       achievements: [
-        "Spearheaded the UX/UI for 'SLS Hub', replacing a legacy members area with a modern, responsive platform for thousands of users.",
-        "Led the 'SurfGuard' core system rewrite, transforming outdated complex workflows into a scalable design system.",
+        "Led SLS Hub UX/UI from workflow definition through implementation QA, replacing the legacy Members Area with a live, responsive national portal.",
+        "Led SurfGuard modernisation across dense operational workflows, reducing avoidable errors, steps and task time while preserving complex rules and permissions.",
         "Re-architected compliance-heavy journeys (Member Join & Registration), simplifying decision-making via progressive disclosure.",
-        "Established a comprehensive Design System & Component Library to accelerate engineering delivery."
+        "Established a 50+ component Figma design system, including approximately four SLSA-specific components and patterns, to accelerate delivery."
       ]
     },
     {
@@ -91,7 +92,7 @@ export const RESUME_DATA = {
       title: "SurfGuard (SLSA)",
       subtitle: "Legacy Modernisation · In Development",
       category: "Legacy Modernisation",
-      summary: "A full rewrite and modernisation of a legacy SurfGuard system, bringing the platform in-house and transitioning it to a modern cloud architecture and security model.",
+      summary: "Led the UX modernisation of a dense legacy operational platform, restructuring high-volume data tables, search, filtering and multi-step workflows into a scalable component-based experience designed to reduce avoidable errors and steps while preserving complex permissions and business rules.",
       tags: ["Enterprise", "Legacy Modernisation", "Design System", "Multi-device"],
       gradient: "from-blue-700 to-cyan-600",
       image: "/surfguard/SLS Hub Hero.png",
@@ -100,7 +101,7 @@ export const RESUME_DATA = {
       finalDesignLink: "design-system",
       details: {
         role: "UI/UX Designer",
-        year: "2023-present",
+        year: "2023-2026",
         platform: "Web (Desktop + Mobile + Tablet)",
         tools: "Figma, Jira, Confluence",
         
@@ -125,7 +126,7 @@ export const RESUME_DATA = {
                 icon: "database",
                 iconColor: "#60a5fa",
                 title: "The Platform",
-                description: "SurfGuard is a national, web-based core platform used by Surf Life Saving Australia staff and volunteers to manage member information, awards, patrols, and broader organisational records."
+                description: "SurfGuard is a national core operational platform supporting Surf Life Saving Australia's network of 200,000+ members across 316 clubs, including member records, awards, patrols and organisational operations."
               },
               {
                 icon: "box",
@@ -137,7 +138,7 @@ export const RESUME_DATA = {
                 icon: "layout",
                 iconColor: "#d946ef",
                 title: "My Role: UI/UX Designer",
-                description: "Led end-to-end UX across core modules. Partnered closely with devs, BAs, and Solution Architects to translate complex business rules, edge cases, and data integrity needs into a seamless cross-device experience."
+                description: "Led product design from discovery and workflow definition through UI, prototyping, validation, handoff and implementation QA. Worked with 1–2 BAs, an architect, 7–9 developers, 2 QA specialists and senior stakeholders."
               }
             ],
             badges: [
@@ -156,7 +157,7 @@ export const RESUME_DATA = {
                 number: "01",
                 icon: "edit3",
                 title: "End-to-end UI/UX Design",
-                description: "Complete UI/UX design for SurfGuard rewrite across multiple modules."
+                description: "Owned discovery, workflow definition, UI, prototyping, validation, handoff and implementation QA across core modules."
               },
               {
                 number: "02",
@@ -186,7 +187,7 @@ export const RESUME_DATA = {
                 number: "06",
                 icon: "users",
                 title: "Cross-team Collaboration",
-                description: "Continuous design iteration with BA, Solution Architect, and stakeholders."
+                description: "Aligned 1–2 BAs, an architect, 7–9 developers, 2 QA specialists and senior stakeholders around complex rules and delivery constraints."
               },
               {
                 number: "07",
@@ -206,12 +207,12 @@ export const RESUME_DATA = {
             id: "design-system",
             type: "artifact-delivery",
             title: "Design System & Delivery",
-            content: "Built and maintained a shared component library and design guidelines to support consistent implementation across modules. Provided developer-ready Dev Mode specs and fully clickable prototypes to validate end-to-end flows with engineering and stakeholders.",
+            content: "Built and maintained a 50+ component Figma design system, including approximately four SLSA-specific components and patterns. Delivered developer-ready design systems — scalable Figma components, documented interaction states and UI patterns aligned with front-end implementation — plus clickable prototypes for end-to-end validation.",
             artifacts: [
               {
                 label: "ARTIFACT 01",
                 title: "Shared Component Library",
-                description: "Reusable UI patterns ensuring visual and behavioural consistency across modules.",
+                description: "50+ reusable Figma components, including approximately four SLSA-specific components and patterns, ensuring consistency across modules.",
                 image: "/surfguard/Ul Design System SG.png",
                 linkUrl: "https://www.figma.com/design/keE51vjv5xu2WiNnVObf5c/UI-Design-System---SG?node-id=2-39&t=SHainmf0XnJxPm78-1"
               },
@@ -231,7 +232,8 @@ export const RESUME_DATA = {
               }
             ],
             processItems: [
-              "Continuous alignment with BA and Solution Architects to validate expected behaviours.",
+              "Design-to-development collaboration with BAs, the architect, developers, QA specialists and senior stakeholders.",
+              "Monthly module-user reviews to validate live operational needs and guide continuous refinement.",
               "Ongoing refinement and UI QA to protect design intent during the build phase."
             ]
           },
@@ -256,7 +258,7 @@ export const RESUME_DATA = {
             id: "qa-support",
             type: "qa-console",
             title: "QA & Implementation Support",
-            content: "Throughout development, I performed UI QA per ticket and captured actionable feedback based on real device/browser behaviour—supporting iterative refinement and stable delivery quality.",
+            content: "Throughout development, I combined monthly module-user reviews with UI QA per ticket and actionable feedback from real device/browser behaviour. This continuous validation reduced avoidable errors, unnecessary workflow steps and task completion time without overstating unsupported numerical outcomes.",
             qaItems: [
               {
                 title: "UI Ticket Testing",
@@ -298,9 +300,9 @@ export const RESUME_DATA = {
     {
       id: "slshub",
       title: "SLS Hub — National Member Portal",
-      subtitle: "Live Product · 2024-present",
+      subtitle: "Live National Portal · 2024-2026",
       category: "Platform",
-      summary: "The redesigned national member portal that unifies memberships, awards, patrols, submissions, resources, and admin operations — delivered with rules/eligibility-driven visibility, cross-system linking, and a consistent UI across desktop, mobile, and dark mode.",
+      summary: "Led the end-to-end design of SLS Hub, the live national member portal serving a network of 200,000+ members across 316 clubs. Unified memberships, awards, patrols, submissions and admin operations through clear rule-driven workflows across desktop, mobile and dark mode.",
       tags: ["Portal", "Transactions", "Governance", "Live Product"],
       gradient: "from-yellow-600 to-orange-500",
       image: "/slshub/SLS Hub Hero.png",
@@ -309,7 +311,7 @@ export const RESUME_DATA = {
       finalDesignLink: "selected-screens",
       details: {
         role: "UI/UX Designer",
-        year: "2024-present",
+        year: "2024-2026",
         platform: "Web + Mobile (responsive) + Dark mode",
         tools: "Figma, Jira, Confluence",
         
@@ -331,7 +333,7 @@ export const RESUME_DATA = {
             id: "summary",
             type: "text-block",
             title: "Summary",
-            content: "SLS Hub replaces the legacy Members Area as the central portal for members to manage memberships, awards, patrol participation, requests, resources, and linked services.\n\nI owned end-to-end UI/UX across the portal (desktop + responsive mobile), delivered a shared component library, implementation-ready specs (Dev Mode), fully clickable prototypes for full-flow validation, and continuous cross-device QA to protect design intent through build and release.\n\nWhat this demonstrates:\n• System-level portal UX with role- and eligibility-driven visibility (member vs admin, award-gated access)\n• Rules-heavy transactional workflows (renewals, transfers, submissions, approvals, payments)\n• Operational traceability (history logs, records, exports, audit-friendly status changes)"
+            content: "SLS Hub is the live national member portal replacing the legacy Members Area for a network of 200,000+ members across 316 clubs. It brings memberships, awards, patrol participation, requests, resources and linked services into one governed experience.\n\nI led product design from discovery and workflow definition through UI, prototyping, validation, handoff and implementation QA across desktop and responsive mobile. I worked with 1–2 BAs, an architect, 7–9 developers, 2 QA specialists and senior stakeholders to balance member needs, eligibility rules and delivery constraints.\n\nWhat this demonstrates:\n• System-level portal UX with role- and eligibility-driven visibility (member vs admin, award-gated access)\n• Rules-heavy transactional workflows (renewals, transfers, submissions, approvals, payments)\n• Operational traceability (history logs, records, exports, audit-friendly status changes)"
           },
           {
             id: "module-coverage",
@@ -349,7 +351,7 @@ export const RESUME_DATA = {
             id: "design-system",
             type: "text-block",
             title: "Design System & Delivery",
-            content: "Built and maintained a shared component library and mapped Confluence field requirements to UI components to support consistent implementation. Delivered Dev Mode-ready specs, fully clickable prototypes for end-to-end validation, and partnered closely with developers to confirm feasibility and protect design intent.\n\nWhat I delivered:\n• Shared component library for consistent patterns across modules\n• Confluence requirements mapping (fields → UI components) for build clarity\n• Dev Mode specs for implementation-ready handoff\n• Clickable prototypes covering complete flows (for dev + stakeholders)\n• Continuous alignment with BA/stakeholders to validate expected behaviours"
+            content: "Built and maintained a 50+ component Figma design system, including approximately four SLSA-specific components and patterns, and mapped Confluence field requirements to UI components. The design-to-development collaboration combined scalable Figma components, documented interaction states and UI patterns aligned with front-end implementation.\n\nWhat I delivered:\n• 50+ shared Figma components for consistent patterns across modules\n• Approximately four SLSA-specific components and operational patterns\n• Confluence requirements mapping (fields → UI components) for build clarity\n• Dev Mode specs and clickable prototypes covering complete flows\n• Continuous alignment with BAs, engineering, QA and senior stakeholders"
           },
           {
             id: "responsive-dark",
@@ -367,7 +369,7 @@ export const RESUME_DATA = {
             id: "quality-readiness",
             type: "text-block",
             title: "Quality & Release Readiness",
-            content: "Ran continuous UI QA per ticket throughout development, testing across browsers and devices and partnering with developers to confirm feasibility and correctness. This helped catch edge cases early (rule-driven visibility, status transitions, responsive regressions, modal constraints) and ensured the experience shipped consistently."
+            content: "Combined monthly module-user reviews with continuous UI QA per ticket, cross-browser testing and implementation reviews. Feedback from active module users informed ongoing refinement, while developer and QA collaboration caught rule-driven visibility, status-transition, responsive and modal edge cases before release."
           },
           {
             id: "selected-screens",
@@ -410,7 +412,7 @@ export const RESUME_DATA = {
       title: "Member Join (SLSA)",
       subtitle: "Member Join Process Rewrite",
       category: "Web App",
-      summary: "The Member Join Rewrite project's aim is to enhance the current online membership sign-up, rejoin and renewal process to provide an improved source of information on the SLS Website coupled with an intuitive, streamlined SLS Hub process, and consolidated reporting and reconciliation features in SurfGuard.",
+      summary: "Redesigned the end-to-end join, rejoin and renewal journey across the public website, SLS Hub and SurfGuard—turning fragmented guidance, eligibility logic, payments and administration into one clearer cross-platform flow.",
       shortSummary: "Enhancing the membership sign-up and renewal process with improved information on the SLS Website, streamlined SLS Hub flows, and consolidated reporting in SurfGuard.",
       tags: ["Form UX", "System Integration", "Compliance", "Working Project"],
       gradient: "from-slate-700 to-slate-800",
@@ -435,7 +437,7 @@ export const RESUME_DATA = {
         ],
 
         overview: "This project involves a complex delivery across three distinct ecosystems: SLSA Website (Public), SLS Hub (Member Portal), and SurfGuard (Admin/CRM). The unified landing page handles information and user triage, while the Hub manages transactional forms and payments.",
-        myRole: "UI/UX Designer responsible for the complete UX/UI across all three systems, including wireframes, prototypes, and stakeholder validation.",
+        myRole: "Led product design across all three systems from workflow definition through UI, prototyping, stakeholder validation, handoff and implementation-ready documentation.",
         constraints: "Must maintain strict compliance with safeguarding standards, integrate with legacy CRM systems, and support complex pricing logic including promo codes and government vouchers.",
         approach: "Progressive disclosure strategy to guide users through complex decisions, with clear separation between information (SLSA Website) and transactions (Hub).",
         keyDecisions: ["Upfront membership type identification", "Interactive club finder with map", "Price transparency before account creation", "Full SurfGuard integration for automated reporting"],
@@ -465,14 +467,14 @@ export const RESUME_DATA = {
             id: "overview",
             type: "text-block",
             title: "Project Overview",
-            content: "Unifying the join, renew, and re-join experience from fragmented state portals into a consistent national guide, fully integrated with SurfGuard for seamless reporting and reconciliation.\n\nThis project involves a complex delivery across three distinct ecosystems: SLSA Website (Public), SLS Hub (Member Portal), and SurfGuard (Admin/CRM)."
+            content: "Unifying join, renewal and re-joining journeys that previously depended on fragmented state portals. The proposed experience connects national guidance on the SLSA Website with member transactions in SLS Hub and reporting and reconciliation in SurfGuard.\n\nThe work spans three distinct systems with different users, rules and operational responsibilities: SLSA Website (public), SLS Hub (member portal), and SurfGuard (admin/CRM)."
           },
           {
             id: "problem-goal",
             type: "problem-goal",
             title: "Problem & Goal",
             problemText: "The current ecosystem suffers from <strong>fragmented entry points</strong> across state and club websites, leading to inconsistent information and repetitive workflows.<br/><br/>The legacy reliance on <strong>offline forms</strong> creates friction for members and results in <strong>disconnected data</strong> for reconciliation within SurfGuard.",
-            goalText: "To provide a <strong>centralised source</strong> of information and guidance on the SLSA Website.<br/><br/>Create a faster, <strong>intuitive transactional process</strong> in the Hub, and ensure full integration with SurfGuard for <strong>automated reporting</strong> and financial reconciliation."
+            goalText: "Provide a <strong>centralised source</strong> of joining information on the SLSA Website.<br/><br/>Reduce avoidable steps in Hub transactions and connect the resulting records to SurfGuard for <strong>reporting</strong> and financial reconciliation."
           },
           {
             id: "scope",
@@ -636,7 +638,7 @@ export const RESUME_DATA = {
       title: "SurfCom ICEMS — Incident Logging & Manager Refresh",
       subtitle: "Emergency / Incident Mgmt",
       category: "Regulated",
-      summary: "Refreshing incident workflows and message-centre patterns to improve speed, clarity, and coordination in operational contexts.",
+      summary: "Redesigned time-critical incident logging and coordination workflows so operators can capture structured information, understand the latest confirmed state and hand over active incidents with less ambiguity.",
       tags: ["Emergency Ops", "Incident Logging", "Messaging", "Maps & Location", "Prototype", "QA"],
       gradient: "from-red-600 to-rose-600",
       icon: <Clock />,
@@ -669,7 +671,7 @@ export const RESUME_DATA = {
           "Unified incident context, messaging, and coordination into a single, persistent workspace.",
           "Validated design patterns with real operators to ensure practical usability."
         ],
-        outcome: "Delivered a streamlined, high-clarity interface that improved incident response speed and reduced operator error, now in use by Surf Life Saving's operations team.",
+        outcome: "Delivered and tested a clearer design direction for incident logging and coordination. The case study presents the post-testing prototype; implementation was not complete at the documented stage.",
         contentSections: [
           {
             id: "demo-video",
@@ -763,9 +765,9 @@ export const RESUME_DATA = {
     {
       id: "hubx",
       title: "HubX — Trading Management Platform",
-      subtitle: "Enterprise Fintech Solution",
+      subtitle: "Launched & Delivered · Enterprise Fintech",
       category: "Desktop",
-      summary: "HubX is a portfolio management system for fund managers and clients. It supports managed funds, asset management, and forex copy trading on one platform.",
+      summary: "Led the design of a launched and delivered portfolio-management platform, consolidating managed funds, asset management and forex copy trading into a clearer system for fund managers and clients.",
       tags: ["Trading Platform", "Fintech", "Data-heavy UI"],
       gradient: "from-slate-700 to-indigo-900",
       image: "/hubx/Hero.png",
@@ -794,7 +796,7 @@ export const RESUME_DATA = {
         constraints: "Enterprise-grade data density, accuracy requirements, complex multi-user workflows, and integration with legacy trading systems.",
         approach: "",
         keyDecisions: [],
-        outcome: "",
+        outcome: "Launched and delivered with a unified information architecture, reusable Ant Design patterns and implementation-ready requirements.",
         
         contentSections: [
           {
@@ -841,12 +843,12 @@ export const RESUME_DATA = {
               },
               {
                 title: "Complex Multi-Step Workflows",
-                desc: "Trading operations involve intricate sequences spanning multiple screens, requiring seamless navigation and state management.",
+                desc: "Trading operations span multiple screens and states, so users need to understand their position in a task and what will happen next.",
                 icon: <Activity size={20} />
               },
               {
                 title: "Accuracy & Precision",
-                desc: "Financial data demands pixel-perfect alignment, consistent formatting, and zero tolerance for ambiguity or error.",
+                desc: "Financial data requires consistent formatting, precise alignment and explicit labels so values and actions are not misread.",
                 icon: <Target size={20} />
               },
               {
@@ -904,7 +906,7 @@ export const RESUME_DATA = {
                 goalIcon: "shield",
                 goalTitle: "Quality Assurance",
                 goals: [
-                  "Authored comprehensive requirements docs combining PM and prototype insights",
+                  "Authored requirements documents combining product decisions, field rules and prototype behaviour",
                   "Tested front-end builds, documenting discrepancies for resolution",
                   "Iterated designs based on feedback, constraints, and testing results"
                 ]
@@ -934,30 +936,30 @@ export const RESUME_DATA = {
                   navTitle: "Ant Design as Foundation",
                   tag: "LIBRARY",
                   displayTitle: "Enterprise-Grade Consistency",
-                  description: "Leveraged Ant Design to ensure consistency, accessibility, and developer efficiency across the entire platform ecosystem."
+                  description: "Used Ant Design as a shared implementation foundation, then defined product-specific patterns for dense data, forms and multi-step workflows."
                 },
                 {
                   navTitle: "Component-Driven Arch",
                   tag: "MODULARITY",
                   displayTitle: "Rapid Page Assembly",
-                  description: "Built reusable UI modules (data grids, forms, cards) enabling rapid development while maintaining strict visual coherence."
+                  description: "Defined reusable data-grid, form and card patterns so recurring screens could be assembled consistently without redesigning common behaviour."
                 },
                 {
                   navTitle: "Documentation Standards",
                   tag: "HANDOFF",
                   displayTitle: "Reducing Ambiguity",
-                  description: "Established detailed requirements documents translating designs into technical specifications for seamless implementation."
+                  description: "Documented field rules, component references and interaction behaviour so engineering and QA could work from the same criteria."
                 },
                 {
                   navTitle: "Iterative QA Integration",
                   tag: "QUALITY",
                   displayTitle: "Design Fidelity Assurance",
-                  description: "Embedded continuous testing throughout development cycles, catching discrepancies early to maintain pixel-perfect fidelity."
+                  description: "Reviewed front-end builds throughout delivery, documenting visual and interaction discrepancies before they accumulated."
                 },
                 {
                   navTitle: "Workflow Simplification",
                   tag: "UX OPTIMIZATION",
-                  displayTitle: "Frictionless Workflows",
+                  displayTitle: "Clearer task progression",
                   description: "Analysed user journeys to identify and eliminate friction points, streamlining multi-step processes without sacrificing functionality."
                 }
               ]
@@ -1042,7 +1044,7 @@ export const RESUME_DATA = {
             id: "outcome",
             type: "text-block",
             title: "Outcome",
-            content: "The redesigned platform delivered measurable improvements in user experience and development efficiency, though specific adoption metrics remain confidential."
+            content: "HubX launched and was delivered with a unified information architecture, reusable Ant Design patterns and implementation-ready requirements. The result made dense trading information easier to scan and complex workflows clearer while keeping confidential commercial and adoption metrics private."
           },
           {
             id: "design-outcome-video",
@@ -1059,7 +1061,7 @@ export const RESUME_DATA = {
               successes: [
                 {
                   title: "Documentation-First Approach",
-                  description: "Comprehensive requirements docs significantly reduced implementation questions and rework, accelerating development velocity."
+                  description: "Detailed requirements gave product, engineering and QA a shared reference for field logic and interaction behaviour."
                 },
                 {
                   title: "Component Library Foundation",
@@ -1092,9 +1094,9 @@ export const RESUME_DATA = {
     {
       id: "courtcanva",
       title: "CourtCanva",
-      subtitle: "Custom Court Design & Quoting Platform",
+      subtitle: "Live Client Project · End-to-End Product Design",
       category: "Desktop",
-      summary: "A web platform enabling users to create custom court designs and obtain quotes from builders and suppliers.",
+      summary: "Led responsive product design for a live client platform enabling custom court creation and supplier quotes. The product remained in active development and was progressing toward full delivery when my employment ended.",
       tags: ["Redesign", "Design System", "Stakeholder Collaboration"],
       gradient: "from-pink-600 to-purple-600",
       image: "/courtcanva/hero2.0.png",
@@ -1118,9 +1120,9 @@ export const RESUME_DATA = {
           { id: "reflection", label: "Reflection" }
         ],
 
-        overview: "CourtCanva is a startup platform where users can create custom court designs and receive quotes for their creations. The web application allows court owners, sports facility managers, and individuals to visualise designs through an intuitive interface and connect with builders.",
-        myRole: "Designed responsive layouts for all pages, developed style guidelines in collaboration with BAs and developers, and continuously refined the design through stakeholder feedback cycles.",
-        constraints: "Ensuring seamless responsive experience across desktop, iPad, and iPhone while maintaining design consistency and accessibility standards.",
+        overview: "CourtCanva is a live client platform where court owners, sports facility managers and individuals can create custom court designs, visualise options and receive supplier quotes. The product was still progressing toward full delivery when my employment ended.",
+        myRole: "Led responsive product design across core journeys, developed style guidelines with BAs and developers, integrated stakeholder feedback and prepared implementation-ready designs across desktop, iPad and iPhone.",
+        constraints: "Maintaining understandable court-building and ordering workflows across desktop, iPad and iPhone while preserving consistency and accessible interaction states.",
         approach: "",
         keyDecisions: [],
         outcome: "",
@@ -1139,12 +1141,12 @@ export const RESUME_DATA = {
             features: [
               {
                 title: "Style Guidelines Development",
-                desc: "Collaborated with BA and developers to create comprehensive guidelines for theme colours, fonts, font sizes, and icon designs.",
+                desc: "Worked with the BA and developers to document colour, typography, icon and reusable interface decisions.",
                 icon: <PenTool size={20} />
               },
               {
                 title: "Responsive Layout Design",
-                desc: "Designed layouts for all pages and landing pages, ensuring seamless experience across desktop and iPad devices.",
+                desc: "Designed core pages and landing experiences across desktop and iPad, adapting controls and content hierarchy for each viewport.",
                 icon: <Layers size={20} />
               },
               {
@@ -1154,7 +1156,7 @@ export const RESUME_DATA = {
               },
               {
                 title: "Continuous Design Refinement",
-                desc: "Engaged in ongoing design improvement, working closely with the project team to deliver a polished final product.",
+                desc: "Refined workflows and interface details with the project team as requirements, feedback and implementation constraints changed.",
                 icon: <CheckSquare size={20} />
               }
             ]
@@ -1253,8 +1255,8 @@ export const RESUME_DATA = {
             title: "CourtCanva 2.0 — Redesigned Experience",
             featureShowcase: {
               badge: "Version 2.0",
-              heroTitle: "The Complete Reimagination",
-              description: "CourtCanva 2.0 isn't just an update; it's a new standard. We rebuilt the core engine to deliver precision, speed, and a seamless commerce experience.",
+              heroTitle: "A clearer configuration and quoting journey",
+              description: "The second design direction reorganised the core court-building workflow, improved visualisation controls and connected customisation more clearly to quoting and checkout.",
               features: [
                 {
                   index: "01",
@@ -1264,27 +1266,27 @@ export const RESUME_DATA = {
                 },
                 {
                   index: "02",
-                  title: "High-Performance Visualisation",
+                  title: "Responsive visualisation",
                   icon: "eye",
                   description: "SVG-based rendering supporting multi-sport layouts (Tennis, Basketball, Pickleball) with instant, lightweight 2D-to-3D perspective switching."
                 },
                 {
                   index: "03",
-                  title: "Deep Customisation",
+                  title: "Structured customisation",
                   icon: "edit",
                   description: "Granular control over surface textures, custom text branding, and a suite of 3D accessories including LED lighting, fencing, and scoreboards."
                 },
                 {
                   index: "04",
-                  title: "E-commerce Ecosystem",
+                  title: "Quote and order journey",
                   icon: "shopping-cart",
-                  description: "A seamless user journey from smart template selection to customisation, cart management, and a simulated secure checkout process."
+                  description: "Connected template selection and court customisation to cart management, quote details and the checkout flow."
                 },
                 {
                   index: "05",
-                  title: "Comprehensive User Hub",
+                  title: "Design and order management",
                   icon: "user",
-                  description: "A fully functional dashboard for managing saved designs and orders, integrated with a robust settings suite covering Profile, Security, and Help Centre."
+                  description: "A dashboard for saved designs and orders, supported by profile, security and help settings."
                 }
               ]
             }
@@ -1307,7 +1309,7 @@ export const RESUME_DATA = {
               successes: [
                 {
                   title: "Stakeholder Showcases",
-                  description: "Regular alignment sessions significantly reduced late-stage revisions, keeping the dev timeline on track."
+                  description: "Regular showcases surfaced stakeholder feedback while design decisions were still practical to adjust."
                 },
                 {
                   title: "Style Guide Sync",
@@ -1340,9 +1342,9 @@ export const RESUME_DATA = {
     {
       id: "nootee",
       title: "NooTee — Note-Taking App",
-      subtitle: "Concept Project",
+      subtitle: "Client Project · End-to-End Product Design",
       category: "Desktop",
-      summary: "A note-taking app designed to solve collaboration gaps, media limitations, and organisation challenges in existing tools.",
+      summary: "Designed a collaborative note-taking product around the gaps users experienced with shared organisation, media-rich notes and keeping team knowledge easy to retrieve.",
       tags: ["Product Design", "UX Research", "Desktop App"],
       gradient: "from-violet-600 to-fuchsia-600",
       backgroundImage: "/nootee/NooTee Hero BG.png",
@@ -1373,9 +1375,9 @@ export const RESUME_DATA = {
           { id: "whats-next", label: "Next Steps & Learnings" }
         ],
 
-        overview: "Most note-taking apps lack collaboration features and robust media support. When users accumulate many notes, poor organisation makes retrieval difficult.",
+        overview: "The research focused on three recurring gaps in note-taking tools: collaborating within a note, working with mixed media, and retrieving information as the number of notes grows.",
         myRole: "Led end-to-end product design—research, personas, journey mapping, competitive analysis, wireframes, and high-fidelity UI.",
-        constraints: "Crowded market with established players. Need clear differentiation and intuitive organisation.",
+        constraints: "A crowded category with established interaction patterns. The design needed a clear reason to switch without making organisation unfamiliar.",
         approach: "",
         keyDecisions: [],
         outcome: "",
@@ -1412,7 +1414,7 @@ export const RESUME_DATA = {
               {
                 problemIcon: "activity",
                 problemTitle: "Chaos",
-                problemDesc: "Managing a large volume of notes becomes difficult without powerful organization tools.",
+                problemDesc: "As the number of notes grows, inconsistent structure and naming make retrieval increasingly difficult.",
                 goalIcon: "search",
                 goalTitle: "Structure",
                 goals: [
@@ -1586,7 +1588,7 @@ export const RESUME_DATA = {
               {
                 number: "01",
                 title: "Ease of Use",
-                description: "Users require a simple, clutter-free interface that is intuitive to navigate from the first use."
+                description: "Users expected familiar navigation and a clear content hierarchy without controls competing with the note itself."
               },
               {
                 number: "02",
@@ -1595,13 +1597,13 @@ export const RESUME_DATA = {
               },
               {
                 number: "03",
-                title: "Seamless Synchronization",
-                description: "Users need their notes to sync instantly across all devices—desktop, laptop, iPad, and mobile—ensuring data is always accessible."
+                title: "Cross-device Continuity",
+                description: "Users needed current notes to remain available across desktop, laptop, tablet and mobile."
               },
               {
                 number: "04",
                 title: "Advanced Search Ability",
-                description: "Users want powerful retrieval tools to find notes instantly by specific keywords, custom tags, creation dates, or other criteria."
+                description: "Users needed to retrieve notes through keywords, custom tags, dates and other remembered attributes."
               },
               {
                 number: "05",
@@ -1649,7 +1651,7 @@ export const RESUME_DATA = {
               {
                 icon: "smile",
                 title: "Ease of Use",
-                description: "Visual hierarchical structure, drag-and-drop organisation, and intuitive shortcuts.",
+                description: "Visual hierarchy, drag-and-drop organisation and consistent keyboard shortcuts.",
                 image: "/nootee/Ease of Use.png"
               },
               {
@@ -1673,7 +1675,7 @@ export const RESUME_DATA = {
               {
                 icon: "users",
                 title: "Sharing & Collaboration",
-                description: "Real-time collaboration, commenting, and comprehensive version history.",
+                description: "Real-time collaboration, comments and version history attached to the note context.",
                 image: "/nootee/Sharing.png"
               },
               {
@@ -1685,7 +1687,7 @@ export const RESUME_DATA = {
               {
                 icon: "wifi-off",
                 title: "Offline Functionality",
-                description: "Let users edit notes seamlessly without an internet connection.",
+                description: "Allow users to continue editing without a connection and make synchronisation state visible.",
                 image: "/nootee/offline functionality.png"
               }
             ]
@@ -1694,7 +1696,7 @@ export const RESUME_DATA = {
             id: "final-ui",
             type: "text-block",
             title: "Final UI",
-            content: "The final design features a clean, dark-mode-first interface with generous spacing, clear typography, and intuitive gestures. Media uploads are seamlessly integrated, and collaboration features are accessible without cluttering the core experience."
+            content: "The final direction uses a dark-first workspace with clear typography and restrained controls around the note canvas. Media and collaboration actions remain available without occupying the primary writing area, while navigation supports folders, tags and retrieval."
           },
           {
             id: "final-gallery",
@@ -1782,7 +1784,7 @@ export const RESUME_DATA = {
       title: "JR Food Court",
       subtitle: "Office Smart Canteen Solution",
       category: "Mobile",
-      summary: "An O2O mobile application streamlining the lunch rush for office workers through pre-ordering and smart table booking.",
+      summary: "Designed an office canteen service that combines pre-ordering and table booking to reduce queuing, seat uncertainty and wasted break time during the lunch rush.",
       tags: ["Mobile UX", "O2O Service", "Efficiency", "Full Case Study"], 
       gradient: "from-orange-500 to-amber-600",
       backgroundImage: "/jr food court/JR Food Court Hero BG.png",
@@ -1814,9 +1816,9 @@ export const RESUME_DATA = {
         overview: "JR Academy's new office needed a food court solution. The challenge was to manage the lunch rush efficiency for staff.",
         myRole: "Led the end-to-end product design, from user research and service blueprinting to high-fidelity UI.",
         constraints: "High-stress, time-sensitive environment. Users are hungry and have limited break time.",
-        approach: "Speed-First philosophy focusing on seamless ordering and queue management.",
+        approach: "Prioritised the time-sensitive parts of the service: choosing food, confirming collection timing and finding a seat.",
         keyDecisions: ["Smart Re-order Loop", "Live Queue Visualization", "Split-Path Checkout"],
-        outcome: "Delivered a comprehensive high-fidelity prototype that streamlined the ordering process.",
+        outcome: "Delivered a high-fidelity prototype connecting food pre-ordering, collection status and table booking in one mobile journey.",
         
         contentSections: [
           {
@@ -1875,7 +1877,7 @@ export const RESUME_DATA = {
             id: "define",
             type: "text-block",
             title: "Define Phase",
-            content: "During the define phase of our project, I collaborated with my team members to brainstorm and create a comprehensive plan that included feature prioritisation, user task flow, and defining the scope of work. This process allowed us to clearly outline our goals and ensure that our design decisions were aligned with the needs of our users.\n\nAfter conducting thorough research and analysis, we were able to define the key pain points of our users and develop effective solutions to address them."
+            content: "During definition, the team grouped research findings into the moments causing the most lost break time: deciding what to order, waiting without reliable collection information and searching for seating. We prioritised the task flow around those moments and limited the first concept to ordering, queue visibility and table booking."
           },
           {
             id: "define-solutions",
@@ -1901,7 +1903,7 @@ export const RESUME_DATA = {
               {
                 step: "04",
                 title: "Wayfinding System",
-                description: "Providing clear signage to guide employees through the food court effortlessly."
+                description: "Use clear signage and matching in-app references so employees can identify collection and seating areas quickly."
               },
               {
                 step: "05",
@@ -1966,7 +1968,7 @@ export const RESUME_DATA = {
             id: "iterations",
             type: "text-block",
             title: "Design Iterations (Low-Fi to Hi-Fi)",
-            content: "I employed a three-step development process to iterate quickly. Below is an interactive 3D carousel showcasing the evolution from initial wireframes to polished designs."
+            content: "The interface moved through three levels of fidelity, allowing the task sequence and screen hierarchy to be reviewed before visual detail was added. The carousel below shows that progression."
           },
           {
             id: "lowfi-carousel",
@@ -1994,7 +1996,7 @@ export const RESUME_DATA = {
             id: "final-polish",
             type: "text-block",
             title: "Final Polish",
-            content: "The final UI incorporates feedback from user testing, featuring larger touch targets and clearer status indicators for 'Live Queue'. Below are all the polished high-fidelity screens ready for development handoff."
+            content: "The final UI applies testing feedback through larger touch targets and clearer Live Queue status indicators. The screens below document the proposed end-to-end journey for handoff."
           },
           {
             id: "final-polish-gallery",
@@ -2050,7 +2052,7 @@ export const RESUME_DATA = {
             id: "final-ui",
             type: "text-block",
             title: "Final UI & Outcomes",
-            content: "The final High-Fidelity prototype successfully addressed the core pain points. The application now supports a seamless O2O (Online-to-Offline) experience, reducing perceived wait times and ensuring staff can enjoy their break."
+            content: "The high-fidelity prototype brings ordering, collection status and seating into one service journey. It demonstrates how the proposed experience could reduce uncertainty during the lunch rush; operational impact was not measured in a live release."
           },
           {
             id: "outcomes-video",

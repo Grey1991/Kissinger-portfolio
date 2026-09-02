@@ -25,7 +25,6 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-pink-500/30">
-      
       <ParticleDonut />
 
       {/* Navigation */}
@@ -35,10 +34,10 @@ export default function Portfolio() {
       />
 
       {/* Hero Section */}
-      <HeroSection name={RESUME_DATA.name} />
+      <HeroSection name={RESUME_DATA.name} role={RESUME_DATA.role} />
 
       {/* Main Content */}
-      <main className="relative z-10 bg-gradient-to-b from-transparent via-slate-950/90 to-slate-950 backdrop-blur-[2px]">
+      <main className="relative z-10 bg-slate-950">
         
         {/* About Section */}
         <AboutSection 
@@ -78,5 +77,3 @@ export default function Portfolio() {
     </div>
   );
 }
-
-

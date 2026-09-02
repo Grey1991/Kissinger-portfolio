@@ -60,6 +60,105 @@ body {
   transform: scale(1) !important;
 }
 
+/* Project case studies: calm, editorial chrome shared by every detail page. */
+.project-detail-backdrop {
+  background: rgb(2 6 23 / 0.92);
+  backdrop-filter: blur(14px);
+}
+
+.project-detail-frame {
+  background: #080d18;
+  border-color: rgb(255 255 255 / 0.12);
+  box-shadow: 0 30px 90px rgb(0 0 0 / 0.55);
+}
+
+.project-detail-close {
+  background: rgb(2 6 23 / 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.project-detail-hero::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(90deg, rgb(2 6 23 / 0.2), transparent 60%);
+}
+
+.project-detail-heading {
+  max-width: 52rem;
+}
+
+.project-detail-layout {
+  background: #080d18;
+}
+
+.project-detail-toc {
+  background: #0b111e;
+}
+
+.project-detail-content {
+  min-width: 0;
+}
+
+.project-detail-content h3 {
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+.project-detail-content p {
+  line-height: 1.7;
+}
+
+.project-detail-section {
+  position: relative;
+  padding-top: 2rem;
+  border-top: 1px solid rgb(255 255 255 / 0.09);
+}
+
+.project-detail-section:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.project-detail-section-index {
+  margin-bottom: 1.5rem;
+  color: rgb(148 163 184 / 0.58);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+.project-detail-section:first-child .project-detail-section-index {
+  display: none;
+}
+
+.project-detail-content img,
+.project-detail-content video {
+  box-shadow: 0 24px 70px rgb(0 0 0 / 0.22);
+}
+
+.project-detail-meta > div:not(:last-child) {
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .project-detail-meta > div:not(:last-child) {
+    border-right: 1px solid rgb(255 255 255 / 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-detail-modal *,
+  .project-detail-modal *::before,
+  .project-detail-modal *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Ecosystem Diagram Animations */
 @keyframes float {
   0%, 100% { transform: translateY(0); }

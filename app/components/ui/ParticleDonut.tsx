@@ -46,6 +46,8 @@ export const ParticleDonut = () => {
     const tubeRadius = 70;
     let mouseX = -1000;
     let mouseY = -1000;
+
+    const getCenterX = () => canvas.width >= 1024 ? canvas.width * 0.78 : canvas.width * 0.72;
     
     for (let i = 0; i < particleCount; i++) {
       const u = Math.random() * Math.PI * 2;
@@ -58,14 +60,14 @@ export const ParticleDonut = () => {
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left - canvas.width / 2;
+      mouseX = e.clientX - rect.left - getCenterX();
       mouseY = e.clientY - rect.top - canvas.height / 2;
     };
     
     const handleTouchMove = (e: TouchEvent) => {
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
-      mouseX = touch.clientX - rect.left - canvas.width / 2;
+      mouseX = touch.clientX - rect.left - getCenterX();
       mouseY = touch.clientY - rect.top - canvas.height / 2;
     };
 
@@ -79,7 +81,7 @@ export const ParticleDonut = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       angleX += 0.002;
       angleY += 0.003;
-      const centerX = canvas.width / 2;
+      const centerX = getCenterX();
       const centerY = canvas.height / 2;
       const fov = 300;
       ctx.fillStyle = '#fce7f3'; 

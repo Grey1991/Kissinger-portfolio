@@ -1,37 +1,34 @@
 'use client';
 
-import { ChevronDown } from 'lucide-react';
-import { Typewriter } from '../ui/Typewriter';
+import { ArrowDown } from 'lucide-react';
 
 interface HeroSectionProps {
   name: string;
+  role: string;
 }
 
-export const HeroSection = ({ name }: HeroSectionProps) => {
+export const HeroSection = ({ name, role }: HeroSectionProps) => {
   return (
-    <section className="relative h-screen w-full flex flex-col justify-center items-center px-6 z-10">
-      <div className="max-w-4xl w-full text-center space-y-8 mix-blend-screen">
-        <h2 className="text-pink-400 tracking-[0.2em] text-sm md:text-base uppercase font-semibold animate-fade-in-up">
-          Portfolio 2026
-        </h2>
-        <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tighter text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)] leading-tight">
-          PORTFOLIO OF<br/>
+    <section className="relative min-h-screen w-full flex items-center px-6 md:px-12 z-10 border-b border-white/5">
+      <div className="max-w-7xl mx-auto w-full pt-24 pb-20">
+        <p className="text-sm uppercase tracking-[0.18em] text-slate-500 mb-8">
+          {name} · {role}
+        </p>
+        <h1 className="max-w-4xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-[-0.04em] text-white leading-[1.02]">
+          Designing clear experiences for{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-fuchsia-400 to-purple-400">
-            {name.toUpperCase()}
+            complex enterprise systems.
           </span>
         </h1>
-        <div className="text-xl md:text-2xl text-slate-400 font-light h-12 flex items-center justify-center gap-2">
-          <span>I am a</span>
-          <span className="text-white font-normal border-b border-pink-500">
-            <Typewriter 
-              texts={['UI/UX Designer', 'Complex System Designer', 'Problem Solver']} 
-            />
-          </span>
-        </div>
-      </div>
-
-      <div className="absolute bottom-12 animate-bounce opacity-50 text-pink-400">
-        <ChevronDown size={32} />
+        <p className="mt-10 max-w-2xl text-lg md:text-xl text-slate-400 leading-relaxed">
+          Senior UI/UX design across national platforms, regulated workflows and design systems — from discovery and workflow definition through delivery and implementation QA.
+        </p>
+        <a
+          href="#works"
+          className="inline-flex items-center gap-2 mt-12 text-sm font-medium text-white border-b border-slate-600 pb-1 hover:border-white transition-colors"
+        >
+          View selected work <ArrowDown size={15} />
+        </a>
       </div>
     </section>
   );

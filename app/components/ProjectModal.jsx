@@ -23,6 +23,7 @@ import GoalsInteractive from './GoalsInteractive';
 import PatternCards from './PatternCards';
 import SafetyRails from './SafetyRails';
 import Lightbox from './Lightbox';
+import { ProjectOverview } from './projects/ProjectOverview';
 import dynamic from 'next/dynamic';
 
 // Dynamically import CourtCanva2 component
@@ -1543,21 +1544,21 @@ export const ProjectModal = ({ project, onClose }) => {
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+    <div className="project-detail-modal fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 overflow-hidden">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-slate-950/90 backdrop-blur-md animate-fade-in" 
+        className="project-detail-backdrop absolute inset-0 bg-slate-950/90 backdrop-blur-md animate-fade-in"
         onClick={onClose}
       />
       
       {/* Modal Content */}
-      <div className="relative w-full max-w-7xl h-[90vh] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-slide-up">
+      <div className="project-detail-frame relative w-full max-w-7xl h-full sm:h-[90vh] bg-slate-900 border border-white/10 sm:rounded-2xl overflow-hidden flex flex-col animate-slide-up">
         
         {/* Close Button */}
         <button 
           onClick={isAnyLightboxOpen ? undefined : onClose}
           disabled={isAnyLightboxOpen}
-          className={`absolute top-4 right-4 z-50 p-2 rounded-full text-white transition-all border border-white/10 ${
+          className={`project-detail-close absolute top-4 right-4 z-50 p-2 rounded-full text-white transition-all border border-white/10 ${
             isAnyLightboxOpen 
               ? 'bg-black/30 opacity-40 cursor-not-allowed' 
               : 'bg-black/50 hover:bg-white/20 cursor-pointer'
@@ -1568,10 +1569,10 @@ export const ProjectModal = ({ project, onClose }) => {
         </button>
 
         {/* Scrollable Area */}
-        <div ref={scrollContainerRef} className="overflow-y-auto overflow-x-hidden h-full scrollbar-thin scrollbar-thumb-pink-500/30 scrollbar-track-transparent">
+        <div ref={scrollContainerRef} className="project-detail-scroll overflow-y-auto overflow-x-hidden h-full scrollbar-thin scrollbar-thumb-slate-500/30 scrollbar-track-transparent">
           
           {/* Header Hero */}
-          <div className={`relative min-h-[20rem] w-full ${project.id === 'slshub' ? 'bg-gradient-to-r from-orange-700 to-orange-600' : `bg-gradient-to-br ${project.gradient}`} p-5 md:p-8 lg:p-12 flex flex-col justify-end`}>
+          <div className={`project-detail-hero relative min-h-[20rem] w-full ${project.id === 'slshub' ? 'bg-gradient-to-r from-orange-700 to-orange-600' : `bg-gradient-to-br ${project.gradient}`} p-6 md:p-10 lg:p-14 flex flex-col justify-end`}>
             {/* Background Image Layer */}
             {project.backgroundImage && (
               <>
@@ -1661,7 +1662,10 @@ export const ProjectModal = ({ project, onClose }) => {
               </div>
             )}
             
-            <div className="relative z-10 space-y-4">
+            <div className="project-detail-heading relative z-10 space-y-4">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-white/55">
+                {project.subtitle}
+              </p>
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 bg-black/40 backdrop-blur rounded-full text-xs font-medium text-white/90 border border-white/10">
                   {project.category}
@@ -1669,23 +1673,17 @@ export const ProjectModal = ({ project, onClose }) => {
                 <span className="px-3 py-1 bg-black/40 backdrop-blur rounded-full text-xs font-medium text-white/90 border border-white/10">
                   {project.details.year}
                 </span>
-                {/* Additional badge for SLS Hub */}
-                {project.id === 'slshub' && (
-                  <span className="px-3 py-1 bg-green-600/80 backdrop-blur rounded-full text-xs font-semibold text-white border border-green-400/30">
-                    ✓ Live
-                  </span>
-                )}
               </div>
-              <h2 className="text-2xl md:text-4xl lg:text-6xl font-bold text-white tracking-tight">{project.title}</h2>
-              <p className="text-white/80 text-sm md:text-xl max-w-2xl font-light">{project.summary}</p>
+              <h2 className="text-3xl md:text-5xl font-semibold text-white tracking-[-0.035em]">{project.title}</h2>
+              <p className="text-white/75 text-base md:text-lg leading-relaxed max-w-2xl">{project.summary}</p>
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row bg-slate-950 relative">
+          <div className="project-detail-layout flex flex-col md:flex-row bg-slate-950 relative">
             
             {/* STICKY TABLE OF CONTENTS (Desktop Only) */}
             {project.details.toc && (
-              <div className="hidden md:block w-64 bg-slate-900/50 border-r border-white/5 p-6 sticky top-0 h-full overflow-y-auto flex-shrink-0">
+              <div className="project-detail-toc hidden md:block w-64 bg-slate-900/50 border-r border-white/5 p-6 sticky top-0 h-full overflow-y-auto flex-shrink-0">
                 <h5 className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-6 flex items-center gap-2">
                   <Menu size={14} /> Contents
                 </h5>
@@ -1702,7 +1700,7 @@ export const ProjectModal = ({ project, onClose }) => {
                         }}
                         className={`text-sm transition-colors block border-l-2 pl-4 ${
                           activeSection === item.id 
-                            ? (project.id === 'slshub' ? 'border-fuchsia-400 text-white font-medium bg-gradient-to-r from-fuchsia-400/10 to-transparent' : 'border-pink-500 text-white font-medium')
+                            ? 'border-white/70 text-white font-medium bg-white/[0.035]'
                             : 'border-transparent text-slate-500 hover:text-slate-300'
                         }`}
                       >
@@ -1715,10 +1713,10 @@ export const ProjectModal = ({ project, onClose }) => {
             )}
 
             {/* Main Content Body */}
-            <div className="flex-grow p-4 sm:p-8 md:p-12 space-y-16">
+            <div className="project-detail-content flex-grow p-5 sm:p-8 md:p-12 lg:p-16 space-y-16">
               
               {/* Meta Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-b border-white/10 pb-12">
+              <div className="project-detail-meta grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 border-b border-white/10 pb-10">
                 <div>
                   <h4 className="text-xs uppercase tracking-wider text-slate-500 mb-2">Role</h4>
                   <p className="text-white font-medium">{project.details.role}</p>
@@ -1752,12 +1750,14 @@ export const ProjectModal = ({ project, onClose }) => {
                         targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }
                     }}
-                    className="w-full py-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white rounded-lg font-medium text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-pink-900/30 hover:shadow-pink-900/50 hover:scale-[1.02]"
+                    className="project-detail-highlight w-full py-2.5 bg-white text-slate-950 hover:bg-slate-200 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2"
                   >
                     <Eye size={16} /> View highlights
                   </button>
                 </div>
               </div>
+
+              <ProjectOverview projectId={project.id} />
 
               {/* CONDITIONAL RENDERING: FULL CASE STUDY OR STANDARD LAYOUT */}
               {project.isCaseStudy && project.details.contentSections ? (
@@ -1766,9 +1766,11 @@ export const ProjectModal = ({ project, onClose }) => {
                     <div 
                       key={index} 
                       id={section.id} 
-                      className="animate-fade-in-up scroll-mt-10" 
-                      style={{animationDelay: `${index * 100}ms`}}
+                      className="project-detail-section scroll-mt-10"
                     >
+                      <div className="project-detail-section-index" aria-hidden="true">
+                        {String(index + 1).padStart(2, '0')}
+                      </div>
                       {/* Flip Cards - Problem & Goals */}
                       {section.type === 'flip-cards' && section.flipCards && (
                         <div className="w-full max-w-6xl mx-auto">
@@ -2901,7 +2903,7 @@ export const ProjectModal = ({ project, onClose }) => {
                         </div>
                         
                         <p className="text-slate-300 text-lg leading-relaxed mb-10">
-                          A startup project aimed at revolutionizing court construction. We provide a responsive platform where users can <strong className="text-white">create custom court designs</strong> via an intuitive interface and <strong className="text-white">receive instant quotes</strong> from suppliers.
+                          A client platform for court owners and facility managers to <strong className="text-white">configure custom court designs</strong>, review visual options and <strong className="text-white">request supplier quotes</strong>.
                         </p>
                       </div>
                     </div>
@@ -2963,7 +2965,7 @@ export const ProjectModal = ({ project, onClose }) => {
                           User-friendly Design Tool
                         </h3>
                         <p className="text-sm text-slate-400 leading-relaxed max-w-2xl opacity-80 group-hover:text-slate-300 group-hover:opacity-100 transition-all">
-                          Intuitive interface for creating court designs. We lowered the barrier to entry so anyone can design like a pro.
+                          Organised court-building controls so non-specialist users could understand available options and see how changes affected the design.
                         </p>
                       </div>
                       <div className="w-[50px] h-[50px] rounded-full border border-white/10 flex items-center justify-center text-slate-500 opacity-50 group-hover:border-sky-400 group-hover:bg-sky-400/10 group-hover:text-sky-400 group-hover:scale-110 group-hover:rotate-45 group-hover:opacity-100 transition-all duration-400 md:col-start-3 col-start-3 row-start-1">
@@ -2979,7 +2981,7 @@ export const ProjectModal = ({ project, onClose }) => {
                           Enhanced Responsiveness
                         </h3>
                         <p className="text-sm text-slate-400 leading-relaxed max-w-2xl opacity-80 group-hover:text-slate-300 group-hover:opacity-100 transition-all">
-                          Seamless experience across devices. Whether on iPad on-site or desktop in the office, the workflow remains fluid.
+                          Adapted the workflow for desktop planning and on-site iPad use while keeping core controls and terminology consistent.
                         </p>
                       </div>
                       <div className="w-[50px] h-[50px] rounded-full border border-white/10 flex items-center justify-center text-slate-500 opacity-50 group-hover:border-sky-400 group-hover:bg-sky-400/10 group-hover:text-sky-400 group-hover:scale-110 group-hover:rotate-45 group-hover:opacity-100 transition-all duration-400 md:col-start-3 col-start-3 row-start-1">
@@ -3591,7 +3593,7 @@ export const ProjectModal = ({ project, onClose }) => {
                               {/* Top Section: Context */}
                               <div>
                                 <p className="text-slate-400 text-base leading-relaxed">
-                                  I bridged the gap between design and engineering by building a robust component library and delivering implementation-ready specs. My focus was on feasibility, consistency, and protecting design intent through to release.
+                                  I connected design and engineering through a shared component library, documented states and implementation-ready specifications. Reviews during delivery focused on feasibility, consistency and preserving agreed interaction behaviour.
                                 </p>
                               </div>
 
@@ -3933,7 +3935,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                       <div className="text-xl mb-1">✨</div>
                                       <div className="text-xs text-slate-400 font-medium">Design Fidelity</div>
                                       <div className="text-sm text-white font-bold flex items-center gap-1.5">
-                                        <span className="text-green-400 text-base">✔</span> Pixel-Perfect Handoff
+                                        <span className="text-green-400 text-base">✔</span> Documented Handoff
                                       </div>
                                     </div>
 
@@ -4027,7 +4029,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                     <div className="group relative border-l-2 border-transparent hover:border-pink-400 pl-4 py-4 transition-all duration-300 hover:translate-x-1.5">
                                       <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-pink-400/20 group-hover:w-1 group-hover:bg-pink-400 transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(244,114,182,0.5)]" />
                                       <span className="block text-base font-bold text-white mb-1.5 group-hover:text-pink-400 transition-colors duration-300">Operational Traceability</span>
-                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">Comprehensive history logs, records, data exports, and audit-friendly status changes.</span>
+                                      <span className="block text-sm text-slate-400 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">History logs, records, data exports and traceable status changes.</span>
                                     </div>
                                   </div>
                                 </div>
@@ -4086,7 +4088,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                 <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">02</span>
                                 <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Design Interface</h3>
                                 <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                                  Intuitive drag-and-drop tool with extensive court elements, customization options, and real-time 3D preview.
+                                  Drag-and-drop court builder with structured elements, customisation controls and a real-time 3D preview.
                                 </p>
                               </div>
                             </div>
