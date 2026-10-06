@@ -25,7 +25,10 @@ export const ParticleDonut = () => {
     if (!ctx) return;
     
     let animationFrameId: number;
-    const particleCount = 2000;
+    const particleCount = 4200;
+    let canvasWidth = 1;
+    let canvasHeight = 1;
+    let compositionScale = 1;
     
     interface Particle {
       u: number;
@@ -47,44 +50,44 @@ export const ParticleDonut = () => {
     let mouseX = -1000;
     let mouseY = -1000;
 
-    const getCenterX = () => canvas.width >= 1024 ? canvas.width * 0.78 : canvas.width * 0.72;
+    const getCenterX = () => canvasWidth / 2;
     
     for (let i = 0; i < particleCount; i++) {
       const u = Math.random() * Math.PI * 2;
       const v = Math.random() * Math.PI * 2;
       particles.push({
         u, v, x: 0, y: 0, z: 0, cx: 0, cy: 0, vx: 0, vy: 0,
-        alpha: Math.random() * 0.5 + 0.1, size: Math.random() * 1.5 + 0.5
+        alpha: Math.random() * 0.4 + 0.12, size: Math.random() * 0.9 + 0.3
       });
     }
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       mouseX = e.clientX - rect.left - getCenterX();
-      mouseY = e.clientY - rect.top - canvas.height / 2;
+      mouseY = e.clientY - rect.top - canvasHeight / 2;
     };
     
     const handleTouchMove = (e: TouchEvent) => {
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
       mouseX = touch.clientX - rect.left - getCenterX();
-      mouseY = touch.clientY - rect.top - canvas.height / 2;
+      mouseY = touch.clientY - rect.top - canvasHeight / 2;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('touchmove', handleTouchMove);
 
-    let angleX = 0;
-    let angleY = 0;
+    let angleX = -0.42;
+    let angleY = 0.92;
 
     const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       angleX += 0.002;
       angleY += 0.003;
       const centerX = getCenterX();
-      const centerY = canvas.height / 2;
-      const fov = 300;
-      ctx.fillStyle = '#fce7f3'; 
+      const centerY = canvasHeight / 2;
+      const fov = 600;
+      ctx.fillStyle = '#d8ceff';
 
       particles.forEach(p => {
         let x = (torusRadius + tubeRadius * Math.cos(p.v)) * Math.cos(p.u);
@@ -100,8 +103,8 @@ export const ParticleDonut = () => {
         y = ty; z = tz;
 
         const scale = fov / (fov + z);
-        const targetX = x * scale;
-        const targetY = y * scale;
+        const targetX = x * scale * compositionScale;
+        const targetY = y * scale * compositionScale;
 
         const dx = targetX - mouseX;
         const dy = targetY - mouseY;
@@ -139,15 +142,27 @@ export const ParticleDonut = () => {
     };
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const bounds = canvas.getBoundingClientRect();
+      canvasWidth = bounds.width;
+      canvasHeight = bounds.height;
+      const artBounds = canvas.parentElement!.getBoundingClientRect();
+      compositionScale = window.innerWidth >= 768
+        ? Math.min(artBounds.width + 180, artBounds.height * 0.75 + 140) / 620 * (2.06 * 2 / 3)
+        : Math.min(canvasWidth, canvasHeight) / 620 * 1.03;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(canvasWidth * pixelRatio);
+      canvas.height = Math.round(canvasHeight * pixelRatio);
+      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     };
+    const resizeObserver = new ResizeObserver(resize);
+    if (canvas.parentElement) resizeObserver.observe(canvas.parentElement);
     window.addEventListener('resize', resize);
     resize();
     render();
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
@@ -157,7 +172,7 @@ export const ParticleDonut = () => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+      className="absolute inset-0 w-full h-full pointer-events-none"
       style={{ opacity: opacity }}
     />
   );

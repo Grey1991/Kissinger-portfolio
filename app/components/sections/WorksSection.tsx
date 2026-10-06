@@ -6,6 +6,7 @@ import { ProjectCard } from '../projects/ProjectCard';
 
 const FEATURED_PROJECT_ORDER = ['slshub', 'surfguard', 'memberjoin', 'hubx', 'courtcanva'];
 const EARLIER_PROJECT_IDS = new Set(['nootee', 'jrfood']);
+const FORM_PROJECT_IDS = new Set(['slshub', 'surfguard', 'memberjoin', 'hubx']);
 
 interface WorksSectionProps {
   projects: Project[];
@@ -32,9 +33,11 @@ export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) =>
 
   const filteredProjects = useMemo(() => {
     if (activeFilter === 'All') return orderedProjects;
+    const filterTerm = activeFilter === 'Forms' ? 'form' : activeFilter.toLowerCase();
     return orderedProjects.filter(p =>
-      p.tags.some(tag => tag.includes(activeFilter)) || 
-      p.category === activeFilter
+      (activeFilter === 'Forms' && FORM_PROJECT_IDS.has(p.id)) ||
+      p.tags.some(tag => tag.toLowerCase().includes(filterTerm)) ||
+      p.category.toLowerCase() === filterTerm
     );
   }, [activeFilter, orderedProjects]);
 
@@ -42,27 +45,28 @@ export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) =>
   const earlierProjects = filteredProjects.filter((project) => EARLIER_PROJECT_IDS.has(project.id));
 
   return (
-    <section id="works" className="py-16 md:py-32 px-6 bg-slate-950 relative border-t border-white/5">
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section id="works" className="portfolio-section">
+      <div className="portfolio-shell">
         {/* Index Header */}
-        <div className="flex flex-col items-start mb-16 gap-6">
-          <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Selected work</p>
-          <h3 className="text-3xl md:text-5xl font-semibold tracking-tight text-white mb-2">Complex products, made clearer.</h3>
-          <p className="text-slate-400 max-w-2xl text-lg leading-relaxed">
-            Selected product and UX work across enterprise platforms, regulated workflows, and modernisation projects.
+        <div className="flex flex-col items-start mb-10 gap-5">
+          <p className="section-label"><span>01 /</span> Selected work</p>
+          <h2 className="section-title">The work behind the thinking.</h2>
+          <p className="section-description max-w-2xl">
+            Real products, complex requirements and the decisions that brought them together.
           </p>
           
           {/* Filter Bar */}
-          <div className="flex flex-wrap gap-x-6 gap-y-3 mt-4 border-b border-white/10">
+          <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3 border-b border-white/10">
             {filters.map(filter => (
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
+                aria-pressed={activeFilter === filter}
                 className={`
                   -mb-px pb-3 text-sm font-medium transition-colors duration-200 border-b
                   ${activeFilter === filter 
-                    ? 'text-white border-white'
-                    : 'text-slate-500 hover:text-slate-200 border-transparent'}
+                    ? 'text-[#c6bbff] border-[#c6bbff]'
+                    : 'text-slate-400 hover:text-white border-transparent'}
                 `}
               >
                 {filter}
@@ -72,21 +76,21 @@ export const WorksSection = ({ projects, onProjectClick }: WorksSectionProps) =>
         </div>
 
         {/* Project Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {primaryProjects.map((project) => (
             <ProjectCard key={project.id} project={project} onClick={onProjectClick} />
           ))}
         </div>
 
         {earlierProjects.length > 0 && (
-          <div className="mt-20">
-            <div className="mb-8">
-              <h4 className="text-2xl md:text-3xl font-semibold tracking-tight text-white">Earlier client &amp; product work</h4>
-              <p className="text-slate-400 mt-2 max-w-2xl">
+          <div className="mt-14">
+            <div className="mb-7">
+              <h3 className="text-2xl font-semibold tracking-tight text-white">Earlier client &amp; product work</h3>
+              <p className="section-description mt-2 max-w-2xl">
                 Earlier end-to-end client and product engagements spanning research, interaction design and delivery.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8">
               {earlierProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} onClick={onProjectClick} />
               ))}

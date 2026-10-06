@@ -93,7 +93,7 @@ export const IncidentScenario = () => {
     <div className="w-full my-16">
       {/* Header */}
       <div className="text-center mb-10">
-        <h3 className="text-4xl font-bold text-white mb-2">Incident Response Scenario</h3>
+        <h3 className="case-study-heading text-4xl font-bold text-white mb-2">Incident Response Scenario</h3>
         <p className="text-slate-400">Multi-agency collaboration via ICEMS</p>
       </div>
 
@@ -284,7 +284,7 @@ export const IncidentScenario = () => {
         <button 
           onClick={startScenario}
           disabled={isRunning}
-          className="px-8 py-4 bg-red-500 hover:bg-red-600 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg font-bold shadow-lg hover:shadow-red-500/40 transition-all flex items-center gap-3"
+          className="px-8 py-4 bg-red-500 hover:bg-red-600 disabled:bg-slate-700 disabled:cursor-not-allowed text-[#111021] disabled:text-white rounded-lg font-bold shadow-lg hover:shadow-red-500/40 transition-all flex items-center gap-3"
         >
           <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path d="M18.88 18.88A3 3 0 0 1 14.64 23H9.36a3 3 0 0 1-4.24-4.24l.88-.88V12a6 6 0 1 1 12 0v5.88l.88.88z"></path>

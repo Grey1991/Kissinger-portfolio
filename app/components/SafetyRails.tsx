@@ -43,7 +43,7 @@ const SafetyRails: React.FC<SafetyRailsProps> = ({ cards, onLightboxChange }) =>
     <div className="space-y-8">
       {/* Title and Note */}
       <div className="space-y-3">
-        <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+        <h3 className="case-study-heading text-2xl font-bold text-white mb-8 flex items-center gap-3">
           <span className="w-8 h-[2px] bg-purple-500 inline-block"/> Risk Scenarios &amp; Solutions
           <span className="ml-2 px-3 py-1 text-xs font-normal text-gray-400 bg-gray-800/50 border border-gray-700/50 rounded-full">
             Post-testing iteration

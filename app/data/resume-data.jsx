@@ -1,14 +1,10 @@
 import React from 'react';
-import { 
-  Database, Users, Shield, Clock, Layers, Smartphone, 
-  PenTool, Utensils, Search, MousePointer, CheckSquare, Monitor,
-  Layout, Activity, Target, Code, FileText, Eye, TrendingUp, Zap, Lightbulb, RefreshCw, MessageCircle, AlertCircle, HelpCircle, Check, ShoppingCart, UserPlus
-} from 'lucide-react';
-import { ResumeData } from '../types';
+import { Users, Shield, Clock, Layers, PenTool, Utensils, Search, MousePointer, CheckSquare, Monitor, Layout, Activity, Target, Eye, TrendingUp, Zap, UserPlus } from 'lucide-react';
+
 
 export const RESUME_DATA = {
   name: "Kissinger Hu",
-  role: "Senior UI/UX Designer",
+  role: "Senior UX/UI Product Designer",
   location: "Sydney, NSW",
   contact: {
     email: "huweina98@gmail.com",
@@ -16,30 +12,27 @@ export const RESUME_DATA = {
     linkedin: "https://www.linkedin.com/in/kissingerhu",
     website: "https://www.kissingerhu.com"
   },
-  summary: "Senior UI/UX Designer with 5+ years of experience modernising legacy systems and designing complex enterprise platforms. Most recently, I worked as the sole designer across Surf Life Saving Australia’s national platforms—turning member, operational and compliance requirements into clearer workflows, reusable systems and implementation-ready product design.",
+  summary: "I'm a UX/UI product designer with five years of experience across enterprise, fintech and client products. Most recently, I was the sole designer across Surf Life Saving Australia's national platforms, working from workflow definition and user feedback through implementation QA. I focus on making complex rules, operational data and legacy interfaces easier to understand and use. I also designed and built this portfolio with Claude-assisted coding, making and reviewing the design decisions throughout.",
   skills: [
-    "End-to-End Product & UI/UX Design",
-    "Complex Workflow & Form Design",
-    "Design Systems & Component Libraries",
-    "Responsive & Mobile-First Design",
+    "Complex Workflows & Information Architecture",
+    "User Research & Usability Evaluation",
     "Interaction Design & Prototyping",
-    "Stakeholder & Cross-functional Collaboration",
-    "Accessibility-minded Responsive Design (web & mobile)",
-    "QA Support & UI Validation",
-    "AI-Assisted Product Design"
+    "Responsive UI & Accessibility",
+    "Design Systems & Component Libraries",
+    "Stakeholder Alignment & Implementation QA"
   ],
-  tools: ["Figma", "Adobe XD", "Adobe Photoshop", "Adobe Illustrator"],
+  tools: ["Figma", "Jira", "Confluence", "Claude", "ChatGPT", "Adobe Photoshop", "Adobe Illustrator", "Adobe XD"],
   experience: [
     {
       company: "Surf Life Saving Australia (SLSA)",
-      role: "Senior UI Designer (Sole Designer)",
+      role: "UI/UX Designer (Sole Designer)",
       period: "05/2023 - 05/2026",
-      description: "Led end-to-end design across national platforms supporting 200,000+ members and 316 clubs.",
+      description: "Owned UX/UI across national platforms serving a member network of 200,000+ people across 316 clubs.",
       achievements: [
         "Led SLS Hub UX/UI from workflow definition through implementation QA, replacing the legacy Members Area with a live, responsive national portal.",
-        "Led SurfGuard modernisation across dense operational workflows, reducing avoidable errors, steps and task time while preserving complex rules and permissions.",
+        "Restructured SurfGuard's dense operational screens into clearer workflows, search, filtering and table interactions while preserving business rules and permissions.",
         "Re-architected compliance-heavy journeys (Member Join & Registration), simplifying decision-making via progressive disclosure.",
-        "Established a 50+ component Figma design system, including approximately four SLSA-specific components and patterns, to accelerate delivery."
+        "Established a Figma library of approximately 50 reusable components and patterns, including four tailored to SLSA workflows."
       ]
     },
     {
@@ -48,19 +41,19 @@ export const RESUME_DATA = {
       period: "01/2023 - 05/2023",
       description: "Focused on B2B Fintech Trading & Risk Management Platforms.",
       achievements: [
-        "Designed scalable UI conventions for complex, data-heavy financial dashboards.",
-        "Conducted comprehensive UX audits to identify critical usability gaps in trading workflows.",
-        "Bridged the gap between design and dev with high-fidelity prototypes and HTML/CSS feasibility checks."
+        "Independently owned UX/UI across complex forms, data-ingestion workflows, dashboards, charts and portfolio views.",
+        "Established reusable interface conventions and implementation-ready Figma prototypes.",
+        "Worked with developers through QA, launch and client delivery."
       ]
     },
     {
       company: "Async Working",
-      role: "UI/UX Designer",
+      role: "UI/UX Designer (Project Contract)",
       period: "04/2022 - 01/2023",
       description: "Sports Tech - Custom Court Design & Ordering Platform.",
       achievements: [
-        "Optimised responsive purchase flows for 'CourtCanva', significantly improving discoverability.",
-        "Iterated designs in an Agile environment, delivering production-ready assets for complex customisation tools."
+        "Owned responsive UX/UI across court customisation, quoting and purchase journeys, including configurable court visuals and the overall product style.",
+        "Resolved evolving client requirements with BAs and developers; the project was still progressing toward release when the role ended."
       ]
     },
     {
@@ -98,7 +91,7 @@ export const RESUME_DATA = {
       image: "/surfguard/SLS Hub Hero.png",
       icon: <Shield />,
       isCaseStudy: true,
-      finalDesignLink: "design-system",
+      finalDesignLink: "case-context",
       details: {
         role: "UI/UX Designer",
         year: "2023-2026",
@@ -258,7 +251,7 @@ export const RESUME_DATA = {
             id: "qa-support",
             type: "qa-console",
             title: "QA & Implementation Support",
-            content: "Throughout development, I combined monthly module-user reviews with UI QA per ticket and actionable feedback from real device/browser behaviour. This continuous validation reduced avoidable errors, unnecessary workflow steps and task completion time without overstating unsupported numerical outcomes.",
+            content: "Throughout development, I combined monthly module-user reviews with UI QA per ticket and actionable feedback from real device/browser behaviour. These reviews targeted avoidable errors, unnecessary steps and task completion time.",
             qaItems: [
               {
                 title: "UI Ticket Testing",
@@ -308,7 +301,7 @@ export const RESUME_DATA = {
       image: "/slshub/SLS Hub Hero.png",
       icon: <Users />,
       isCaseStudy: true,
-      finalDesignLink: "selected-screens",
+      finalDesignLink: "case-context",
       details: {
         role: "UI/UX Designer",
         year: "2024-2026",
@@ -413,7 +406,7 @@ export const RESUME_DATA = {
       subtitle: "Member Join Process Rewrite",
       category: "Web App",
       summary: "Redesigned the end-to-end join, rejoin and renewal journey across the public website, SLS Hub and SurfGuard—turning fragmented guidance, eligibility logic, payments and administration into one clearer cross-platform flow.",
-      shortSummary: "Enhancing the membership sign-up and renewal process with improved information on the SLS Website, streamlined SLS Hub flows, and consolidated reporting in SurfGuard.",
+      shortSummary: "Redesigned joining and renewal across the public website, SLS Hub and SurfGuard, clarifying eligibility, payments and the steps users needed to take.",
       tags: ["Form UX", "System Integration", "Compliance", "Working Project"],
       gradient: "from-slate-700 to-slate-800",
       icon: <UserPlus />,
@@ -671,7 +664,7 @@ export const RESUME_DATA = {
           "Unified incident context, messaging, and coordination into a single, persistent workspace.",
           "Validated design patterns with real operators to ensure practical usability."
         ],
-        outcome: "Delivered and tested a clearer design direction for incident logging and coordination. The case study presents the post-testing prototype; implementation was not complete at the documented stage.",
+        outcome: "Delivered and tested a clearer design for incident logging and coordination, including post-testing iterations. Implementation was still in progress at the documented stage.",
         contentSections: [
           {
             id: "demo-video",
@@ -767,7 +760,7 @@ export const RESUME_DATA = {
       title: "HubX — Trading Management Platform",
       subtitle: "Launched & Delivered · Enterprise Fintech",
       category: "Desktop",
-      summary: "Led the design of a launched and delivered portfolio-management platform, consolidating managed funds, asset management and forex copy trading into a clearer system for fund managers and clients.",
+      summary: "Independently designed and delivered HubX, a launched B2B fintech platform for fund managers and clients, structuring complex forms, data-ingestion workflows, dashboards and high-density portfolio views.",
       tags: ["Trading Platform", "Fintech", "Data-heavy UI"],
       gradient: "from-slate-700 to-indigo-900",
       image: "/hubx/Hero.png",
@@ -1094,9 +1087,9 @@ export const RESUME_DATA = {
     {
       id: "courtcanva",
       title: "CourtCanva",
-      subtitle: "Live Client Project · End-to-End Product Design",
+      subtitle: "Client Project · Design & Developer Handoff",
       category: "Desktop",
-      summary: "Led responsive product design for a live client platform enabling custom court creation and supplier quotes. The product remained in active development and was progressing toward full delivery when my employment ended.",
+      summary: "Owned responsive UX/UI for a client sports-court platform, including court configuration, quoting, purchasing and the wider visual style. The project was still progressing toward release when my contract ended.",
       tags: ["Redesign", "Design System", "Stakeholder Collaboration"],
       gradient: "from-pink-600 to-purple-600",
       image: "/courtcanva/hero2.0.png",
@@ -1120,7 +1113,7 @@ export const RESUME_DATA = {
           { id: "reflection", label: "Reflection" }
         ],
 
-        overview: "CourtCanva is a live client platform where court owners, sports facility managers and individuals can create custom court designs, visualise options and receive supplier quotes. The product was still progressing toward full delivery when my employment ended.",
+        overview: "CourtCanva is a client platform for creating custom court designs, visualising options and receiving supplier quotes. I owned the design work while the product was in development; it had not been delivered when my contract ended.",
         myRole: "Led responsive product design across core journeys, developed style guidelines with BAs and developers, integrated stakeholder feedback and prepared implementation-ready designs across desktop, iPad and iPhone.",
         constraints: "Maintaining understandable court-building and ordering workflows across desktop, iPad and iPhone while preserving consistency and accessible interaction states.",
         approach: "",
@@ -1356,7 +1349,7 @@ export const RESUME_DATA = {
         year: "2021",
         platform: "Desktop App",
         tools: "Adobe XD, Miro",
-        type: "Concept",
+        type: "Client-Commissioned Product Design",
         
         toc: [
           { id: "overview", label: "Overview" },
@@ -1785,7 +1778,7 @@ export const RESUME_DATA = {
       subtitle: "Office Smart Canteen Solution",
       category: "Mobile",
       summary: "Designed an office canteen service that combines pre-ordering and table booking to reduce queuing, seat uncertainty and wasted break time during the lunch rush.",
-      tags: ["Mobile UX", "O2O Service", "Efficiency", "Full Case Study"], 
+      tags: ["Mobile UX", "O2O Service", "Efficiency", "Full Project"],
       gradient: "from-orange-500 to-amber-600",
       backgroundImage: "/jr food court/JR Food Court Hero BG.png",
       image: "https://i.postimg.cc/x1Hz6yTM/JR-Landing-img-mv2.avif",
@@ -1877,7 +1870,7 @@ export const RESUME_DATA = {
             id: "define",
             type: "text-block",
             title: "Define Phase",
-            content: "During definition, the team grouped research findings into the moments causing the most lost break time: deciding what to order, waiting without reliable collection information and searching for seating. We prioritised the task flow around those moments and limited the first concept to ordering, queue visibility and table booking."
+            content: "During definition, the team grouped research findings into the moments causing the most lost break time: deciding what to order, waiting without reliable collection information and searching for seating. We prioritised the task flow around those moments and limited the first version to ordering, queue visibility and table booking."
           },
           {
             id: "define-solutions",
@@ -1974,7 +1967,7 @@ export const RESUME_DATA = {
             id: "lowfi-carousel",
             type: "carousel-3d",
             steps: [
-                { title: "Low-Fi 1: Log in Page", text: "Initial concept for the login screen, focusing on quick access for busy employees.", image: "https://i.postimg.cc/pX3jQ1xM/Low-Fi1.avif", caption: "Wireframe 1/16" },
+                { title: "Low-Fi 1: Log in Page", text: "Initial design for the login screen, focusing on quick access for busy employees.", image: "https://i.postimg.cc/pX3jQ1xM/Low-Fi1.avif", caption: "Wireframe 1/16" },
                 { title: "Low-Fi 2: Initial page", text: "Entry point options for Delivery or Pickup modes.", image: "https://i.postimg.cc/Hsr5y1q6/Low-Fi2.avif", caption: "Wireframe 2/16" },
                 { title: "Low-Fi 3: Home Page", text: "Drafting the main feed with food categories and search.", image: "https://i.postimg.cc/rFDWr2BN/Low-Fi3.avif", caption: "Wireframe 3/16" },
                 { title: "Low-Fi 4: Search Page", text: "Search functionality for finding specific food items or stores.", image: "https://i.postimg.cc/VsGnvkVq/Low-Fi4.avif", caption: "Wireframe 4/16" },
@@ -2052,7 +2045,7 @@ export const RESUME_DATA = {
             id: "final-ui",
             type: "text-block",
             title: "Final UI & Outcomes",
-            content: "The high-fidelity prototype brings ordering, collection status and seating into one service journey. It demonstrates how the proposed experience could reduce uncertainty during the lunch rush; operational impact was not measured in a live release."
+            content: "The delivered high-fidelity prototype brings ordering, collection status and seating into one service journey. It gives staff a connected path from choosing a meal to checking collection status and arranging a table."
           },
           {
             id: "outcomes-video",

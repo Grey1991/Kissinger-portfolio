@@ -23,7 +23,7 @@ const PROJECT_OVERVIEWS: Record<string, OverviewItem> = {
   surfcom: {
     challenge: 'Help operators understand and act on changing incident information without losing context under time pressure.',
     contribution: 'Designed and tested structured logging, acknowledgement, messaging, handover and safety-critical confirmation patterns.',
-    status: 'Post-testing design direction presented as a prototype; implementation status is disclosed in the case study.',
+    status: 'Tested design and prototype delivered; implementation was still in progress at the documented stage.',
   },
   hubx: {
     challenge: 'Bring fragmented trading tools, dense financial data and multi-step portfolio workflows into one coherent platform.',
@@ -38,12 +38,12 @@ const PROJECT_OVERVIEWS: Record<string, OverviewItem> = {
   nootee: {
     challenge: 'Address collaboration, media and organisation gaps found in existing note-taking tools.',
     contribution: 'Worked from user research and product structure through interaction design and high-fidelity desktop UI.',
-    status: 'Client product design case study focused on the validated design direction.',
+    status: 'Client product design covering research, interface design and further development priorities.',
   },
   jrfood: {
     challenge: 'Reduce queues and uncertainty around food collection and seating during a concentrated office lunch rush.',
     contribution: 'Mapped the service journey and designed mobile pre-ordering, collection and table-booking flows.',
-    status: 'End-to-end mobile product concept demonstrating the proposed service experience.',
+    status: 'End-to-end mobile service design covering ordering, collection and seating.',
   },
 };
 
@@ -63,7 +63,7 @@ export const ProjectOverview = ({ projectId }: ProjectOverviewProps) => {
   ];
 
   return (
-    <section aria-label="Case study overview" className="grid gap-px overflow-hidden rounded-xl border border-white/10 bg-white/10 md:grid-cols-3">
+    <section aria-label="Project overview" className="grid gap-px overflow-hidden rounded-xl border border-white/10 bg-white/10 md:grid-cols-3">
       {items.map((item) => (
         <div key={item.label} className="bg-[#0b111e] p-6 md:p-7">
           <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">

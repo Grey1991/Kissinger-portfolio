@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { PortfolioImage } from './ui/PortfolioImage';
+import { useEffect, useRef } from 'react';
+import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
 import { createPortal } from 'react-dom';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -25,16 +27,8 @@ export default function Lightbox({
   caption,
   alt = 'Enlarged image'
 }: LightboxProps) {
-  // Handle ESC key to close
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [isOpen, onClose]);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useAccessibleDialog(dialogRef, isOpen, onClose);
 
   // Handle arrow keys for navigation
   useEffect(() => {
@@ -59,13 +53,18 @@ export default function Lightbox({
 
   const lightboxContent = (
     <div 
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={caption || alt}
+      tabIndex={-1}
       className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-8 cursor-zoom-out"
       onClick={onClose}
       style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
     >
       <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
         <div className="relative">
-          <img 
+          <PortfolioImage original
             src={currentImage}
             alt={alt}
             className="max-w-[95vw] max-h-[95vh] w-auto h-auto object-contain"

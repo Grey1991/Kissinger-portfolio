@@ -1,14 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  Palette, Layout, Box, Save, User, ShoppingCart, Menu, X, 
-  ChevronRight, Settings, LogOut, Layers, Maximize2, Undo, Redo, 
-  CheckCircle, CreditCard, History, Search, Filter, Trash2, 
-  AlertCircle, FileText, ArrowRight, Star, MapPin, Truck,
-  Type, Grid, Lightbulb, Ruler, ChevronLeft, RefreshCw, Edit3,
-  Monitor, Armchair, HelpCircle, Shield, Lock, Mail, Phone, Camera, ChevronDown, Plus, Home
-} from 'lucide-react';
+import { PortfolioImage } from './ui/PortfolioImage';
+import React, { useState, useEffect } from 'react';
+import { Palette, Layout, Box, User, ShoppingCart, Menu, LogOut, Layers, Undo, Redo, CheckCircle, Trash2, AlertCircle, ArrowRight, MapPin, Truck, Type, Grid, Lightbulb, Ruler, ChevronLeft, RefreshCw, Edit3, HelpCircle, Shield, Lock, Mail, Phone, Camera, ChevronDown, Plus, Home } from 'lucide-react';
 
 /**
  * ==========================================
@@ -143,7 +137,7 @@ const Navbar = ({ currentPage, setCurrentPage, cartCount, toggleMenu, onSignOut 
         <div className="flex justify-between h-full items-center">
           
           <div className="flex items-center cursor-pointer gap-3 group" onClick={() => setCurrentPage('templates')}>
-            <img 
+            <PortfolioImage
               src="/courtcanva/CC_Logo.png" 
               alt="CourtCanva 2.0" 
               className="h-6 w-auto object-contain transition-transform group-hover:scale-105"

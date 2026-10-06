@@ -1,5 +1,6 @@
 'use client';
 
+import { PortfolioImage } from './ui/PortfolioImage';
 import { useState } from 'react';
 import { ContentSection } from '../types';
 
@@ -15,7 +16,7 @@ export const ScrollytellingBlock = ({ section }: ScrollytellingBlockProps) => {
   return (
     <div className="w-full py-12">
       {section.title && (
-        <h3 className="text-3xl font-bold text-white mb-12 flex items-center gap-3 justify-center">
+        <h3 className="case-study-heading text-3xl font-bold text-white mb-12 flex items-center gap-3 justify-center">
           <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block" /> 
           {section.title}
         </h3>
@@ -52,7 +53,7 @@ export const ScrollytellingBlock = ({ section }: ScrollytellingBlockProps) => {
                     : 'opacity-0 scale-95 z-0'
                 }`}
               >
-                <img
+                <PortfolioImage
                   src={step.image}
                   alt={step.title}
                   className="w-full h-full object-contain p-4"

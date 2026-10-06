@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { RESUME_DATA } from './data/resume-data';
 
 // UI Components
-import { ParticleDonut } from './components/ui/ParticleDonut';
 
 // Section Components
 import { Navigation } from './components/sections/Navigation';
@@ -19,13 +18,13 @@ import { ProjectModal } from './components/ProjectModal';
 
 // Styles
 import './styles/animations.css';
+import './styles/case-studies.css';
 
 export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState(null);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-pink-500/30">
-      <ParticleDonut />
+    <div className="portfolio-home min-h-screen font-sans">
 
       {/* Navigation */}
       <Navigation 
@@ -37,20 +36,15 @@ export default function Portfolio() {
       <HeroSection name={RESUME_DATA.name} role={RESUME_DATA.role} />
 
       {/* Main Content */}
-      <main className="relative z-10 bg-slate-950">
+      <main className="relative z-10">
         
-        {/* About Section */}
-        <AboutSection 
-          summary={RESUME_DATA.summary}
-          location={RESUME_DATA.location}
-          email={RESUME_DATA.contact.email}
-        />
-
         {/* Works Section */}
         <WorksSection 
           projects={RESUME_DATA.projects}
           onProjectClick={setSelectedProject}
         />
+
+        <AboutSection summary={RESUME_DATA.summary} />
 
         {/* Skills Section */}
         <SkillsSection 

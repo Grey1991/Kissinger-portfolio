@@ -1,27 +1,27 @@
 'use client';
 
 import { Linkedin } from 'lucide-react';
+import Image from 'next/image';
 
 interface NavigationProps {
   email: string;
   linkedin: string;
 }
 
-export const Navigation = ({ email, linkedin }: NavigationProps) => {
+export const Navigation = ({ linkedin }: NavigationProps) => {
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-6 md:px-12 py-5 flex justify-between items-center bg-slate-950/85 backdrop-blur-xl border-b border-white/5">
-      <div className="text-xl font-bold tracking-tight text-white flex items-center gap-2 group">
-        <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10">
-          <img src="/KH icon.png" alt="KH" className="w-full h-full object-cover" />
-        </div>
-        <span className="opacity-90 tracking-wide text-base">Kissinger Hu</span>
-      </div>
-      <div className="flex gap-4 md:gap-8 text-xs md:text-sm font-medium tracking-wide">
+    <nav className="portfolio-nav" aria-label="Main navigation">
+      <div className="portfolio-shell flex justify-between items-center gap-4">
+      <a href="#top" className="nav-identity" aria-label="Kissinger Hu, back to top">
+        <span className="nav-avatar"><Image src="/KH icon.png" alt="" width={32} height={32} /></span>
+        <span className="nav-identity-name">Kissinger Hu</span>
+      </a>
+      <div className="flex gap-5 md:gap-8 text-sm font-medium">
         {['Works', 'Skills', 'Contact'].map((item) => (
           <a 
             key={item} 
             href={`#${item.toLowerCase()}`}
-            className="text-slate-400 hover:text-white transition-colors duration-200"
+            className="portfolio-nav-link"
           >
             {item}
           </a>
@@ -31,10 +31,11 @@ export const Navigation = ({ email, linkedin }: NavigationProps) => {
         href={linkedin} 
         target="_blank" 
         rel="noreferrer"
-        className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 hover:border-white/40 hover:text-white transition-colors duration-200 text-xs uppercase tracking-wider text-slate-300"
+        className="hidden md:flex items-center gap-2 portfolio-nav-link text-sm"
       >
         <Linkedin size={14} /> Connect
       </a>
+      </div>
     </nav>
   );
 };

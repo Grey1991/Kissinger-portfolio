@@ -1,5 +1,6 @@
 'use client';
 
+import { PortfolioImage } from './ui/PortfolioImage';
 import React, { useState } from 'react';
 import Lightbox from './Lightbox';
 
@@ -102,7 +103,7 @@ export default function PatternCards({ onLightboxChange }: { onLightboxChange?: 
 
   return (
     <div className="pattern-cards-wrapper">
-      <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+      <h3 className="case-study-heading text-2xl font-bold text-white mb-8 flex items-center gap-3">
         <span className="w-8 h-[2px] bg-purple-500 inline-block"/> Design Highlights
       </h3>
 
@@ -120,7 +121,7 @@ export default function PatternCards({ onLightboxChange }: { onLightboxChange?: 
               </div>
             </div>
             <figure className="pattern-card__media" onClick={() => openLightbox(index)}>
-              <img 
+              <PortfolioImage
                 src={pattern.imageSrc} 
                 alt={pattern.imageAlt}
                 className="pattern-card__image"
@@ -186,7 +187,7 @@ export default function PatternCards({ onLightboxChange }: { onLightboxChange?: 
           width: fit-content;
           font-size: 14px;
           font-weight: 700;
-          color: #a78bfa;
+          color: #c6bbff;
           font-family: 'JetBrains Mono', monospace;
           letter-spacing: 0.5px;
         }
@@ -220,7 +221,7 @@ export default function PatternCards({ onLightboxChange }: { onLightboxChange?: 
           border-radius: 12px;
           font-size: 11px;
           font-weight: 600;
-          color: #c4b5fd;
+          color: #c6bbff;
           letter-spacing: 0.3px;
         }
 

@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kissinger Hu | UI/UX Designer Portfolio",
-  description: "Portfolio showcasing the UI/UX design work of Kissinger Hu.",
+  applicationName: "Kissinger portfolio 2.0",
+  title: "Kissinger Hu | Senior UX/UI Product Designer",
+  description: "Sydney-based UX/UI product designer. Enterprise platforms, fintech, complex workflows and design systems, from problem definition through delivery.",
 };
 
 export default function RootLayout({

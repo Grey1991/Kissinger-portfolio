@@ -1,0 +1,367 @@
+/* Shared portfolio presentation; embedded product screens retain their own visual language. */
+
+/* Muted case-study palette. Status families stay distinct; embedded products
+   retain their original colours rather than inheriting the portfolio skin. */
+:root {
+  --product-pink-300: var(--color-pink-300);
+  --product-pink-400: var(--color-pink-400);
+  --product-pink-500: var(--color-pink-500);
+  --product-pink-600: var(--color-pink-600);
+  --product-fuchsia-300: var(--color-fuchsia-300);
+  --product-fuchsia-400: var(--color-fuchsia-400);
+  --product-fuchsia-500: var(--color-fuchsia-500);
+  --product-fuchsia-600: var(--color-fuchsia-600);
+  --product-purple-300: var(--color-purple-300);
+  --product-purple-400: var(--color-purple-400);
+  --product-purple-500: var(--color-purple-500);
+  --product-purple-600: var(--color-purple-600);
+  --product-violet-300: var(--color-violet-300);
+  --product-violet-400: var(--color-violet-400);
+  --product-violet-500: var(--color-violet-500);
+  --product-violet-600: var(--color-violet-600);
+  --product-indigo-300: var(--color-indigo-300);
+  --product-indigo-400: var(--color-indigo-400);
+  --product-indigo-500: var(--color-indigo-500);
+  --product-indigo-600: var(--color-indigo-600);
+  --product-blue-300: var(--color-blue-300);
+  --product-blue-400: var(--color-blue-400);
+  --product-blue-500: var(--color-blue-500);
+  --product-blue-600: var(--color-blue-600);
+  --product-sky-300: var(--color-sky-300);
+  --product-sky-400: var(--color-sky-400);
+  --product-sky-500: var(--color-sky-500);
+  --product-sky-600: var(--color-sky-600);
+  --product-cyan-300: var(--color-cyan-300);
+  --product-cyan-400: var(--color-cyan-400);
+  --product-cyan-500: var(--color-cyan-500);
+  --product-cyan-600: var(--color-cyan-600);
+  --product-teal-300: var(--color-teal-300);
+  --product-teal-400: var(--color-teal-400);
+  --product-teal-500: var(--color-teal-500);
+  --product-teal-600: var(--color-teal-600);
+  --product-emerald-300: var(--color-emerald-300);
+  --product-emerald-400: var(--color-emerald-400);
+  --product-emerald-500: var(--color-emerald-500);
+  --product-emerald-600: var(--color-emerald-600);
+  --product-green-300: var(--color-green-300);
+  --product-green-400: var(--color-green-400);
+  --product-green-500: var(--color-green-500);
+  --product-green-600: var(--color-green-600);
+  --product-lime-300: var(--color-lime-300);
+  --product-lime-400: var(--color-lime-400);
+  --product-lime-500: var(--color-lime-500);
+  --product-lime-600: var(--color-lime-600);
+  --product-yellow-300: var(--color-yellow-300);
+  --product-yellow-400: var(--color-yellow-400);
+  --product-yellow-500: var(--color-yellow-500);
+  --product-yellow-600: var(--color-yellow-600);
+  --product-amber-300: var(--color-amber-300);
+  --product-amber-400: var(--color-amber-400);
+  --product-amber-500: var(--color-amber-500);
+  --product-amber-600: var(--color-amber-600);
+  --product-orange-300: var(--color-orange-300);
+  --product-orange-400: var(--color-orange-400);
+  --product-orange-500: var(--color-orange-500);
+  --product-orange-600: var(--color-orange-600);
+  --product-red-300: var(--color-red-300);
+  --product-red-400: var(--color-red-400);
+  --product-red-500: var(--color-red-500);
+  --product-red-600: var(--color-red-600);
+  --product-rose-300: var(--color-rose-300);
+  --product-rose-400: var(--color-rose-400);
+  --product-rose-500: var(--color-rose-500);
+  --product-rose-600: var(--color-rose-600);
+}
+.project-detail-modal {
+  --color-pink-300: #ddc5d6;
+  --color-pink-400: #d1aec8;
+  --color-pink-500: #b994b0;
+  --color-pink-600: #997c90;
+  --color-fuchsia-300: #ddd3f4;
+  --color-fuchsia-400: #c6bbff;
+  --color-fuchsia-500: #ac9cdb;
+  --color-fuchsia-600: #8f80bd;
+  --color-purple-300: #ddd3f4;
+  --color-purple-400: #c6bbff;
+  --color-purple-500: #ac9cdb;
+  --color-purple-600: #8f80bd;
+  --color-violet-300: #ddd3f4;
+  --color-violet-400: #c6bbff;
+  --color-violet-500: #ac9cdb;
+  --color-violet-600: #8f80bd;
+  --color-indigo-300: #d1d5f0;
+  --color-indigo-400: #b8bee1;
+  --color-indigo-500: #99a3ca;
+  --color-indigo-600: #7f89b3;
+  --color-blue-300: #c3d2e3;
+  --color-blue-400: #a9bfd8;
+  --color-blue-500: #8ca5c3;
+  --color-blue-600: #748fac;
+  --color-sky-300: #c3d2e3;
+  --color-sky-400: #a9bfd8;
+  --color-sky-500: #8ca5c3;
+  --color-sky-600: #748fac;
+  --color-cyan-300: #c3d2e3;
+  --color-cyan-400: #a9bfd8;
+  --color-cyan-500: #8ca5c3;
+  --color-cyan-600: #748fac;
+  --color-teal-300: #c3ded5;
+  --color-teal-400: #a5cabc;
+  --color-teal-500: #88b39f;
+  --color-teal-600: #719883;
+  --color-emerald-300: #c3ded5;
+  --color-emerald-400: #a5cabc;
+  --color-emerald-500: #88b39f;
+  --color-emerald-600: #719883;
+  --color-green-300: #c3ded5;
+  --color-green-400: #a5cabc;
+  --color-green-500: #88b39f;
+  --color-green-600: #719883;
+  --color-lime-300: #c3ded5;
+  --color-lime-400: #a5cabc;
+  --color-lime-500: #88b39f;
+  --color-lime-600: #719883;
+  --color-yellow-300: #ead9b9;
+  --color-yellow-400: #d8bf96;
+  --color-yellow-500: #bda478;
+  --color-yellow-600: #a38a62;
+  --color-amber-300: #ead9b9;
+  --color-amber-400: #d8bf96;
+  --color-amber-500: #bda478;
+  --color-amber-600: #a38a62;
+  --color-orange-300: #ead9b9;
+  --color-orange-400: #d8bf96;
+  --color-orange-500: #bda478;
+  --color-orange-600: #a38a62;
+  --color-red-300: #ebc5cb;
+  --color-red-400: #d7a4ae;
+  --color-red-500: #bf8794;
+  --color-red-600: #a66f7d;
+  --color-rose-300: #ebc5cb;
+  --color-rose-400: #d7a4ae;
+  --color-rose-500: #bf8794;
+  --color-rose-600: #a66f7d;
+}
+.project-detail-modal .case-product-preview {
+  --color-pink-300: var(--product-pink-300);
+  --color-pink-400: var(--product-pink-400);
+  --color-pink-500: var(--product-pink-500);
+  --color-pink-600: var(--product-pink-600);
+  --color-fuchsia-300: var(--product-fuchsia-300);
+  --color-fuchsia-400: var(--product-fuchsia-400);
+  --color-fuchsia-500: var(--product-fuchsia-500);
+  --color-fuchsia-600: var(--product-fuchsia-600);
+  --color-purple-300: var(--product-purple-300);
+  --color-purple-400: var(--product-purple-400);
+  --color-purple-500: var(--product-purple-500);
+  --color-purple-600: var(--product-purple-600);
+  --color-violet-300: var(--product-violet-300);
+  --color-violet-400: var(--product-violet-400);
+  --color-violet-500: var(--product-violet-500);
+  --color-violet-600: var(--product-violet-600);
+  --color-indigo-300: var(--product-indigo-300);
+  --color-indigo-400: var(--product-indigo-400);
+  --color-indigo-500: var(--product-indigo-500);
+  --color-indigo-600: var(--product-indigo-600);
+  --color-blue-300: var(--product-blue-300);
+  --color-blue-400: var(--product-blue-400);
+  --color-blue-500: var(--product-blue-500);
+  --color-blue-600: var(--product-blue-600);
+  --color-sky-300: var(--product-sky-300);
+  --color-sky-400: var(--product-sky-400);
+  --color-sky-500: var(--product-sky-500);
+  --color-sky-600: var(--product-sky-600);
+  --color-cyan-300: var(--product-cyan-300);
+  --color-cyan-400: var(--product-cyan-400);
+  --color-cyan-500: var(--product-cyan-500);
+  --color-cyan-600: var(--product-cyan-600);
+  --color-teal-300: var(--product-teal-300);
+  --color-teal-400: var(--product-teal-400);
+  --color-teal-500: var(--product-teal-500);
+  --color-teal-600: var(--product-teal-600);
+  --color-emerald-300: var(--product-emerald-300);
+  --color-emerald-400: var(--product-emerald-400);
+  --color-emerald-500: var(--product-emerald-500);
+  --color-emerald-600: var(--product-emerald-600);
+  --color-green-300: var(--product-green-300);
+  --color-green-400: var(--product-green-400);
+  --color-green-500: var(--product-green-500);
+  --color-green-600: var(--product-green-600);
+  --color-lime-300: var(--product-lime-300);
+  --color-lime-400: var(--product-lime-400);
+  --color-lime-500: var(--product-lime-500);
+  --color-lime-600: var(--product-lime-600);
+  --color-yellow-300: var(--product-yellow-300);
+  --color-yellow-400: var(--product-yellow-400);
+  --color-yellow-500: var(--product-yellow-500);
+  --color-yellow-600: var(--product-yellow-600);
+  --color-amber-300: var(--product-amber-300);
+  --color-amber-400: var(--product-amber-400);
+  --color-amber-500: var(--product-amber-500);
+  --color-amber-600: var(--product-amber-600);
+  --color-orange-300: var(--product-orange-300);
+  --color-orange-400: var(--product-orange-400);
+  --color-orange-500: var(--product-orange-500);
+  --color-orange-600: var(--product-orange-600);
+  --color-red-300: var(--product-red-300);
+  --color-red-400: var(--product-red-400);
+  --color-red-500: var(--product-red-500);
+  --color-red-600: var(--product-red-600);
+  --color-rose-300: var(--product-rose-300);
+  --color-rose-400: var(--product-rose-400);
+  --color-rose-500: var(--product-rose-500);
+  --color-rose-600: var(--product-rose-600);
+}
+.project-detail-content :is([class*="shadow-"], .shadow-lg, .shadow-xl):not(.case-product-preview *) {
+  --tw-shadow-color: rgb(198 187 255 / .08);
+}
+
+.project-detail-modal {
+  --case-accent: #c6bbff;
+  --color-slate-500: #8998af;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.project-detail-frame { border-radius: 10px; }
+.project-detail-modal .scrollbar-thin::-webkit-scrollbar-thumb { background-color: rgb(198 187 255 / .25); }
+.project-detail-modal .scrollbar-thin::-webkit-scrollbar-thumb:hover { background-color: rgb(198 187 255 / .4); }
+.project-detail-hero {
+  background-color: #0e1523;
+  background-image: radial-gradient(ellipse at 90% 20%, rgb(115 90 200 / .12), transparent 65%);
+}
+.project-detail-hero::after {
+  background: linear-gradient(0deg, #080d18, rgb(8 13 24 / .2) 85%);
+}
+.project-detail-heading > p:first-child { color: var(--case-accent); }
+.project-detail-heading h2 { font-weight: 550; line-height: 1.12; }
+.project-detail-heading > p:last-child { color: #c6ceda; }
+.project-detail-toc { background: #0e1523; }
+.project-detail-toc a:hover,
+.project-detail-toc a.border-white\/70 { color: var(--case-accent); border-color: var(--case-accent); }
+.project-detail-highlight {
+  color: #111021;
+  background: var(--case-accent);
+  border-radius: 6px;
+}
+.project-detail-highlight:hover { background: #dbd3ff; }
+.project-detail-content h4:not(.case-product-preview *) { letter-spacing: -.015em; font-weight: 600; }
+.project-detail-content p:not(.case-product-preview *) { color: #a5aebe; }
+.project-detail-content :is(.rounded-2xl, .rounded-3xl):not(.case-product-preview *) { border-radius: 10px; }
+.project-detail-content :is(.bg-slate-800, .bg-slate-800\/50, .bg-slate-900, .bg-slate-900\/50):not(.case-product-preview *) {
+  background-color: #0e1523;
+}
+.project-detail-content :is(.text-pink-400, .text-purple-400, .text-fuchsia-400, .text-pink-500, .text-purple-500, .text-fuchsia-500):not(.case-product-preview *) {
+  color: var(--case-accent);
+}
+.project-detail-content :is(.bg-pink-500\/10, .bg-purple-500\/10, .bg-fuchsia-500\/10, .bg-pink-500\/5):not(.case-product-preview *) {
+  background-color: rgb(198 187 255 / .08);
+}
+.project-detail-content :is(.border-pink-500\/30, .border-purple-500\/30, .border-fuchsia-500\/30, .border-pink-500):not(.case-product-preview *) {
+  border-color: rgb(198 187 255 / .3);
+}
+.project-detail-content :is(.bg-pink-500, .bg-purple-500, .bg-fuchsia-500):not(.case-product-preview *) {
+  background-color: var(--case-accent);
+}
+.project-detail-content a[href^="mailto:"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  min-height: 46px;
+  color: #111021;
+  background: var(--case-accent);
+  border: 1px solid var(--case-accent);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 550;
+  box-shadow: none;
+}
+.project-detail-modal :is(a, button):focus-visible {
+  outline: 2px solid var(--case-accent);
+  outline-offset: 4px;
+}
+.project-detail-modal :is([role="button"], [role="slider"]):focus-visible {
+  outline: 2px solid var(--case-accent);
+  outline-offset: 4px;
+}
+.project-detail-content .flip-card-face.bg-gradient-to-br {
+  background: #18253a;
+}
+.project-detail-content .flip-card-face .text-slate-500,
+.project-detail-content [role="button"] .opacity-50 {
+  color: #a5aebe;
+  opacity: 1;
+}
+@media (max-width: 639px) {
+  .project-detail-frame { border-radius: 0; }
+}
+
+/* Section boundaries use heading hierarchy and space, not stacked rules. */
+.project-detail-meta > div:not(:last-child) { border-right: 0; }
+.project-detail-content h4[class*="border-b"]:not(.case-product-preview *) { border-bottom: 0; padding-bottom: 0; }
+.project-detail-content h3:not(.case-study-heading, .case-product-preview *) { font-size: 1.25rem; font-weight: 600; line-height: 1.3; }
+.project-detail-content h3 > span:empty { display: none; }
+.project-detail-content button:is(.px-4, .px-6, .px-8):not(.case-product-preview *) {
+  min-height: 44px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 550;
+  box-shadow: none;
+}
+.project-detail-content :is(button, a):is(.bg-gradient-to-r, .bg-gradient-to-br, .bg-white):not(.case-product-preview *) {
+  background: var(--case-accent);
+  color: #111021;
+  border-color: var(--case-accent);
+  box-shadow: none;
+}
+.project-detail-content button:is(.px-4, .px-6, .px-8):not(.case-product-preview *):hover {
+  border-color: var(--case-accent);
+}
+.case-roadmap { max-width: 56rem; margin-inline: auto; }
+.case-roadmap-challenge { margin-bottom: 28px; padding: 20px; border-radius: 10px; background: #0e1523; }
+.case-roadmap-challenge p + p { margin-top: 8px; }
+.case-roadmap-list { position: relative; display: grid; gap: 20px; }
+.case-roadmap-step:not(:last-child)::before { content: ""; position: absolute; left: 12px; top: 26px; height: calc(100% + 20px); width: 1px; background: rgb(198 187 255 / .25); transform: translateX(-50%); }
+.case-roadmap-step { position: relative; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 18px; align-items: start; }
+.case-roadmap-dot { position: relative; z-index: 1; width: 12px; height: 12px; margin: 20px 6px 0; border-radius: 50%; border: 2px solid var(--case-accent); background: #080d18; }
+.case-roadmap-card { background: #0e1523; border: 1px solid rgb(255 255 255 / .1); border-radius: 10px; padding: 20px; transition: border-color 180ms; }
+.case-roadmap-card:hover { border-color: rgb(198 187 255 / .5); }
+.case-roadmap-card h4 { font-size: 18px; line-height: 1.3; margin-bottom: 10px; }
+.case-roadmap-card p { font-size: 15px; }
+.case-flow-canvas { min-width: 980px; }
+.case-flow-hint { display: none; }
+.case-flow-scroll { scrollbar-color: #c6bbff #0e1523; scrollbar-width: thin; }
+.case-flow-scroll:focus-visible { outline: 2px solid var(--case-accent); outline-offset: 4px; }
+
+@media (max-width: 1023px) {
+  .case-flow-hint { display: block; font-size: 12px; margin-bottom: 12px; }
+  .project-detail-toc { width: 190px; padding: 20px 16px; }
+  .project-detail-content { padding: 28px; }
+  .project-detail-content .space-y-20 { row-gap: 56px; }
+}
+@media (max-width: 767px) {
+  .project-detail-modal { padding: 0; }
+  .project-detail-frame { height: 100%; border-radius: 0; }
+  .project-detail-hero { min-height: 260px; padding: 64px 20px 28px; }
+  .project-detail-heading h2 { font-size: 28px; overflow-wrap: break-word; }
+  .project-detail-heading > p:last-child { font-size: 14px; line-height: 1.65; }
+  .project-detail-heading > p:first-child { font-size: 10px; letter-spacing: .1em; }
+  .project-detail-content { padding: 28px 20px; }
+  .project-detail-content .case-study-heading { font-size: 24px; margin-bottom: 20px; }
+  .project-detail-content p:not(.case-product-preview *) { font-size: 14px; line-height: 1.7; }
+  .project-detail-content :is(.text-lg, .text-xl):not(h3, h4, .case-product-preview *) { font-size: 14px; line-height: 1.7; }
+  .project-detail-content .case-roadmap-challenge .section-label { font-size: 10px; color: var(--case-accent); }
+  .project-detail-content h4:is(.text-lg, .text-xl, .text-2xl, .text-3xl):not(.case-product-preview *) { font-size: 17px; line-height: 1.35; }
+  .project-detail-content h3:not(.case-study-heading, .case-product-preview *) { font-size: 18px; }
+  .project-detail-content :is(.p-8, .p-10, .p-12):not(.case-product-preview *) { padding: 20px; }
+  .project-detail-content :is(.gap-10, .gap-12):not(.case-product-preview *) { gap: 24px; }
+  .project-detail-content :is(.mb-12, .mb-16):not(.case-product-preview *) { margin-bottom: 28px; }
+  .project-detail-content :is(.my-12, .my-16):not(.case-product-preview *) { margin-block: 28px; }
+  .project-detail-content .space-y-20 > :not(:last-child) { margin-block-end: 48px; }
+  .project-detail-content .space-y-16 > :not(:last-child) { margin-block-end: 32px; }
+  .case-roadmap-step { gap: 12px; }
+  .case-roadmap-card { padding: 16px; }
+  .case-roadmap-dot { margin-top: 16px; }
+  .case-roadmap-step:not(:last-child)::before { top: 22px; }
+  .project-detail-hero > .absolute.right-4 { display: none; }
+}

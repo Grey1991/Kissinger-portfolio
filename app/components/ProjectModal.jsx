@@ -12,9 +12,12 @@ function useBodyScrollLock(isOpen) {
   }, [isOpen]);
 }
 
-import { useEffect, useRef, useState } from 'react';
-import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronRight, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, LucideIcon, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Monitor, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, LogIn, LayoutDashboard, RefreshCw, UserPlus, History, Wifi, Building, Edit2, ArrowLeftRight, ClipboardList, Database, Box, Layers, GitBranch, Play, CheckCircle, Lock, ArrowUpDown, ExternalLink } from 'lucide-react';
-import { Project } from '../types';
+import { PortfolioImage } from './ui/PortfolioImage';
+import { imageDescription } from './ui/imageDescription';
+import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, Database, Box, Layers, GitBranch, Play, CheckCircle, Lock, ArrowUpDown, ExternalLink } from 'lucide-react';
+
 import { ScrollytellingBlock } from './ScrollytellingBlock';
 import { Carousel3D } from './Carousel3D';
 import { TestingRefinement } from './TestingRefinement';
@@ -24,6 +27,11 @@ import PatternCards from './PatternCards';
 import SafetyRails from './SafetyRails';
 import Lightbox from './Lightbox';
 import { ProjectOverview } from './projects/ProjectOverview';
+import { CaseStudyContext, CaseStudyDecisions, SurfGuardResponsiveEvidence } from './projects/CaseStudyEvidence';
+import { PortfolioCaseContext, JoiningJourney } from './projects/PortfolioCaseContext';
+import { CaseStudyChapter } from './projects/CaseStudyChapter';
+import { buildCaseStudyNarrative } from '../data/case-study-narratives';
+import { StrategyRoadmap } from './projects/StrategyRoadmap';
 import dynamic from 'next/dynamic';
 
 // Dynamically import CourtCanva2 component
@@ -138,7 +146,7 @@ const FeaturesInteractive = ({ features }) => {
       {/* Mobile: Image preview below feature list */}
       <div className="lg:hidden w-full rounded-2xl overflow-hidden border border-white/10 bg-slate-900/50 shadow-xl">
         {features.map((feature, idx) => (
-          <img
+          <PortfolioImage
             key={idx}
             src={feature.image}
             alt={feature.title}
@@ -162,7 +170,7 @@ const FeaturesInteractive = ({ features }) => {
           {/* Image Container */}
           <div className="relative mt-10 h-[500px] bg-slate-900/50 rounded-2xl overflow-hidden">
             {features.map((feature, idx) => (
-              <img
+              <PortfolioImage
                 key={idx}
                 src={feature.image}
                 alt={feature.title}
@@ -192,7 +200,7 @@ const InteractiveFlowDiagram = ({
     <div className="w-full max-w-5xl mx-auto my-16">
       {/* Header */}
       {title && (
-        <h3 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+        <h3 className="case-study-heading text-3xl font-bold text-white mb-2 flex items-center gap-3">
           <span className="w-8 h-[2px] bg-gradient-to-r from-cyan-500 to-purple-500 inline-block"/> 
           {title}
         </h3>
@@ -202,11 +210,12 @@ const InteractiveFlowDiagram = ({
       )}
 
       {/* Toggle Buttons */}
-      <div className="flex gap-2 bg-slate-800/50 p-1 rounded-full w-fit mb-10 border border-white/10">
+      <div className="flex flex-wrap gap-2 bg-slate-800/50 p-1 rounded-lg w-fit mb-10 border border-white/10">
         {flowDiagrams.map((flow, idx) => (
           <button
             key={flow.id}
             onClick={() => setActiveFlowIndex(idx)}
+            aria-pressed={activeFlowIndex === idx}
             className={`px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 ${
               activeFlowIndex === idx
                 ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg shadow-cyan-500/30' 
@@ -219,7 +228,16 @@ const InteractiveFlowDiagram = ({
       </div>
 
       {/* Diagram Container */}
-      <div className="relative w-full h-[380px] bg-slate-950/50 rounded-2xl border border-cyan-500/20 overflow-hidden shadow-xl shadow-cyan-500/10">
+      <p className="case-flow-hint">Scroll sideways to explore the full flow.</p>
+      <div className="case-flow-scroll w-full bg-slate-950/50 rounded-2xl border border-white/10 overflow-x-auto" role="region" aria-label="User task flow diagram, horizontally scrollable" tabIndex={0}
+        onKeyDown={(event) => {
+          if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+            event.preventDefault();
+            event.currentTarget.scrollBy({ left: event.key === 'ArrowRight' ? 160 : -160 });
+          }
+        }}
+      >
+        <div className="case-flow-canvas relative w-full h-[380px]">
         {flowDiagrams.map((flow, idx) => {
           // Define custom connections for flow-1 (branching structure)
           const connections = flow.id === 'flow-1' ? [
@@ -246,7 +264,7 @@ const InteractiveFlowDiagram = ({
             >
               {/* SVG Connection Lines - behind nodes */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-                {connections.map((conn, i) => {
+                {connections.map((conn) => {
                   const fromNode = flow.nodes[conn[0]];
                   const toNode = flow.nodes[conn[1]];
                   
@@ -278,7 +296,7 @@ const InteractiveFlowDiagram = ({
                         y1={`${y1}%`}
                         x2={`${x2}%`}
                         y2={`${y2}%`}
-                        stroke="#6EE7B7"
+                        stroke="#a5cabc"
                         strokeWidth="2"
                         strokeLinecap="round"
                         opacity="0.6"
@@ -318,6 +336,7 @@ const InteractiveFlowDiagram = ({
           </div>
         );
         })}
+        </div>
       </div>
     </div>
   );
@@ -343,7 +362,7 @@ const InterviewImage = ({ src, alt, caption, className, hasTitle, onLightboxChan
         className={`cursor-zoom-in group relative w-full ${hasTitle ? 'max-w-md' : ''}`}
         onClick={openLightbox}
       >
-        <img 
+        <PortfolioImage
           src={src}
           alt={alt}
           className={className || `w-full rounded-xl border border-white/10 shadow-2xl ${hasTitle ? 'max-h-48 object-contain' : ''} group-hover:border-pink-500/50 transition-all duration-300`}
@@ -432,7 +451,7 @@ const SurveyTabsComponent = ({ tabs, caption, onLightboxChange }) => {
             onClick={() => openLightbox(idx)}
             className="group relative aspect-square rounded-xl overflow-hidden border border-white/10 bg-slate-900 hover:border-pink-500/50 hover:shadow-xl hover:shadow-pink-500/20 transition-all duration-300 cursor-zoom-in"
           >
-            <img 
+            <PortfolioImage
               src={img}
               alt={`${tabs[activeTab].label} survey ${idx + 1}`}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
@@ -566,7 +585,7 @@ const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }) => {
                 className="group relative rounded-xl overflow-hidden border border-white/10 bg-slate-900 hover:border-orange-500/50 hover:shadow-xl hover:shadow-orange-500/20 transition-all duration-300 cursor-zoom-in"
               >
                 <div className="aspect-video w-full">
-                  <img 
+                  <PortfolioImage
                     src={item.src}
                     alt={item.caption}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -610,7 +629,7 @@ const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }) => {
                       onClick={() => openLightbox(idx, 'more')}
                       className="group relative aspect-video rounded-lg overflow-hidden border border-white/10 bg-slate-900 hover:border-orange-500/50 hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 cursor-zoom-in"
                     >
-                      <img 
+                      <PortfolioImage
                         src={item.src}
                         alt={item.caption}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
@@ -679,9 +698,9 @@ const GalleryComponent = ({ images, caption, onLightboxChange }) => {
               onClick={() => openLightbox(imgIdx)}
               className="relative overflow-hidden rounded-lg border border-white/10 group cursor-zoom-in bg-slate-900 shadow-md hover:shadow-pink-900/20 hover:border-pink-500/50 transition-all duration-300 w-full mb-4 break-inside-avoid"
             >
-              <img 
+              <PortfolioImage
                 src={imgSrc} 
-                alt={`Gallery item ${imgIdx + 1}`}
+                alt={imageDescription(imgSrc, caption || 'Project design gallery')}
                 className="w-full h-auto object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
               />
               {/* Hover overlay */}
@@ -710,7 +729,7 @@ const GalleryComponent = ({ images, caption, onLightboxChange }) => {
         onNext={nextImage}
         onPrev={prevImage}
         caption={caption}
-        alt="Gallery image"
+        alt={imageDescription(images[lightboxImageIndex], caption || 'Project design gallery')}
       />
     </div>
   );
@@ -764,7 +783,7 @@ const BeforeAfterSlider = ({ section }) => {
         <span className="inline-block px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-wider mb-4 uppercase text-cyan-400">
           {section.beforeAfterSlider.badge}
         </span>
-        <h3 className="text-4xl font-extrabold text-white mb-4 tracking-tight">
+        <h3 className="case-study-heading text-4xl font-extrabold text-white mb-4 tracking-tight">
           {section.title}
         </h3>
         <p className="text-lg leading-relaxed text-slate-400">
@@ -793,6 +812,20 @@ const BeforeAfterSlider = ({ section }) => {
       <div 
         ref={containerRef}
         className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-2xl cursor-col-resize select-none mb-12"
+        role="slider"
+        tabIndex={0}
+        aria-label={`${currentComparison.label || section.title}: compare before and after designs`}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(sliderPosition)}
+        aria-valuetext={`${Math.round(sliderPosition)}% before design visible; ${100 - Math.round(sliderPosition)}% after design visible`}
+        onKeyDown={(event) => {
+          const change = { ArrowLeft: -5, ArrowDown: -5, ArrowRight: 5, ArrowUp: 5, PageDown: -10, PageUp: 10 }[event.key];
+          if (change !== undefined || event.key === 'Home' || event.key === 'End') {
+            event.preventDefault();
+            setSliderPosition(position => event.key === 'Home' ? 0 : event.key === 'End' ? 100 : Math.max(0, Math.min(100, position + change)));
+          }
+        }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onTouchStart={handleMouseDown}
@@ -823,7 +856,7 @@ const BeforeAfterSlider = ({ section }) => {
           className="absolute top-1/2 w-11 h-11 -translate-x-1/2 -translate-y-1/2 bg-cyan-400 rounded-full flex items-center justify-center pointer-events-none z-20"
           style={{ 
             left: `${sliderPosition}%`,
-            boxShadow: '0 0 25px rgba(34, 211, 238, 0.6)'
+            boxShadow: '0 4px 16px rgba(198, 187, 255, 0.12)'
           }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -831,14 +864,14 @@ const BeforeAfterSlider = ({ section }) => {
           </svg>
         </div>
         <div 
-          className={`absolute bottom-5 left-5 px-4 py-2 bg-black/80 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-rose-400 border border-rose-400/30 transition-opacity duration-300 pointer-events-none ${
+          className={`absolute bottom-3 left-3 max-w-[44%] px-2 py-1.5 sm:bottom-5 sm:left-5 sm:max-w-none sm:px-4 sm:py-2 bg-black/80 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-rose-400 border border-rose-400/30 transition-opacity duration-300 pointer-events-none ${
             sliderPosition < 20 ? 'opacity-0' : 'opacity-100'
           }`}
         >
           {section.beforeAfterSlider.beforeLabel}
         </div>
         <div 
-          className={`absolute bottom-5 right-5 px-4 py-2 bg-black/80 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-emerald-400 border border-emerald-400/30 transition-opacity duration-300 pointer-events-none ${
+          className={`absolute bottom-3 right-3 max-w-[44%] px-2 py-1.5 sm:bottom-5 sm:right-5 sm:max-w-none sm:px-4 sm:py-2 bg-black/80 backdrop-blur-md rounded-lg text-xs font-bold uppercase tracking-wider text-emerald-400 border border-emerald-400/30 transition-opacity duration-300 pointer-events-none ${
             sliderPosition > 80 ? 'opacity-0' : 'opacity-100'
           }`}
         >
@@ -867,10 +900,23 @@ const BeforeAfterSlider = ({ section }) => {
 const ConsoleNavigation = ({ section }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const navRefs = useRef([]);
+  const indicatorRef = useRef(null);
+
+  useEffect(() => {
+    const updateIndicator = () => {
+      if (indicatorRef.current) {
+        indicatorRef.current.style.top = `${navRefs.current[activeIndex]?.offsetTop || 0}px`;
+      }
+    };
+    updateIndicator();
+    const observer = new ResizeObserver(updateIndicator);
+    navRefs.current.forEach((element) => element && observer.observe(element));
+    return () => observer.disconnect();
+  }, [activeIndex]);
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+      <h3 className="case-study-heading text-2xl font-bold text-white mb-8 flex items-center gap-3">
         <span className="w-8 h-[2px] bg-purple-500 inline-block"/> {section.title}
       </h3>
       <p className="text-slate-400 mb-12 text-lg">{section.intro}</p>
@@ -879,8 +925,9 @@ const ConsoleNavigation = ({ section }) => {
         <div className="relative flex flex-col gap-6">
           <div className="hidden md:block absolute right-[-2.5rem] top-0 bottom-0 w-px bg-white/10" />
           <div 
+            ref={indicatorRef}
             className="hidden md:block absolute right-[-2.5rem] w-0.5 h-6 bg-cyan-400 transition-all duration-300 ease-out"
-            style={{ boxShadow: '0 0 10px rgb(34 211 238)', top: navRefs.current[activeIndex]?.offsetTop || 0 }}
+            style={{ boxShadow: '0 0 10px rgb(34 211 238)' }}
           />
           {section.consoleNav.items.map((item, idx) => (
             <div
@@ -892,11 +939,6 @@ const ConsoleNavigation = ({ section }) => {
               onMouseEnter={() => setActiveIndex(idx)}
             >
               <span>{item.navTitle}</span>
-              <span className={`font-mono text-xs text-cyan-400 transition-all duration-300 ${
-                idx === activeIndex ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
-              }`}>
-                {String(idx + 1).padStart(2, '0')}
-              </span>
             </div>
           ))}
         </div>
@@ -998,13 +1040,13 @@ const ResponsiveDarkModeSection = () => {
                   {/* Screen Content */}
                   <div className="w-full h-full transition-all duration-500 flex items-start justify-center">
                     {isDarkMode ? (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Mobile Flow (Dark).png" 
                         alt="Mobile Flow Dark Mode"
                         className="w-full h-auto min-h-full object-cover object-top scale-[1.15] origin-top"
                       />
                     ) : (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Mobile Flow (Light).png" 
                         alt="Mobile Flow Light Mode"
                         className="w-full h-auto min-h-full object-cover object-top scale-[1.15] origin-top"
@@ -1023,13 +1065,13 @@ const ResponsiveDarkModeSection = () => {
                   {/* Screen Content */}
                   <div className="w-full h-full transition-all duration-500">
                     {isDarkMode ? (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Desktop Dashboard(Dark).png" 
                         alt="Desktop Dashboard Dark Mode"
                         className="w-full h-full object-cover object-top"
                       />
                     ) : (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Desktop Dashboard(Light).png" 
                         alt="Desktop Dashboard Light Mode"
                         className="w-full h-full object-cover object-top"
@@ -1056,13 +1098,13 @@ const ResponsiveDarkModeSection = () => {
                   
                   <div className="w-full h-full transition-all duration-500">
                     {isDarkMode ? (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Mobile Modal (Dark).png" 
                         alt="Mobile Modal Dark Mode"
                         className="w-full h-full object-cover object-top"
                       />
                     ) : (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Mobile Modal (Light).png" 
                         alt="Mobile Modal Light Mode"
                         className="w-full h-full object-cover object-top"
@@ -1079,13 +1121,13 @@ const ResponsiveDarkModeSection = () => {
                   
                   <div className="w-full transition-all duration-500 flex items-start justify-center">
                     {isDarkMode ? (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Desktop Table (Dark).png" 
                         alt="Desktop Table Dark Mode"
                         className="w-full h-auto object-contain"
                       />
                     ) : (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Desktop Table (Light).png" 
                         alt="Desktop Table Light Mode"
                         className="w-full h-auto object-contain"
@@ -1114,13 +1156,13 @@ const ResponsiveDarkModeSection = () => {
                   {/* Screen Content */}
                   <div className="w-full h-full transition-all duration-500">
                     {isDarkMode ? (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Mobile Form (Dark).png" 
                         alt="Mobile Form Dark Mode"
                         className="w-full h-full object-cover object-top"
                       />
                     ) : (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Mobile Form (Light).png" 
                         alt="Mobile Form Light Mode"
                         className="w-full h-full object-cover object-top"
@@ -1139,13 +1181,13 @@ const ResponsiveDarkModeSection = () => {
                   {/* Screen Content */}
                   <div className="w-full transition-all duration-500 flex items-start justify-center">
                     {isDarkMode ? (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Desktop Form (Dark).png" 
                         alt="Desktop Form Dark Mode"
                         className="w-full h-auto object-contain"
                       />
                     ) : (
-                      <img 
+                      <PortfolioImage
                         src="/slshub/Desktop Form (Light).png" 
                         alt="Desktop Form Light Mode"
                         className="w-full h-auto object-contain"
@@ -1175,6 +1217,7 @@ const HubXFlipCard = ({
   ProblemIcon,
   GoalIcon,
 }) => {
+  const descriptionId = useId();
   const [isFlipped, setIsFlipped] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -1185,6 +1228,14 @@ const HubXFlipCard = ({
   return (
     <div
       className="flip-card-container perspective-1000"
+      role="button"
+      tabIndex={0}
+      aria-label={`${card.problemTitle}: show ${isFlipped ? 'overview' : 'details'}`}
+      aria-describedby={`${descriptionId}-${isFlipped ? 'back' : 'front'}`}
+      aria-expanded={isFlipped}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setIsFlipped(value => !value); }
+      }}
       style={{ height: '400px' }}
       onMouseEnter={() => { if (!isTouchDevice) setIsFlipped(true); }}
       onMouseLeave={() => { if (!isTouchDevice) setIsFlipped(false); }}
@@ -1195,7 +1246,7 @@ const HubXFlipCard = ({
         style={{ transform: isFlipped ? 'rotateY(180deg)' : 'none', transformStyle: 'preserve-3d' }}
       >
         {/* Front - Problem */}
-        <div className="flip-card-face absolute w-full h-full backface-hidden bg-slate-900/50 border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
+        <div id={`${descriptionId}-front`} aria-hidden={isFlipped} className="flip-card-face absolute w-full h-full backface-hidden bg-slate-900/50 border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
           <div className="absolute top-4 right-4 text-xs text-slate-500 border border-slate-700 px-3 py-1 rounded-full flex items-center gap-2">
             {isTouchDevice ? 'Tap to flip ↻' : 'Hover to flip ↻'}
           </div>
@@ -1209,6 +1260,8 @@ const HubXFlipCard = ({
         {/* Back - Goal */}
         <div
           className="flip-card-face absolute w-full h-full backface-hidden bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 flex flex-col items-center justify-center shadow-2xl shadow-blue-900/50"
+          aria-hidden={!isFlipped}
+          id={`${descriptionId}-back`}
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           {isTouchDevice && (
@@ -1242,6 +1295,7 @@ const FlipCardItem = ({
   accentColor,
   iconElement,
 }) => {
+  const descriptionId = useId();
   const [isFlipped, setIsFlipped] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -1252,6 +1306,14 @@ const FlipCardItem = ({
   return (
     <div
       className="h-full cursor-pointer"
+      role="button"
+      tabIndex={0}
+      aria-label={`${card.system}: show ${isFlipped ? 'scope' : 'design logic'}`}
+      aria-describedby={`${descriptionId}-${isFlipped ? 'back' : 'front'}`}
+      aria-expanded={isFlipped}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setIsFlipped(value => !value); }
+      }}
       style={{ perspective: '1000px' }}
       onMouseEnter={() => { if (!isTouchDevice) setIsFlipped(true); }}
       onMouseLeave={() => { if (!isTouchDevice) setIsFlipped(false); }}
@@ -1263,6 +1325,8 @@ const FlipCardItem = ({
       >
         {/* Front Face */}
         <div
+          id={`${descriptionId}-front`}
+          aria-hidden={isFlipped}
           className="absolute w-full h-full rounded-xl p-4 flex flex-col border shadow-lg"
           style={{
             backfaceVisibility: 'hidden',
@@ -1290,7 +1354,6 @@ const FlipCardItem = ({
                 key={idx}
                 className="flex gap-2 text-xs text-slate-400 px-1.5 py-1 rounded items-center leading-tight"
               >
-                <span className="font-mono text-[11px] font-bold opacity-80 flex-shrink-0" style={{ color: accentColor }}>{item.id}</span>
                 <span>{item.text}</span>
               </div>
             ))}
@@ -1302,6 +1365,8 @@ const FlipCardItem = ({
 
         {/* Back Face */}
         <div
+          id={`${descriptionId}-back`}
+          aria-hidden={!isFlipped}
           className="absolute w-full h-full rounded-xl p-4 flex flex-col border shadow-lg"
           style={{
             backfaceVisibility: 'hidden',
@@ -1383,7 +1448,7 @@ const HighlightSection = ({ section }) => {
                 return (
                   <div className="w-full max-w-5xl mx-auto">
                     {section.title && (
-                      <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                      <h3 className="case-study-heading text-3xl font-bold text-white mb-6 flex items-center gap-3">
                         <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                         {section.title}
                       </h3>
@@ -1482,26 +1547,39 @@ const VedioMulti = ({ section }) => {
                       }
 
 export const ProjectModal = ({ project, onClose }) => {
+  const dialogRef = useRef(null);
   const scrollContainerRef = useRef(null);
   const [activeSection, setActiveSection] = useState("");
   const [isAnyLightboxOpen, setIsAnyLightboxOpen] = useState(false);
   const [selectedScreensTab, setSelectedScreensTab] = useState('account-access');
   const [screenshotLightboxOpen, setScreenshotLightboxOpen] = useState(false);
   const [currentScreenshotImage, setCurrentScreenshotImage] = useState('');
+  const narrative = useMemo(() => project ? buildCaseStudyNarrative(project.id, project.details.contentSections ?? []) : null, [project]);
+  const contents = narrative?.toc ?? project?.details.toc;
+  const contentSections = narrative?.sections ?? project?.details.contentSections;
+  const inspectScreenshot = (src) => {
+    setCurrentScreenshotImage(src);
+    setScreenshotLightboxOpen(true);
+    setIsAnyLightboxOpen(true);
+  };
   useBodyScrollLock(true);
+  useAccessibleDialog(dialogRef, !!project, () => { if (!isAnyLightboxOpen) onClose(); });
 
   // Handle scroll spy for Table of Contents
   useEffect(() => {
-    if (!project?.details.toc) return;
+    if (!contents) return;
 
     const handleScroll = () => {
-      if (!scrollContainerRef.current || !project.details.toc) return;
+      if (!scrollContainerRef.current || !contents) return;
       
       const scrollPos = scrollContainerRef.current.scrollTop + 200;
       
-      for (const item of project.details.toc) {
+      for (const item of contents) {
         const element = document.getElementById(item.id);
-        if (element && element.offsetTop <= scrollPos) {
+        const sectionTop = element && (narrative
+          ? element.getBoundingClientRect().top - scrollContainerRef.current.getBoundingClientRect().top + scrollContainerRef.current.scrollTop
+          : element.offsetTop);
+        if (element && (!narrative || element.getClientRects().length) && sectionTop <= scrollPos) {
           setActiveSection(item.id);
         }
       }
@@ -1512,7 +1590,7 @@ export const ProjectModal = ({ project, onClose }) => {
       container.addEventListener('scroll', handleScroll);
       return () => container.removeEventListener('scroll', handleScroll);
     }
-  }, [project]);
+  }, [project, contents, narrative]);
 
   // Video autoplay on scroll into view
   useEffect(() => {
@@ -1544,7 +1622,7 @@ export const ProjectModal = ({ project, onClose }) => {
   if (!project) return null;
 
   return (
-    <div className="project-detail-modal fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 overflow-hidden">
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={`${project.title} project details`} tabIndex={-1} className="project-detail-modal fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 overflow-hidden">
       {/* Backdrop */}
       <div 
         className="project-detail-backdrop absolute inset-0 bg-slate-950/90 backdrop-blur-md animate-fade-in"
@@ -1576,9 +1654,9 @@ export const ProjectModal = ({ project, onClose }) => {
             {/* Background Image Layer */}
             {project.backgroundImage && (
               <>
-                <img 
+                <PortfolioImage
                   src={project.backgroundImage} 
-                  alt={`${project.title} background`}
+                  alt=""
                   className="absolute inset-0 w-full h-full object-cover object-center brightness-[0.4]"
                 />
               </>
@@ -1587,7 +1665,7 @@ export const ProjectModal = ({ project, onClose }) => {
             {/* Foreground/Hero Image Layer */}
             {project.image ? (
               <>
-                <img 
+                <PortfolioImage
                   src={project.image} 
                   alt={project.title}
                   className={`absolute inset-0 w-full h-full opacity-100 transition-all duration-700 ${
@@ -1645,16 +1723,16 @@ export const ProjectModal = ({ project, onClose }) => {
                     <use href="#hubx-path-mid" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
                     <use href="#hubx-path-right" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
                     
-                    <circle r="2" fill="#3B82F6">
+                    <circle r="2" fill="#a9bfd8">
                       <animateMotion dur="2s" repeatCount="indefinite"><mpath href="#hubx-path-down"/></animateMotion>
                     </circle>
-                    <circle r="2" fill="#10B981">
+                    <circle r="2" fill="#a5cabc">
                       <animateMotion dur="2s" begin="0.5s" repeatCount="indefinite"><mpath href="#hubx-path-left"/></animateMotion>
                     </circle>
-                    <circle r="2" fill="#10B981">
+                    <circle r="2" fill="#a5cabc">
                       <animateMotion dur="2s" begin="0.7s" repeatCount="indefinite"><mpath href="#hubx-path-mid"/></animateMotion>
                     </circle>
-                    <circle r="2" fill="#10B981">
+                    <circle r="2" fill="#a5cabc">
                       <animateMotion dur="2s" begin="0.5s" repeatCount="indefinite"><mpath href="#hubx-path-right"/></animateMotion>
                     </circle>
                   </svg>
@@ -1682,13 +1760,13 @@ export const ProjectModal = ({ project, onClose }) => {
           <div className="project-detail-layout flex flex-col md:flex-row bg-slate-950 relative">
             
             {/* STICKY TABLE OF CONTENTS (Desktop Only) */}
-            {project.details.toc && (
+            {contents && (
               <div className="project-detail-toc hidden md:block w-64 bg-slate-900/50 border-r border-white/5 p-6 sticky top-0 h-full overflow-y-auto flex-shrink-0">
                 <h5 className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-6 flex items-center gap-2">
                   <Menu size={14} /> Contents
                 </h5>
                 <ul className="space-y-4">
-                  {project.details.toc.map((item) => (
+                  {contents.map((item) => (
                     <li key={item.id}>
                       <a 
                         href={`#${item.id}`}
@@ -1733,8 +1811,8 @@ export const ProjectModal = ({ project, onClose }) => {
                   <button 
                     onClick={() => {
                       // Different target sections for different projects
-                      let targetId = project.finalDesignLink || 'outcome'; // use finalDesignLink if available
-                      if (!project.finalDesignLink) {
+                      let targetId = narrative?.highlightId || project.finalDesignLink || 'outcome'; // use finalDesignLink if available
+                      if (!narrative?.highlightId && !project.finalDesignLink) {
                         if (project.id === 'surfcom') {
                           targetId = 'design-highlights';
                         } else if (project.id === 'courtcanva') {
@@ -1757,26 +1835,25 @@ export const ProjectModal = ({ project, onClose }) => {
                 </div>
               </div>
 
-              <ProjectOverview projectId={project.id} />
+              {!narrative && <ProjectOverview projectId={project.id} />}
 
               {/* CONDITIONAL RENDERING: FULL CASE STUDY OR STANDARD LAYOUT */}
-              {project.isCaseStudy && project.details.contentSections ? (
-                <div className="space-y-20 max-w-6xl mx-auto">
-                  {project.details.contentSections.map((section, index) => (
-                    <div 
-                      key={index} 
-                      id={section.id} 
-                      className="project-detail-section scroll-mt-10"
-                    >
-                      <div className="project-detail-section-index" aria-hidden="true">
-                        {String(index + 1).padStart(2, '0')}
-                      </div>
+              {project.isCaseStudy && contentSections ? (
+                <div className="flex flex-col max-w-6xl mx-auto">
+                  {contentSections.map((section) => (
+                    <CaseStudyChapter key={section.id} section={section}>
+                      {section.type === 'portfolio-context' && <PortfolioCaseContext project={project} onInspect={inspectScreenshot} />}
+                      {section.type === 'joining-journey' && <JoiningJourney onInspect={inspectScreenshot} />}
+                      {section.type === 'case-context' && <CaseStudyContext projectId={project.id} onInspect={inspectScreenshot} />}
+                      {section.type === 'case-evidence' && <CaseStudyDecisions projectId={project.id} onInspect={inspectScreenshot} />}
+                      {project.id === 'surfguard' && section.id === 'responsive' && <SurfGuardResponsiveEvidence onInspect={inspectScreenshot} notes={section.content} checkItems={section.checkItems} />}
+
                       {/* Flip Cards - Problem & Goals */}
                       {section.type === 'flip-cards' && section.flipCards && (
                         <div className="w-full max-w-6xl mx-auto">
                           {/* Header */}
                           <div className="text-center mb-16">
-                            <h3 className="text-4xl font-bold text-white mb-4">{section.title}</h3>
+                            <h3 className="case-study-heading text-4xl font-bold text-white mb-4">{section.title}</h3>
                             {section.content && (
                               <p className="text-slate-400 text-lg">{section.content}</p>
                             )}
@@ -1802,62 +1879,7 @@ export const ProjectModal = ({ project, onClose }) => {
 
                       {/* Strategy Roadmap */}
                       {section.type === 'strategy-roadmap' && section.roadmapSteps && (
-                        <div className="w-full max-w-4xl mx-auto my-16">
-                          {/* Header */}
-                          {section.title && (
-                            <div className="text-center mb-16">
-                              <h3 className="text-4xl font-bold text-white mb-2">{section.title}</h3>
-                            </div>
-                          )}
-
-                          {/* Challenge Banner */}
-                          {section.roadmapChallenge && (
-                            <div className="relative bg-red-50/10 border border-red-500/30 rounded-2xl p-6 mb-16 text-center shadow-lg shadow-red-500/5">
-                              <div className="text-xs uppercase tracking-widest text-red-400 font-bold mb-2">
-                                The Challenge
-                              </div>
-                              <div className="text-lg text-slate-200 font-medium">
-                                {section.roadmapChallenge}
-                              </div>
-                              {/* Connecting line */}
-                              <div className="absolute bottom-0 left-1/2 w-0.5 h-16 bg-gradient-to-b from-white/20 to-transparent transform translate-y-full -translate-x-1/2" />
-                            </div>
-                          )}
-
-                          {/* Timeline */}
-                          <div className="relative pl-12">
-                            {/* Vertical line */}
-                            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-white/20 via-white/10 to-white/5" />
-
-                            {/* Steps */}
-                            <div className="space-y-8">
-                              {section.roadmapSteps.map((item, idx) => (
-                                <div
-                                  key={idx}
-                                  className="group relative opacity-60 hover:opacity-100 transition-all duration-300 hover:translate-x-2"
-                                >
-                                  {/* Dot */}
-                                  <div className="absolute -left-[30px] top-0 w-4 h-4 rounded-full bg-slate-900 border-2 border-white/20 group-hover:border-pink-500 group-hover:bg-pink-500 group-hover:shadow-lg group-hover:shadow-pink-500/50 transition-all duration-300 z-10" />
-
-                                  {/* Content Card */}
-                                  <div className="bg-slate-800/50 border border-white/10 rounded-2xl p-6 group-hover:border-pink-500/30 group-hover:bg-slate-800/70 group-hover:shadow-xl group-hover:shadow-pink-500/10 transition-all duration-300">
-                                    <div className="flex items-center gap-3 mb-2">
-                                      <span className="text-xs font-bold text-pink-400 bg-pink-500/10 px-3 py-1 rounded-lg">
-                                        {item.step}
-                                      </span>
-                                      <h4 className="text-xl font-bold text-white">
-                                        {item.title}
-                                      </h4>
-                                    </div>
-                                    <p className="text-slate-300 leading-relaxed">
-                                      {item.description}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
+                        <StrategyRoadmap title={section.title} challenge={section.roadmapChallenge} steps={section.roadmapSteps} />
                       )}
 
                       {/* Interactive Flow Diagram */}
@@ -1878,7 +1900,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {section.type === 'stats-grid' && section.stats && (
                 <div>
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-6 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -1966,7 +1988,7 @@ export const ProjectModal = ({ project, onClose }) => {
                         }}
                       >
                         <div className="relative overflow-hidden rounded-lg border border-white/10 bg-slate-900/50 transition-all duration-300 hover:border-pink-500/50 hover:shadow-xl hover:shadow-pink-500/20">
-                          <img
+                          <PortfolioImage
                             src={img.src}
                             alt={img.caption || ''}
                             className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
@@ -1989,7 +2011,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {section.type === 'hud-ribbon' && section.stats && (
                 <div className="w-full my-12">
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-8 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -2046,7 +2068,7 @@ export const ProjectModal = ({ project, onClose }) => {
                 <div className="w-full my-8">
                   {/* Header */}
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-4 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -2058,9 +2080,9 @@ export const ProjectModal = ({ project, onClose }) => {
                   {/* Interactive Document with Hotspots */}
                   <div className="relative w-full rounded-2xl bg-slate-900 border border-white/10 shadow-2xl overflow-hidden group">
                     {/* Background Image */}
-                    <img 
+                    <PortfolioImage
                       src={section.hotspotDoc.imageSrc}
-                      alt="Documentation"
+                      alt="HubX requirements specification linking interface fields, component references and validation rules for engineering and QA"
                       className="w-full h-auto transition-all duration-500"
                       style={{
                         filter: 'brightness(0.4) grayscale(0.3)'
@@ -2068,9 +2090,9 @@ export const ProjectModal = ({ project, onClose }) => {
                     />
 
                     {/* Hover enhancement overlay */}
-                    <img 
+                    <PortfolioImage
                       src={section.hotspotDoc.imageSrc}
-                      alt="Documentation"
+                      alt=""
                       className="absolute inset-0 w-full h-full object-contain transition-all duration-500 opacity-0 group-hover:opacity-100 pointer-events-none"
                       style={{
                         filter: 'brightness(0.6) grayscale(0.1)',
@@ -2122,7 +2144,7 @@ export const ProjectModal = ({ project, onClose }) => {
 
               {/* Ecosystem Diagram - Now integrated into hero, this section can be removed from data */}
               {section.type === 'ecosystem-diagram' && (
-                <div className="hidden" />
+                <p className="text-sm leading-relaxed text-slate-400">The trading roles and their relationship to the HubX platform are illustrated in the project overview above.</p>
               )}
 
               {/* Incident Scenario - Interactive multi-agency response simulation */}
@@ -2134,7 +2156,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {section.type === 'chat-interview' && (
                 <div className="w-full my-8">
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-4 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -2148,7 +2170,7 @@ export const ProjectModal = ({ project, onClose }) => {
                     {/* Chat Header */}
                     {section.interviewee && (
                       <div className="bg-slate-800/80 backdrop-blur-sm px-6 py-4 border-b border-white/10 flex items-center gap-4 sticky top-0 z-10">
-                        <img 
+                        <PortfolioImage
                           src={section.interviewee.avatar} 
                           alt={section.interviewee.name}
                           className="w-10 h-10 rounded-full bg-slate-700 border-2 border-pink-500/30"
@@ -2240,7 +2262,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {section.type === 'problem-goal' && (
                 <div className="w-full">
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-10 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-10 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -2307,7 +2329,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {section.type === 'needs-list' && section.needs && (
                 <div className="w-full max-w-4xl mx-auto">
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-10 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-10 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -2319,9 +2341,6 @@ export const ProjectModal = ({ project, onClose }) => {
                         className="group flex items-start px-6 py-5 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-slate-800/30 hover:border-pink-500/30 hover:px-7 hover:translate-x-1"
                       >
                         {/* Number */}
-                        <div className="text-lg font-semibold text-slate-600 group-hover:text-pink-500 mr-7 mt-0.5 transition-colors duration-300 font-mono">
-                          {need.number}
-                        </div>
                         
                         {/* Content */}
                         <div className="flex-1">
@@ -2342,7 +2361,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {section.type === 'spotlight-grid' && section.cards && (
                 <div className="w-full max-w-6xl mx-auto">
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-10 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-10 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -2374,15 +2393,12 @@ export const ProjectModal = ({ project, onClose }) => {
                           }}
                         >
                           {/* Watermark Number */}
-                          <div className="absolute top-[-10px] right-[-5px] text-[64px] font-mono font-bold text-white/[0.03] group-hover:text-pink-500/10 transition-colors duration-300 pointer-events-none z-[1]">
-                            {card.number}
-                          </div>
                           
                           {/* Spotlight Glow Background */}
                           <div 
                             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0"
                             style={{
-                              background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(217, 70, 239, 0.1), transparent 40%)`
+                              background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(198, 187, 255, 0.06), transparent 40%)`
                             }}
                           />
                           
@@ -2391,7 +2407,7 @@ export const ProjectModal = ({ project, onClose }) => {
                             className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-[1]"
                             style={{
                               padding: '1px',
-                              background: `radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(217, 70, 239, 0.5), transparent 40%)`,
+                              background: `radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(198, 187, 255, 0.25), transparent 40%)`,
                               WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                               WebkitMaskComposite: 'xor',
                               maskComposite: 'exclude'
@@ -2426,7 +2442,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {section.type === 'bento-cards' && section.cards && (
                 <div className="w-full max-w-5xl mx-auto">
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-10 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-10 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -2473,7 +2489,7 @@ export const ProjectModal = ({ project, onClose }) => {
                   {section.badges && (
                     <div className="bg-slate-950/60 border border-white/10 rounded-2xl p-6">
                       <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-4">
-                        // Core Competencies Demonstrated
+                        {'// Core Competencies Demonstrated'}
                       </div>
                       <div className="flex flex-wrap gap-3">
                         {section.badges.map((badge, idx) => {
@@ -2496,13 +2512,13 @@ export const ProjectModal = ({ project, onClose }) => {
 
               {/* Highlights Section with Filter Pills */}
               {/* Responsive Device Block */}
-              {section.type === 'responsive-device' && (
+              {section.type === 'responsive-device' && project.id !== 'surfguard' && (
                 <div className="w-full max-w-5xl mx-auto">
                   <div className="flex flex-col lg:flex-row items-start gap-12">
                     {/* Left: Text Panel */}
                     <div className="flex-1 flex flex-col gap-8">
                       {section.title && (
-                        <h3 className="text-3xl font-bold text-white flex items-center gap-3">
+                        <h3 className="case-study-heading text-3xl font-bold text-white flex items-center gap-3">
                           <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/>
                           {section.title}
                         </h3>
@@ -2512,7 +2528,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       )}
                       {section.checkItems && section.checkItems.length > 0 && (
                         <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6 flex flex-col gap-4">
-                          <span className="font-mono text-xs text-slate-500 tracking-widest uppercase">// What was addressed</span>
+                          <span className="font-mono text-xs text-slate-500 tracking-widest uppercase">{'// What was addressed'}</span>
                           {section.checkItems.map((item, idx) => (
                             <div key={idx} className="flex items-start gap-3">
                               <CheckCircle size={18} className="text-sky-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
@@ -2530,7 +2546,7 @@ export const ProjectModal = ({ project, onClose }) => {
                             <Tablet size={12}/> Tablet
                           </span>
                           <div className="rounded-xl border border-white/10 bg-slate-900/80 overflow-hidden shadow-xl aspect-[3/4]">
-                            <img src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover object-top" />
+                            <PortfolioImage src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover object-top" />
                           </div>
                         </div>
                       )}
@@ -2540,7 +2556,7 @@ export const ProjectModal = ({ project, onClose }) => {
                             <Smartphone size={12}/> Mobile
                           </span>
                           <div className="rounded-xl border border-white/10 bg-slate-800/90 overflow-hidden shadow-xl aspect-[3/4]">
-                            <img src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover object-top" />
+                            <PortfolioImage src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover object-top" />
                           </div>
                         </div>
                       )}
@@ -2550,7 +2566,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* Tablet */}
                       <div className="absolute right-4 top-0 w-[72%] h-[90%] rounded-2xl border border-white/10 bg-slate-900/80 overflow-hidden shadow-2xl">
                         {section.deviceImages?.tablet ? (
-                          <img src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover object-top" />
+                          <PortfolioImage src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover object-top" />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-600">
                             <Tablet size={32} className="opacity-30" />
@@ -2561,7 +2577,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* Phone */}
                       <div className="absolute left-0 bottom-4 w-[36%] h-[76%] rounded-2xl border border-white/15 bg-slate-800/90 overflow-hidden shadow-2xl z-10">
                         {section.deviceImages?.phone ? (
-                          <img src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover object-top" />
+                          <PortfolioImage src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover object-top" />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-600">
                             <Smartphone size={24} className="opacity-30" />
@@ -2581,7 +2597,7 @@ export const ProjectModal = ({ project, onClose }) => {
                     {/* Left: Text Panel */}
                     <div className="flex-1 flex flex-col gap-6">
                       {section.title && (
-                        <h3 className="text-3xl font-bold text-white flex items-center gap-3">
+                        <h3 className="case-study-heading text-3xl font-bold text-white flex items-center gap-3">
                           <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/>
                           {section.title}
                         </h3>
@@ -2624,7 +2640,7 @@ export const ProjectModal = ({ project, onClose }) => {
                 <div className="w-full max-w-5xl mx-auto">
                   {/* Title */}
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-6 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/>
                       {section.title}
                     </h3>
@@ -2639,7 +2655,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       <div key={idx} className={`flex flex-col gap-4 ${artifact.fullWidth ? 'sm:col-span-2' : ''}`}>
                         {/* Artifact label + text */}
                         <div className="flex flex-col gap-1">
-                          <span className="font-mono text-xs text-slate-500 tracking-widest uppercase">// {artifact.label}</span>
+                          <span className="font-mono text-xs text-slate-500 tracking-widest uppercase">{'// '}{artifact.label}</span>
                           <div className="flex items-center gap-3">
                             <h4 className="text-base font-semibold text-white">{artifact.title}</h4>
                             {artifact.linkUrl && (
@@ -2705,7 +2721,7 @@ export const ProjectModal = ({ project, onClose }) => {
                 <div className="w-full max-w-5xl mx-auto">
                   {/* Title */}
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-6 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/>
                       {section.title}
                     </h3>
@@ -2732,7 +2748,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {section.type === 'flow-images' && section.flows && (
                 <div className="w-full">
                   {section.title && (
-                    <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-8 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                       {section.title}
                     </h3>
@@ -2766,7 +2782,7 @@ export const ProjectModal = ({ project, onClose }) => {
                 <div className="w-full">
                   {section.title && (
                     <div className="mb-3">
-                      <h3 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                      <h3 className="case-study-heading text-3xl font-bold text-white mb-2 flex items-center gap-3">
                         <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                         {section.title}
                       </h3>
@@ -2784,7 +2800,7 @@ export const ProjectModal = ({ project, onClose }) => {
                 <div className="w-full max-w-6xl mx-auto">
                   {/* Header */}
                   <div className="mb-12">
-                    <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                    <h3 className="case-study-heading text-3xl font-bold text-white mb-6 flex items-center gap-3">
                       <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500"/> 
                       {section.title}
                     </h3>
@@ -2894,7 +2910,7 @@ export const ProjectModal = ({ project, onClose }) => {
                         </div>
                         
                         <div className="flex items-center gap-4 mb-6">
-                          <img 
+                          <PortfolioImage
                             src="/courtcanva/CC_Logo.png" 
                             alt="CourtCanva Logo" 
                             className="w-16 h-16 object-contain"
@@ -2951,7 +2967,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {/* Requirements List */}
               {section.type === 'requirements-list' && (
                 <div className="w-full max-w-5xl mx-auto">
-                  <h3 className="text-3xl font-bold text-white mb-12 flex items-center gap-3">
+                  <h3 className="case-study-heading text-3xl font-bold text-white mb-12 flex items-center gap-3">
                     <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                     {section.title}
                   </h3>
@@ -2959,7 +2975,6 @@ export const ProjectModal = ({ project, onClose }) => {
                   <div className="space-y-0">
                     {/* Requirement 1 */}
                     <div className="group relative py-6 grid grid-cols-[80px,1fr,60px] gap-8 items-start border-b border-white/10 transition-all duration-400 after:absolute after:bottom-[-1px] after:left-0 after:h-[2px] after:w-0 after:bg-sky-400 after:shadow-[0_0_15px_rgba(56,189,248,0.5)] after:transition-[width] after:duration-500 hover:after:w-full">
-                      <div className="font-mono text-slate-500 text-sm pt-1 group-hover:text-sky-400 transition-colors hidden md:block">01</div>
                       <div className="flex flex-col gap-2 md:col-start-2">
                         <h3 className="text-xl font-semibold text-white group-hover:text-sky-400 group-hover:translate-x-2 transition-all duration-300">
                           User-friendly Design Tool
@@ -2975,7 +2990,6 @@ export const ProjectModal = ({ project, onClose }) => {
 
                     {/* Requirement 2 */}
                     <div className="group relative py-6 grid grid-cols-[80px,1fr,60px] gap-8 items-start border-b border-white/10 transition-all duration-400 after:absolute after:bottom-[-1px] after:left-0 after:h-[2px] after:w-0 after:bg-sky-400 after:shadow-[0_0_15px_rgba(56,189,248,0.5)] after:transition-[width] after:duration-500 hover:after:w-full">
-                      <div className="font-mono text-slate-500 text-sm pt-1 group-hover:text-sky-400 transition-colors hidden md:block">02</div>
                       <div className="flex flex-col gap-2 md:col-start-2">
                         <h3 className="text-xl font-semibold text-white group-hover:text-sky-400 group-hover:translate-x-2 transition-all duration-300">
                           Enhanced Responsiveness
@@ -2991,7 +3005,6 @@ export const ProjectModal = ({ project, onClose }) => {
 
                     {/* Requirement 3 */}
                     <div className="group relative py-6 grid grid-cols-[80px,1fr,60px] gap-8 items-start border-b border-white/10 transition-all duration-400 after:absolute after:bottom-[-1px] after:left-0 after:h-[2px] after:w-0 after:bg-sky-400 after:shadow-[0_0_15px_rgba(56,189,248,0.5)] after:transition-[width] after:duration-500 hover:after:w-full">
-                      <div className="font-mono text-slate-500 text-sm pt-1 group-hover:text-sky-400 transition-colors hidden md:block">03</div>
                       <div className="flex flex-col gap-2 md:col-start-2">
                         <h3 className="text-xl font-semibold text-white group-hover:text-sky-400 group-hover:translate-x-2 transition-all duration-300">
                           Design Consistency
@@ -3007,7 +3020,6 @@ export const ProjectModal = ({ project, onClose }) => {
 
                     {/* Requirement 4 */}
                     <div className="group relative py-6 grid grid-cols-[80px,1fr,60px] gap-8 items-start transition-all duration-400 after:absolute after:bottom-[-1px] after:left-0 after:h-[2px] after:w-0 after:bg-sky-400 after:shadow-[0_0_15px_rgba(56,189,248,0.5)] after:transition-[width] after:duration-500 hover:after:w-full">
-                      <div className="font-mono text-slate-500 text-sm pt-1 group-hover:text-sky-400 transition-colors hidden md:block">04</div>
                       <div className="flex flex-col gap-2 md:col-start-2">
                         <h3 className="text-xl font-semibold text-white group-hover:text-sky-400 group-hover:translate-x-2 transition-all duration-300">
                           Accessibility (A11y)
@@ -3028,7 +3040,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {section.type === 'text-block' && (
                         <div className={project.id === 'slshub' && (section.id === 'selected-screens' || section.id === 'interactive-prototype' || section.id === 'module-coverage' || section.id === 'rules-governance' || section.id === 'design-system' || section.id === 'responsive-dark' || section.id === 'guides-enablement' || section.id === 'quality-readiness' || section.id === 'summary') ? 'max-w-full' : 'max-w-3xl'}>
                           {section.title && (
-                            <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                            <h3 className="case-study-heading text-3xl font-bold text-white mb-6 flex items-center gap-3">
                               <span className={`inline-block ${project.id === 'slshub' ? 'h-0.5 w-6 bg-fuchsia-500' : 'w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500'}`}/> 
                               {section.title}
                             </h3>
@@ -3143,7 +3155,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                             }}
                                           >
                                             <div className="aspect-video bg-slate-900/50 flex items-center justify-center relative">
-                                              <img
+                                              <PortfolioImage
                                                 src={screenshot.src}
                                                 alt={screenshot.caption}
                                                 className="w-full h-full object-cover"
@@ -3415,7 +3427,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                         setIsAnyLightboxOpen(true);
                                       }}
                                     >
-                                      <img 
+                                      <PortfolioImage
                                         src="/slshub/Admin Access Criteria.png" 
                                         alt="Admin Access Criteria" 
                                         className="w-full h-full object-contain"
@@ -3440,7 +3452,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                         setIsAnyLightboxOpen(true);
                                       }}
                                     >
-                                      <img 
+                                      <PortfolioImage
                                         src="/slshub/Award Gating.png" 
                                         alt="Award Gating" 
                                         className="w-full h-full object-contain"
@@ -3516,9 +3528,9 @@ export const ProjectModal = ({ project, onClose }) => {
                                         setIsAnyLightboxOpen(true);
                                       }}
                                     >
-                                      <img 
+                                      <PortfolioImage
                                         src="/slshub/Submission Confirmation.png" 
-                                        alt="Submission Confirmation" 
+                                        alt="Confirmation before cancelling an application"
                                         className="w-full h-full object-contain"
                                       />
                                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -3527,7 +3539,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                     </div>
                                     <div className="flex flex-col gap-1.5">
                                       <div className="self-start font-mono text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded border border-cyan-400/20 uppercase">Rule type: Multi-step approval + confirmation</div>
-                                      <div className="text-sm text-slate-200 leading-relaxed">Transaction traceability: &quot;Are you sure?&quot; confirmation modals ensure intent before submission.</div>
+                                      <div className="text-sm text-slate-200 leading-relaxed">Confirm irreversible actions: the cancellation dialog explains the consequence before an application is cancelled.</div>
                                     </div>
                                   </div>
 
@@ -3541,7 +3553,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                         setIsAnyLightboxOpen(true);
                                       }}
                                     >
-                                      <img 
+                                      <PortfolioImage
                                         src="/slshub/Deactivate Confirm.png" 
                                         alt="Deactivate Confirm" 
                                         className="w-full h-full object-contain"
@@ -3566,7 +3578,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                         setIsAnyLightboxOpen(true);
                                       }}
                                     >
-                                      <img 
+                                      <PortfolioImage
                                         src="/slshub/Audit Log:Permissions.png" 
                                         alt="Audit Log and Permissions" 
                                         className="w-full h-full object-contain"
@@ -3649,7 +3661,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                 <div className="bg-slate-900/60 backdrop-blur-sm border border-white/10 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-white/20 before:absolute before:top-0 before:left-0 before:w-2.5 before:h-2.5 before:border-t-2 before:border-l-2 before:border-cyan-400 after:absolute after:bottom-0 after:right-0 after:w-2.5 after:h-2.5 after:border-b-2 after:border-r-2 after:border-cyan-400">
                                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                                   <div className="px-4 py-3 border-b border-white/10 flex justify-between items-center bg-black/20">
-                                    <span className="font-mono text-[11px] uppercase tracking-wider text-cyan-400">01_Component_Architecture</span>
+                                    <span className="font-mono text-[11px] uppercase tracking-wider text-cyan-400">Component architecture</span>
                                     <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded">Figma Variables</span>
                                   </div>
                                   <div 
@@ -3660,7 +3672,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                       setIsAnyLightboxOpen(true);
                                     }}
                                   >
-                                    <img 
+                                    <PortfolioImage
                                       src="/slshub/Component Matrix : Library.png" 
                                       alt="Component Matrix Library"
                                       className="w-full h-auto block"
@@ -3675,7 +3687,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                 <div className="bg-slate-900/60 backdrop-blur-sm border border-white/10 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-white/20 before:absolute before:top-0 before:left-0 before:w-2.5 before:h-2.5 before:border-t-2 before:border-l-2 before:border-purple-400 after:absolute after:bottom-0 after:right-0 after:w-2.5 after:h-2.5 after:border-b-2 after:border-r-2 after:border-purple-400">
                                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                                   <div className="px-4 py-3 border-b border-white/10 flex justify-between items-center bg-black/20">
-                                    <span className="font-mono text-[11px] uppercase tracking-wider text-purple-400">02_Dev_Handoff_Specs</span>
+                                    <span className="font-mono text-[11px] uppercase tracking-wider text-purple-400">Developer handoff specs</span>
                                     <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded">Dev Mode</span>
                                   </div>
                                   <div 
@@ -3686,7 +3698,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                       setIsAnyLightboxOpen(true);
                                     }}
                                   >
-                                    <img 
+                                    <PortfolioImage
                                       src="/slshub/Measurements : Breakpoints.png" 
                                       alt="Measurements and Breakpoints"
                                       className="w-full h-auto block"
@@ -3712,9 +3724,9 @@ export const ProjectModal = ({ project, onClose }) => {
                                       setIsAnyLightboxOpen(true);
                                     }}
                                   >
-                                    <img 
+                                    <PortfolioImage
                                       src="/slshub/Table Screenshot.png" 
-                                      alt="Table Screenshot"
+                                      alt="Shared table design reference used to document data layout and interface consistency"
                                       className="w-full h-auto block"
                                     />
                                     <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
@@ -3738,9 +3750,9 @@ export const ProjectModal = ({ project, onClose }) => {
                                       setIsAnyLightboxOpen(true);
                                     }}
                                   >
-                                    <img 
+                                    <PortfolioImage
                                       src="/slshub/Flow Map.png" 
-                                      alt="Flow Map"
+                                      alt="User flow map documenting task progression and transitions between screens"
                                       className="w-full h-auto block"
                                     />
                                     <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
@@ -3764,9 +3776,9 @@ export const ProjectModal = ({ project, onClose }) => {
                                       setIsAnyLightboxOpen(true);
                                     }}
                                   >
-                                    <img 
+                                    <PortfolioImage
                                       src="/slshub/Bug Fix:QA Table2.png" 
-                                      alt="Bug Fix QA Table"
+                                      alt="Design QA issue log tracking implementation discrepancies and their resolution"
                                       className="w-full h-auto block"
                                     />
                                     <div className="absolute top-4 right-4 p-2 bg-black/60 rounded-lg opacity-0 group-hover/img:opacity-100 transition-opacity duration-200">
@@ -3799,7 +3811,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                   
                                   {/* Preview Box - Favicon Image */}
                                   <div className="w-full h-[180px] bg-black/30 rounded-xl mb-5 flex items-center justify-center overflow-hidden p-4">
-                                    <img 
+                                    <PortfolioImage
                                       src="/slshub/System Favicon.png" 
                                       alt="System Favicon"
                                       className="max-w-full max-h-full object-contain"
@@ -3831,7 +3843,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                       setIsAnyLightboxOpen(true);
                                     }}
                                   >
-                                    <img 
+                                    <PortfolioImage
                                       src="/slshub/Launch Brochure.png" 
                                       alt="Launch Brochure"
                                       className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
@@ -3884,18 +3896,18 @@ export const ProjectModal = ({ project, onClose }) => {
                                     <div className="flex items-center gap-2.5 mb-1">
                                       <div className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.7)]"></div>
                                       <span className="font-mono text-[11px] text-green-400 uppercase tracking-wider font-bold">
-                                        System Stable
+                                        Implementation Review
                                       </span>
                                     </div>
 
                                     {/* Big Stat */}
                                     <div className="text-[28px] font-extrabold text-white leading-none">
-                                      Ready to Ship
+                                      Review & refine
                                     </div>
 
                                     {/* Sub Stat */}
                                     <div className="text-sm text-white/60">
-                                      0 Critical Blockers
+                                      Implementation QA
                                     </div>
 
                                   </div>
@@ -4055,7 +4067,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* Structure Cards - Product Structure */}
                       {section.type === 'structure-cards' && (
                         <div className="w-full max-w-7xl mx-auto">
-                          <h3 className="text-3xl font-bold text-white mb-12 text-center flex items-center justify-center gap-3">
+                          <h3 className="case-study-heading text-3xl font-bold text-white mb-12 text-center flex items-center justify-center gap-3">
                             <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                             {section.title}
                           </h3>
@@ -4063,13 +4075,12 @@ export const ProjectModal = ({ project, onClose }) => {
                           <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
                             {/* Card 1: Homepage */}
                             <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <img src="/courtcanva/landing webpage.png" alt="Homepage" className="absolute inset-0 w-full h-full object-cover" />
+                              <PortfolioImage src="/courtcanva/landing webpage.png" alt="Homepage" className="absolute inset-0 w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
                               <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <Home size={20} />
                               </div>
                               <div className="relative z-10 p-6">
-                                <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">01</span>
                                 <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Homepage</h3>
                                 <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Eye-catching banner showcasing platform capabilities with clear CTAs for starting designs or exploring the gallery.
@@ -4079,13 +4090,12 @@ export const ProjectModal = ({ project, onClose }) => {
 
                             {/* Card 2: Design Interface */}
                             <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <img src="/courtcanva/3D Preview Access Button.png" alt="Design Interface" className="absolute inset-0 w-full h-full object-cover" />
+                              <PortfolioImage src="/courtcanva/3D Preview Access Button.png" alt="Design Interface" className="absolute inset-0 w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
                               <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <Edit3 size={20} />
                               </div>
                               <div className="relative z-10 p-6">
-                                <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">02</span>
                                 <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Design Interface</h3>
                                 <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Drag-and-drop court builder with structured elements, customisation controls and a real-time 3D preview.
@@ -4095,13 +4105,12 @@ export const ProjectModal = ({ project, onClose }) => {
 
                             {/* Card 3: Quote Request */}
                             <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <img src="/courtcanva/Order Generation Page.png" alt="Quote Request" className="absolute inset-0 w-full h-full object-cover" />
+                              <PortfolioImage src="/courtcanva/Order Generation Page.png" alt="Quote Request" className="absolute inset-0 w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
                               <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <FileText size={20} />
                               </div>
                               <div className="relative z-10 p-6">
-                                <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">03</span>
                                 <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Quote Request</h3>
                                 <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Submit custom designs with project details like location and materials. Quotes sent directly via email or platform messaging.
@@ -4111,13 +4120,12 @@ export const ProjectModal = ({ project, onClose }) => {
 
                             {/* Card 4: Templates */}
                             <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <img src="/courtcanva/My Template Page.png" alt="Templates" className="absolute inset-0 w-full h-full object-cover" />
+                              <PortfolioImage src="/courtcanva/My Template Page.png" alt="Templates" className="absolute inset-0 w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
                               <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <Grid size={20} />
                               </div>
                               <div className="relative z-10 p-6">
-                                <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">04</span>
                                 <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Templates</h3>
                                 <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Diverse collection of user-created designs offering inspiration with social sharing options for favorite designs.
@@ -4127,13 +4135,12 @@ export const ProjectModal = ({ project, onClose }) => {
 
                             {/* Card 5: User Account */}
                             <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <img src="/courtcanva/My Account.png" alt="User Account" className="absolute inset-0 w-full h-full object-cover" />
+                              <PortfolioImage src="/courtcanva/My Account.png" alt="User Account" className="absolute inset-0 w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
                               <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <User size={20} />
                               </div>
                               <div className="relative z-10 p-6">
-                                <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">05</span>
                                 <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">User Account</h3>
                                 <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Personal dashboard for managing saved designs, accessing quotes, and tracking project progress.
@@ -4143,13 +4150,12 @@ export const ProjectModal = ({ project, onClose }) => {
 
                             {/* Card 6: Place Order */}
                             <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <img src="/courtcanva/Order Placed Successful Page.png" alt="Place Order" className="absolute inset-0 w-full h-full object-cover" />
+                              <PortfolioImage src="/courtcanva/Order Placed Successful Page.png" alt="Place Order" className="absolute inset-0 w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
                               <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
                                 <ShoppingCart size={20} />
                               </div>
                               <div className="relative z-10 p-6">
-                                <span className="text-sm font-bold text-emerald-400 block mb-2 opacity-80 drop-shadow-lg">06</span>
                                 <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Place Order</h3>
                                 <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                   Secure payment with detailed order summaries and real-time status updates from court builders.
@@ -4195,9 +4201,6 @@ export const ProjectModal = ({ project, onClose }) => {
                                   {/* Header */}
                                   <div className="flex items-center justify-between mb-0 group-hover:mb-4 transition-all duration-400">
                                     <div className="flex items-center gap-3">
-                                      <span className="text-xs font-mono text-slate-500 opacity-50 group-hover:opacity-100 group-hover:text-emerald-400 group-hover:font-bold transition-all duration-300">
-                                        {feature.index}
-                                      </span>
                                       <h4 className="text-base font-bold text-slate-200 group-hover:text-white transition-colors duration-300 flex items-center gap-2">
                                         {IconComponent && <IconComponent size={18} className="opacity-80" />}
                                         {feature.title}
@@ -4247,9 +4250,6 @@ export const ProjectModal = ({ project, onClose }) => {
                                   <div className="absolute left-0 top-1.5 w-[3px] h-6 bg-slate-800 transition-all duration-400 group-hover:h-full group-hover:bg-emerald-400 group-hover:shadow-[0_0_15px_rgb(52,211,153)]" />
                                   
                                   {/* Background number */}
-                                  <div className="absolute -top-10 -left-5 text-[100px] font-black text-white/[0.02] z-0 pointer-events-none leading-none transition-all duration-500 group-hover:text-white/[0.06] group-hover:-translate-x-2 group-hover:scale-105" style={{fontFamily: 'Helvetica Neue, sans-serif'}}>
-                                    {String(idx + 1).padStart(2, '0')}
-                                  </div>
 
                                   {/* Content */}
                                   <div className="relative z-10">
@@ -4284,9 +4284,6 @@ export const ProjectModal = ({ project, onClose }) => {
                                   <div className="absolute left-0 top-1.5 w-[3px] h-6 bg-slate-800 transition-all duration-400 group-hover:h-full group-hover:bg-pink-400 group-hover:shadow-[0_0_15px_rgb(251,113,133)]" />
                                   
                                   {/* Background number */}
-                                  <div className="absolute -top-10 -left-5 text-[100px] font-black text-white/[0.02] z-0 pointer-events-none leading-none transition-all duration-500 group-hover:text-white/[0.06] group-hover:-translate-x-2 group-hover:scale-105" style={{fontFamily: 'Helvetica Neue, sans-serif'}}>
-                                    {String(idx + 1).padStart(2, '0')}
-                                  </div>
 
                                   {/* Content */}
                                   <div className="relative z-10">
@@ -4308,7 +4305,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {section.type === 'image' && (
                         <div className="w-full my-8">
                           {section.title && (
-                            <h3 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+                            <h3 className="case-study-heading text-3xl font-bold text-white mb-4 flex items-center gap-3">
                               <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                               {section.title}
                             </h3>
@@ -4392,7 +4389,7 @@ export const ProjectModal = ({ project, onClose }) => {
                               {section.productUsers.users.map((user, idx) => (
                                 <div key={idx} className="flex flex-col items-center group">
                                   <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white/10 mb-6 group-hover:border-pink-500/50 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-pink-500/20 transition-all duration-300">
-                                    <img 
+                                    <PortfolioImage
                                       src={user.image} 
                                       alt={user.name}
                                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
@@ -4433,7 +4430,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {section.type === 'info-cards' && section.infoCards && (
                         <div className="w-full max-w-6xl mx-auto my-12">
                           {section.title && (
-                            <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                            <h3 className="case-study-heading text-2xl font-bold text-white mb-8 flex items-center gap-3">
                               <span className="w-6 h-[2px] bg-gradient-to-r from-yellow-500 to-orange-600 inline-block"/> 
                               {section.title}
                             </h3>
@@ -4455,7 +4452,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* Video Block */}
                       {section.type === 'video' && (
                         <div className="w-full my-12 flex flex-col items-center">
-                          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block max-w-xs">
+                          <div className={`relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block ${['hubx', 'surfcom'].includes(project.id) ? 'w-full max-w-4xl' : 'max-w-xs'}`}>
                             {section.src?.includes('youtube.com') || section.src?.includes('youtu.be') ? (
                               <iframe
                                 src={section.src}
@@ -4511,7 +4508,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* React Component */}
                       {section.type === 'react-component' && section.component === 'CourtCanva2' && (
                         <div className="w-full max-w-3xl my-12">
-                          <div className="rounded-2xl overflow-hidden ring-1 ring-white/20">
+                          <div className="case-product-preview rounded-2xl overflow-hidden ring-1 ring-white/20">
                             <CourtCanva2 />
                           </div>
                         </div>
@@ -4544,7 +4541,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* Feature List */}
                       {section.type === 'feature-list' && section.features && (
                         <div>
-                          <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                          <h3 className="case-study-heading text-2xl font-bold text-white mb-8 flex items-center gap-3">
                             <span className="w-8 h-[2px] bg-purple-500 inline-block"/> {section.title}
                           </h3>
                           <p className="text-slate-400 mb-8 max-w-3xl text-lg">{section.intro}</p>
@@ -4592,7 +4589,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                   {feature.images && feature.images.length > 0 && (
                                     <div className="mt-4 grid grid-cols-2 gap-3">
                                       {feature.images.map((imgSrc, imgIdx) => (
-                                        <img
+                                        <PortfolioImage
                                           key={imgIdx}
                                           src={imgSrc}
                                           alt={`${feature.title} - Image ${imgIdx + 1}`}
@@ -4614,7 +4611,7 @@ export const ProjectModal = ({ project, onClose }) => {
                           {/* Header */}
                           <div className="mb-10">
                             <div className="flex flex-wrap gap-2 justify-between items-end mb-3">
-                              <h3 className="text-3xl font-bold text-white m-0 flex items-center gap-3">
+                              <h3 className="case-study-heading text-3xl font-bold text-white m-0 flex items-center gap-3">
                                 <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                                 {section.title}
                               </h3>
@@ -4637,11 +4634,11 @@ export const ProjectModal = ({ project, onClose }) => {
                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6" style={{ perspective: '1000px', gridAutoRows: '260px' }}>
                             {section.cards.map((card, cardIdx) => {
                               const colorMap = {
-                                cyan: '#38bdf8',
-                                pink: '#f472b6',
-                                emerald: '#34d399'
+                                cyan: '#a9bfd8',
+                                pink: '#c6bbff',
+                                emerald: '#a5cabc'
                               };
-                              const accentColor = colorMap[card.color] || '#38bdf8';
+                              const accentColor = colorMap[card.color] || '#c6bbff';
 
                               const svgIconMap = {
                                 globe: (
@@ -4681,12 +4678,9 @@ export const ProjectModal = ({ project, onClose }) => {
                           {section.uatBar && (
                             <div className="bg-purple-500/5 border border-purple-500/30 rounded-xl px-4 py-3 flex flex-wrap items-center gap-3 justify-between transition-all hover:shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:border-purple-400 hover:-translate-y-0.5">
                               <div className="flex flex-wrap items-center gap-2">
-                                <svg width="20" height="20" fill="none" stroke="#a855f7" strokeWidth="2" viewBox="0 0 24 24" className="flex-shrink-0">
+                                <svg width="20" height="20" fill="none" stroke="#c6bbff" strokeWidth="2" viewBox="0 0 24 24" className="flex-shrink-0">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                <div className="font-mono text-sm font-extrabold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded flex-shrink-0">
-                                  {section.uatBar.badge}
-                                </div>
                                 <div className="text-[13px] font-bold text-white">
                                   {section.uatBar.title}
                                 </div>
@@ -4694,7 +4688,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                   {section.uatBar.subtitle}
                                 </div>
                               </div>
-                              <svg width="18" height="18" stroke="#a855f7" strokeWidth="2" fill="none" viewBox="0 0 24 24" className="flex-shrink-0">
+                              <svg width="18" height="18" stroke="#c6bbff" strokeWidth="2" fill="none" viewBox="0 0 24 24" className="flex-shrink-0">
                                 <polyline points="20 6 9 17 4 12"/>
                               </svg>
                             </div>
@@ -4705,7 +4699,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* Impact Section */}
                       {section.type === 'impact' && (
                         <div className="bg-gradient-to-r from-pink-900/20 to-purple-900/20 p-8 md:p-12 rounded-3xl border border-pink-500/20 text-center shadow-2xl shadow-pink-900/10">
-                          <h3 className="text-3xl font-bold text-white mb-6">{section.title}</h3>
+                          <h3 className="case-study-heading text-3xl font-bold text-white mb-6">{section.title}</h3>
                           <p className="text-slate-200 text-xl leading-relaxed max-w-4xl mx-auto">
                             {section.content}
                           </p>
@@ -4716,7 +4710,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {section.type === 'wrapup-section' && (
                         <div className="w-full max-w-5xl mx-auto">
                           {/* Title */}
-                          <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                          <h3 className="case-study-heading text-3xl font-bold text-white mb-8 flex items-center gap-3">
                             <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
                             {section.title || 'Wrap-up'}
                           </h3>
@@ -4814,7 +4808,7 @@ export const ProjectModal = ({ project, onClose }) => {
                           </div>
                         </div>
                       )}
-                    </div>
+                    </CaseStudyChapter>
                   ))}
                 </div>
               ) : (
@@ -4908,7 +4902,7 @@ export const ProjectModal = ({ project, onClose }) => {
           }}
           onNext={() => {}}
           onPrev={() => {}}
-          alt="SLS Hub Screenshot"
+          alt={imageDescription(currentScreenshotImage, `${project.title} interface`)}
         />
       )}
     </div>

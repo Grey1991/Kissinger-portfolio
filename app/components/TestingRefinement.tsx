@@ -1,5 +1,6 @@
 'use client';
 
+import { PortfolioImage } from './ui/PortfolioImage';
 import { useState } from 'react';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 
@@ -72,7 +73,7 @@ export const TestingRefinement = () => {
                   activeVersion === 'v1' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
                 }`}
               >
-                <img 
+                <PortfolioImage
                   src="/jr food court/Select Seats Page 1.png"
                   alt="Before: Confusing seat selection"
                   className="w-full h-full object-cover"
@@ -85,7 +86,7 @@ export const TestingRefinement = () => {
                   activeVersion === 'v2' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
                 }`}
               >
-                <img 
+                <PortfolioImage
                   src="/jr food court/Select Seat Page 2.png"
                   alt="After: Visual seat map"
                   className="w-full h-full object-cover"

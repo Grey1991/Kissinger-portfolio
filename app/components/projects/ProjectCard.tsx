@@ -1,5 +1,6 @@
 'use client';
 
+import { PortfolioImage } from '../ui/PortfolioImage';
 import { ArrowUpRight } from 'lucide-react';
 import { Project } from '../../types';
 
@@ -11,32 +12,28 @@ interface ProjectCardProps {
 export const ProjectCard = ({ project, onClick }: ProjectCardProps) => (
   <button
     type="button"
-    onClick={() => onClick(project)}
-    className="flex flex-col h-full w-full text-left group overflow-hidden rounded-xl border border-white/10 bg-slate-900/40 hover:border-white/25 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+    onClick={(event) => { event.currentTarget.focus(); onClick(project); }}
+    className="portfolio-project-card flex flex-col h-full w-full text-left group"
   >
-    <div className={`h-52 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden p-5`}>
+    <div className="project-preview w-full relative overflow-hidden p-5">
       <div className="absolute inset-0 bg-slate-950/10" />
 
       {project.backgroundImage && (
-        <img
+        <PortfolioImage
           src={project.backgroundImage}
-          alt={`${project.title} background`}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          alt=""
           className="absolute inset-0 w-full h-full object-cover brightness-[0.35]"
         />
       )}
 
       {project.image ? (
         <>
-          <img
+          <PortfolioImage
             src={project.image}
+            sizes="(min-width: 768px) 50vw, 100vw"
             alt={project.title}
-            className={`absolute inset-0 w-full h-full opacity-95 ${
-              project.id === 'slshub'
-                ? 'object-cover object-[120%_220%] scale-[1.3]'
-                : project.id === 'surfguard'
-                  ? 'object-cover object-[80%_center]'
-                  : 'object-cover object-top'
-            }`}
+            className="absolute inset-0 w-full h-full opacity-95 object-contain object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
         </>
@@ -54,12 +51,12 @@ export const ProjectCard = ({ project, onClick }: ProjectCardProps) => (
       </div>
     </div>
 
-    <div className="p-6 flex flex-col flex-grow">
-      <h4 className="text-xl font-semibold text-white mb-1">
+    <div className="p-5 flex flex-col flex-grow">
+      <h3 className="text-lg md:text-xl font-semibold text-white mb-2 tracking-tight">
         {project.title}
-      </h4>
-      <p className="text-slate-500 text-sm font-medium mb-4 line-clamp-1">{project.subtitle}</p>
-      <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-grow line-clamp-4">
+      </h3>
+      <p className="text-[#c6bbff] text-xs font-medium mb-3">{project.subtitle}</p>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-grow line-clamp-4">
         {project.shortSummary || project.summary}
       </p>
 
@@ -72,7 +69,7 @@ export const ProjectCard = ({ project, onClick }: ProjectCardProps) => (
           ))}
         </div>
         <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-slate-300 transition-colors group-hover:text-white">
-          View <ArrowUpRight size={14} />
+          View project <ArrowUpRight size={15} />
         </span>
       </div>
     </div>

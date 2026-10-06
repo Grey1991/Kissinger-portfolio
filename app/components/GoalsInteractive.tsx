@@ -1,5 +1,6 @@
 'use client';
 
+import { PortfolioImage } from './ui/PortfolioImage';
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
@@ -26,9 +27,9 @@ const goals: Goal[] = [
     uiImage: "/surfcom%20icems/View%20Incident%20Details.png",
     colorClass: "card-1",
     colorVars: {
-      bg: "rgba(236, 72, 153, 0.1)",
-      border: "rgba(236, 72, 153, 0.3)",
-      hover: "#ec4899"
+      bg: "rgba(198, 187, 255, 0.08)",
+      border: "rgba(198, 187, 255, 0.25)",
+      hover: "#c6bbff"
     }
   },
   {
@@ -39,9 +40,9 @@ const goals: Goal[] = [
     uiImage: "/surfcom%20icems/View%20Message%20Log.png",
     colorClass: "card-2",
     colorVars: {
-      bg: "rgba(59, 130, 246, 0.1)",
-      border: "rgba(59, 130, 246, 0.3)",
-      hover: "#3b82f6"
+      bg: "rgba(169, 191, 216, 0.08)",
+      border: "rgba(169, 191, 216, 0.25)",
+      hover: "#a9bfd8"
     }
   },
   {
@@ -52,9 +53,9 @@ const goals: Goal[] = [
     uiImage: "/surfcom%20icems/View%20ICEMS%20Summary.png",
     colorClass: "card-3",
     colorVars: {
-      bg: "rgba(168, 85, 247, 0.1)",
-      border: "rgba(168, 85, 247, 0.3)",
-      hover: "#a855f7"
+      bg: "rgba(165, 202, 188, 0.08)",
+      border: "rgba(165, 202, 188, 0.25)",
+      hover: "#a5cabc"
     }
   }
 ];
@@ -87,7 +88,7 @@ export default function GoalsInteractive({ onLightboxChange }: { onLightboxChang
 
   return (
     <div className="goals-interactive-wrapper">
-      <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+      <h3 className="case-study-heading text-2xl font-bold text-white mb-8 flex items-center gap-3">
         <span className="w-8 h-[2px] bg-purple-500 inline-block"/> Goals
       </h3>
       <p className="text-slate-400 mb-8 max-w-3xl text-lg">
@@ -111,12 +112,12 @@ export default function GoalsInteractive({ onLightboxChange }: { onLightboxChang
                 <span className="tag-text"></span>
               </div>
               <div className="image-container" onClick={() => openLightbox(goal.wireframeImage, goal.uiImage, goal.title)}>
-                <img 
+                <PortfolioImage
                   src={goal.wireframeImage} 
                   alt={`${goal.title} - Documentation`}
                   className="layer layer-wire"
                 />
-                <img 
+                <PortfolioImage
                   src={goal.uiImage} 
                   alt={`${goal.title} - Live UI`}
                   className="layer layer-ui"
@@ -153,13 +154,13 @@ export default function GoalsInteractive({ onLightboxChange }: { onLightboxChang
             className="lightbox-toggle" 
             onClick={(e) => { e.stopPropagation(); toggleView(); }}
           >
-            <div className="toggle-dot" style={{ background: showWireframe ? '#94a3b8' : '#10b981' }}></div>
+            <div className="toggle-dot" style={{ background: showWireframe ? '#94a3b8' : '#a5cabc' }}></div>
             <span className="toggle-text">{showWireframe ? 'DOC SPEC' : 'LIVE UI'}</span>
           </button>
 
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <img 
-              src={showWireframe ? lightboxWireframe! : lightboxUI} 
+            <PortfolioImage original
+              src={showWireframe ? lightboxWireframe! : lightboxUI}
               alt={lightboxTitle} 
               style={{ filter: showWireframe ? 'grayscale(100%) contrast(1.2)' : 'none' }}
             />
@@ -318,8 +319,8 @@ export default function GoalsInteractive({ onLightboxChange }: { onLightboxChang
         }
 
         .goal-card:hover .status-dot {
-          background: #10b981;
-          box-shadow: 0 0 10px #10b981;
+          background: #a5cabc;
+          box-shadow: none;
         }
 
         .tag-text::after {

@@ -1,5 +1,6 @@
 'use client';
 
+import { PortfolioImage } from './ui/PortfolioImage';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -33,7 +34,7 @@ export const Carousel3D = ({ steps, title }: Carousel3DProps) => {
   return (
     <div className="w-full py-12">
       {title && (
-        <h3 className="text-3xl font-bold text-white mb-12 flex items-center gap-3 justify-center">
+        <h3 className="case-study-heading text-3xl font-bold text-white mb-12 flex items-center gap-3 justify-center">
           <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block" />
           {title}
         </h3>
@@ -116,7 +117,7 @@ export const Carousel3D = ({ steps, title }: Carousel3DProps) => {
                   onClick={() => offset !== 0 && goToSlide(index)}
                 >
                   <div className="w-64 h-[450px] rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-slate-900 flex items-center justify-center p-2">
-                    <img
+                    <PortfolioImage
                       src={step.image}
                       alt={step.title}
                       className="w-full h-full object-contain"
