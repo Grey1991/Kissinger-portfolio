@@ -22,15 +22,15 @@ export const PORTFOLIO_NARRATIVES: Record<string, PortfolioNarrative> = {
     title: 'Bring fragmented trading tools into one workspace.',
     purpose: 'HubX is a web platform for fund managers and clients to manage portfolios, trading accounts and risk across services connected to MetaTrader 4 and 5.',
     question: 'How can dense trading data remain readable while familiar operations move into a unified web platform?',
-    screen: { src: '/hubx/MetaTrader 4 After.png', alt: 'Delivered web trading interface with order states, column filters and an orders table', caption: 'The redesigned orders view brings navigation, order states and table filtering into one working context.' },
+    screen: { src: '/hubx/MetaTrader 4 After.png', alt: 'Redesigned web trading interface with order states, column filters and an orders table', caption: 'The redesigned orders view brings navigation, order states and table filtering into one working context.' },
     groups: [
       { label: 'Constraints', ids: ['context'], title: 'Keep precision while consolidating the workspace.', bridge: 'The orders view illustrates the central constraint: the interface must support dense information and familiar operations without sacrificing precision.' },
       { label: 'Platform evolution', ids: ['before-after'], title: 'Compare the legacy and redesigned workspaces.', bridge: 'Those constraints informed the migration. Compare the supplied interfaces to see what changed in navigation, data hierarchy and presentation.' },
       { label: 'Shared patterns', ids: ['decisions'], title: 'Make recurring operations consistent.', bridge: 'The visual changes need a repeatable foundation. These decisions connect reusable components, task progression and implementation reviews.' },
       { label: 'Delivery & validation', ids: ['requirements', 'design-outcome-video'], title: 'Specify the behaviour behind the screens.', bridge: 'Shared patterns are only useful when their rules are explicit. Field requirements give engineering and QA concrete criteria; the walkthrough shows the assembled platform.' },
-      { label: 'Status & reflection', ids: ['outcome', 'reflection'], title: 'Delivered platform and lessons for the next build.' },
+      { label: 'Status & reflection', ids: ['outcome', 'reflection'], title: 'Design outcomes and lessons for the next build.' },
     ],
-    status: 'HubX launched and was delivered. My work covered interface design, implementation-ready requirements and QA support.',
+    status: 'My HubX work covered desktop interface design, implementation-ready requirements and QA support for complex financial trading and portfolio workflows.',
   },
   surfcom: {
     title: 'Keep the incident and its latest state together.',

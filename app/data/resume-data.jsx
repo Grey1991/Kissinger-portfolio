@@ -4,7 +4,7 @@ import { Users, Shield, Clock, Layers, PenTool, Utensils, Search, MousePointer, 
 
 export const RESUME_DATA = {
   name: "Kissinger Hu",
-  role: "Senior UX/UI Product Designer",
+  role: "Senior Product Designer | UX/UI",
   location: "Sydney, NSW",
   contact: {
     email: "huweina98@gmail.com",
@@ -12,58 +12,61 @@ export const RESUME_DATA = {
     linkedin: "https://www.linkedin.com/in/kissingerhu",
     website: "https://www.kissingerhu.com"
   },
-  summary: "I'm a UX/UI product designer with five years of experience across enterprise, fintech and client products. Most recently, I was the sole designer across Surf Life Saving Australia's national platforms, working from workflow definition and user feedback through implementation QA. I focus on making complex rules, operational data and legacy interfaces easier to understand and use. I also designed and built this portfolio with Claude-assisted coding, making and reviewing the design decisions throughout.",
+  summary: "I'm a product and UI/UX designer with five years of experience across enterprise, fintech and client products. Most recently, I set UX/UI direction as the sole designer across Surf Life Saving Australia's national platforms, simplifying complex rules and data through considered interaction design, reusable systems and close engineering collaboration.",
   skills: [
     "Complex Workflows & Information Architecture",
     "User Research & Usability Evaluation",
     "Interaction Design & Prototyping",
     "Responsive UI & Accessibility",
     "Design Systems & Component Libraries",
+    "Data Visualisation",
     "Stakeholder Alignment & Implementation QA"
   ],
-  tools: ["Figma", "Jira", "Confluence", "Claude", "ChatGPT", "Adobe Photoshop", "Adobe Illustrator", "Adobe XD"],
+  tools: ["Figma", "Jira", "Confluence", "Adobe Photoshop", "Adobe Illustrator", "Claude", "ChatGPT", "Codex", "Gemini"],
   experience: [
     {
       company: "Surf Life Saving Australia (SLSA)",
-      role: "UI/UX Designer (Sole Designer)",
+      role: "UI/UX Designer",
       period: "05/2023 - 05/2026",
-      description: "Owned UX/UI across national platforms serving a member network of 200,000+ people across 316 clubs.",
+      description: "Sole designer across member and operational products, partnering with 1-2 BAs, an architect, 7-9 developers, 2 QA specialists and business stakeholders.",
       achievements: [
-        "Led SLS Hub UX/UI from workflow definition through implementation QA, replacing the legacy Members Area with a live, responsive national portal.",
-        "Restructured SurfGuard's dense operational screens into clearer workflows, search, filtering and table interactions while preserving business rules and permissions.",
-        "Re-architected compliance-heavy journeys (Member Join & Registration), simplifying decision-making via progressive disclosure.",
-        "Established a Figma library of approximately 50 reusable components and patterns, including four tailored to SLSA workflows."
+        "Led UX/UI for SLS Hub, replacing the legacy Members Area with a live desktop and mobile portal for memberships, awards, patrols and applications, including light and dark themes.",
+        "Used guided states and contextual actions to clarify permissions, eligibility and request status. Near-monthly reviews with module users informed flows and stakeholder alignment.",
+        "Modernised SurfGuard's crowded screens through task hierarchy, search, filtering and table interactions while preserving business rules and permissions. Selected redesigned modules are live.",
+        "Established shared Figma components and interaction patterns, documented responsive states and field behaviour, and wrote Jira user stories and Confluence decisions alongside implementation reviews.",
+        "Restructured Member Join across the public website, SLS Hub and SurfGuard. Put membership choices and fees before account creation and designed conditional family, guardian, payment and approval flows. Design V1 complete; implementation pending.",
+        "Refined SurfCom ICEMS incident and notification workflows for operational users making time-critical decisions."
       ]
     },
     {
       company: "Life Byte System",
-      role: "UI/UX Designer",
+      role: "UI/UX Designer | Full-time",
       period: "01/2023 - 05/2023",
-      description: "Focused on B2B Fintech Trading & Risk Management Platforms.",
+      description: "Independently owned UX/UI for HubX, a desktop B2B financial trading and portfolio platform for fund managers and clients.",
       achievements: [
-        "Independently owned UX/UI across complex forms, data-ingestion workflows, dashboards, charts and portfolio views.",
-        "Established reusable interface conventions and implementation-ready Figma prototypes.",
-        "Worked with developers through QA, launch and client delivery."
+        "Organised complex forms, data-ingestion workflows, dashboards and charts around the needs of fund managers and clients.",
+        "Established information architecture and reusable table, form and card patterns, using precise numeric formatting and visual hierarchy to keep dense financial data readable.",
+        "Defined field rules and interaction behaviour for engineering and QA. Reviewed front-end builds with developers to resolve visual and functional discrepancies."
       ]
     },
     {
       company: "Async Working",
-      role: "UI/UX Designer (Project Contract)",
+      role: "UI/UX Designer | Project contract",
       period: "04/2022 - 01/2023",
-      description: "Sports Tech - Custom Court Design & Ordering Platform.",
+      description: "Project contract designing CourtCanva, a client court-customisation and commerce platform.",
       achievements: [
-        "Owned responsive UX/UI across court customisation, quoting and purchase journeys, including configurable court visuals and the overall product style.",
-        "Resolved evolving client requirements with BAs and developers; the project was still progressing toward release when the role ended."
+        "Owned court configuration, visual previews, quoting and purchase UX/UI, extending the existing direction into responsive flows and upgraded typography, layout and reusable styles.",
+        "Reorganised design tools and clarified preview access using feedback. Improved toolbar contrast and adapted client requirements with BAs and developers; project pre-release at contract end."
       ]
     },
     {
       company: "Freelance",
-      role: "UI/UX Designer",
+      role: "UI/UX Designer | Project-based",
       period: "06/2021 - 04/2022",
-      description: "Various projects including 'NOOTEE' and 'JR Food Court'.",
+      description: "Independent, project-based UI/UX work for NOOTEE and JR Food Court.",
       achievements: [
-        "Mapped user journeys and IA for a note-taking application based on user research.",
-        "Designed a mobile-first office canteen ordering system focused on task efficiency."
+        "NOOTEE: Designed a client-commissioned note-taking app, using interviews, surveys and competitor analysis to guide note organisation and retrieval.",
+        "JR Food Court: Designed an internal mobile app for lunch ordering and table booking, including navigation and core task flows."
       ]
     }
   ],
@@ -74,8 +77,8 @@ export const RESUME_DATA = {
       year: "2022 - 2023"
     },
     {
-      degree: "Bachelor of Applied Finance",
-      school: "Australian National Institute of Management",
+      degree: "Bachelor of Applied Finance and Accounting",
+      school: "Australian National Institute of Management and Commerce",
       year: "2019 - 2021"
     }
   ],
@@ -83,7 +86,7 @@ export const RESUME_DATA = {
     {
       id: "surfguard",
       title: "SurfGuard (SLSA)",
-      subtitle: "Legacy Modernisation · In Development",
+      subtitle: "Legacy Modernisation · Partially Live",
       category: "Legacy Modernisation",
       summary: "Led the UX modernisation of a dense legacy operational platform, restructuring high-volume data tables, search, filtering and multi-step workflows into a scalable component-based experience designed to reduce avoidable errors and steps while preserving complex permissions and business rules.",
       tags: ["Enterprise", "Legacy Modernisation", "Design System", "Multi-device"],
@@ -235,7 +238,7 @@ export const RESUME_DATA = {
             id: "responsive",
             type: "responsive-device",
             title: "Mobile & Tablet Coverage",
-            content: "SurfGuard is being rebuilt to support mobile device usage as a first-class requirement. I delivered responsive layouts across key workflows to ensure operational tasks remain usable under smaller viewports and real-world constraints.",
+            content: "SurfGuard's modernisation includes mobile and tablet use as a first-class requirement, with selected redesigned modules now live. I designed responsive layouts across key workflows to keep operational tasks usable under smaller viewports and real-world constraints.",
             checkItems: [
               "Navigation density and action placement across breakpoints.",
               "Mobile/tablet-friendly forms and step progression.",
@@ -279,9 +282,9 @@ export const RESUME_DATA = {
             outcomes: [],
             statusBar: {
               label: "Project Status",
-              value: "In Development",
+              value: "Partially Live",
               badges: [
-                { text: "🚧 In Development", type: "pending" },
+                { text: "✓ Selected Modules Live", type: "done" },
                 { text: "⚙️ Incremental Rollout", type: "pending" }
               ]
             },
@@ -758,9 +761,9 @@ export const RESUME_DATA = {
     {
       id: "hubx",
       title: "HubX — Trading Management Platform",
-      subtitle: "Launched & Delivered · Enterprise Fintech",
+      subtitle: "B2B Trading & Portfolio Platform · Enterprise Fintech",
       category: "Desktop",
-      summary: "Independently designed and delivered HubX, a launched B2B fintech platform for fund managers and clients, structuring complex forms, data-ingestion workflows, dashboards and high-density portfolio views.",
+      summary: "Independently designed HubX, a desktop B2B financial trading and portfolio platform for fund managers and clients, structuring complex forms, data-ingestion workflows, dashboards and high-density data views.",
       tags: ["Trading Platform", "Fintech", "Data-heavy UI"],
       gradient: "from-slate-700 to-indigo-900",
       image: "/hubx/Hero.png",
@@ -789,7 +792,7 @@ export const RESUME_DATA = {
         constraints: "Enterprise-grade data density, accuracy requirements, complex multi-user workflows, and integration with legacy trading systems.",
         approach: "",
         keyDecisions: [],
-        outcome: "Launched and delivered with a unified information architecture, reusable Ant Design patterns and implementation-ready requirements.",
+        outcome: "Defined a unified information architecture, reusable Ant Design patterns and implementation-ready requirements for complex trading and portfolio workflows.",
         
         contentSections: [
           {
@@ -1037,7 +1040,7 @@ export const RESUME_DATA = {
             id: "outcome",
             type: "text-block",
             title: "Outcome",
-            content: "HubX launched and was delivered with a unified information architecture, reusable Ant Design patterns and implementation-ready requirements. The result made dense trading information easier to scan and complex workflows clearer while keeping confidential commercial and adoption metrics private."
+            content: "HubX's design combines a unified information architecture, reusable Ant Design patterns and implementation-ready requirements. The interface makes dense trading information easier to scan and complex workflows clearer; commercial and adoption metrics are not included in this case study."
           },
           {
             id: "design-outcome-video",

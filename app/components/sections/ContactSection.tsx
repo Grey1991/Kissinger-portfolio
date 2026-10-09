@@ -1,6 +1,7 @@
 'use client';
 
 import { Mail, Download, ArrowUpRight } from 'lucide-react';
+import { RESUME_DOCUMENT } from '@/app/data/resume-document';
 
 interface ContactSectionProps {
   email: string;
@@ -26,8 +27,8 @@ export const ContactSection = ({ email, linkedin }: ContactSectionProps) => {
             <Mail size={18} /> Contact Me
           </a>
           <a 
-            href="/cv/Kissinger Hu-Resume-2026.pdf" 
-            download="Kissinger Hu-Resume-2026.pdf"
+            href={RESUME_DOCUMENT.href}
+            download={RESUME_DOCUMENT.filename}
             className="portfolio-button"
           >
             <Download size={18} /> Download CV

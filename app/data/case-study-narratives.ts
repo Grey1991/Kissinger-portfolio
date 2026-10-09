@@ -43,7 +43,7 @@ export function buildCaseStudyNarrative(projectId: string, original: Section[]) 
     chapterNumber: chapters.length + 1,
     content: projectId === 'slshub'
       ? 'SLS Hub is live. I brought member tasks, eligibility rules and administrative approvals into one portal, then carried the design through responsive layouts, engineering handoff and implementation QA.'
-      : 'SurfGuard remains in development. I designed clearer record structures, responsive layouts and shared patterns, and supported engineering through implementation reviews.',
+      : 'SurfGuard is partially live, with selected redesigned modules released through a phased modernisation. I designed clearer record structures, responsive layouts and shared patterns, and supported engineering through implementation reviews.',
   };
   return {
     sections: [...main, conclusion, ...reference],

@@ -2,6 +2,7 @@
 
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { ParticleDonut } from '../ui/ParticleDonut';
+import { RESUME_DOCUMENT } from '@/app/data/resume-document';
 
 interface HeroSectionProps {
   name: string;
@@ -20,7 +21,7 @@ export const HeroSection = ({ name, role }: HeroSectionProps) => {
             <p className="hero-description">I design products that make complicated tasks feel straightforward. Enterprise platforms, fintech and the details that make them work.</p>
             <div className="flex flex-wrap gap-3 mt-7">
               <a href="#works" className="portfolio-button primary">Explore my work <ArrowDown size={16} /></a>
-              <a href="/cv/Kissinger%20Hu-Resume-2026.pdf" download="Kissinger-Hu-Resume.pdf" className="portfolio-button">Download CV <ArrowUpRight size={16} /></a>
+              <a href={RESUME_DOCUMENT.href} download={RESUME_DOCUMENT.filename} className="portfolio-button">Download CV <ArrowUpRight size={16} /></a>
             </div>
           </div>
           <div className="hero-art" aria-hidden="true"><ParticleDonut /></div>
