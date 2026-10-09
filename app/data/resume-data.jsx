@@ -1095,7 +1095,7 @@ export const RESUME_DATA = {
       summary: "Owned responsive UX/UI for a client sports-court platform, including court configuration, quoting, purchasing and the wider visual style. The project was still progressing toward release when my contract ended.",
       tags: ["Redesign", "Design System", "Stakeholder Collaboration"],
       gradient: "from-pink-600 to-purple-600",
-      image: "/courtcanva/hero2.0.png",
+      image: "/courtcanva/hero2.0-clean.png",
       icon: <Monitor />,
       isCaseStudy: true,
       details: {

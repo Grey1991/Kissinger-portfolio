@@ -1,7 +1,10 @@
 import { PORTFOLIO_NARRATIVES } from './remaining-case-narratives';
+import { CASE_PRESENTATIONS } from './case-study-presentation';
+import { isExplanatoryChapter } from './case-study-disclosure';
 
-type Section = { id: string; type: string; title?: string; [key: string]: unknown };
-type Chapter = { id: string; label: string; title: string; bridge?: string; supportingIds?: string[] };
+type Section = { id: string; type: string; title?: string; reference?: boolean; chapterLabel?: string; [key: string]: unknown };
+type Narrative = { sections: Section[]; toc: { id: string; label: string }[]; highlightId?: string };
+type Chapter = { id: string; label: string; title: string; type?: string; bridge?: string; supportingIds?: string[] };
 const NARRATIVES: Record<string, Chapter[]> = {
   slshub: [
     { id: 'case-context', label: '01 · Product & challenge', title: 'A member portal with rules behind every task.' },
@@ -13,8 +16,10 @@ const NARRATIVES: Record<string, Chapter[]> = {
     { id: 'quality-readiness', label: '07 · Validation', title: 'Check the built experience against the design.', bridge: 'Handoff was followed by implementation reviews: checking rule-driven visibility, status changes and device behaviour with developers and QA.' },
   ],
   surfguard: [
+    { id: 'member-search-comparison', type: 'surfguard-comparison', label: 'Member Search', title: 'Member Search' },
+    { id: 'member-details-comparison', type: 'surfguard-comparison', label: 'Member Details', title: 'Member Details' },
     { id: 'case-context', label: '01 · Product & challenge', title: 'Modernise the interface without losing the operation.' },
-    { id: 'key-decisions', label: '02 · Record structure', title: 'Make the member record easier to act on.' },
+    { id: 'key-decisions', label: '02 · Forms & exceptions', title: 'Guide member entry and make exceptions actionable.' },
     { id: 'responsive', label: '03 · Across devices', title: 'Keep the record context on tablet and phone.', bridge: 'Once the record has a clear hierarchy, the next question is what must remain visible on a smaller screen. The same membership task provides a direct comparison.' },
     { id: 'design-system', label: '04 · Delivery', title: 'Make the redesign repeatable across modules.', bridge: 'The record patterns need to extend beyond a single screen. Shared components, documented states and developer-ready specifications support delivery across the rebuild.' },
     { id: 'qa-support', label: '05 · Validation', title: 'Refine the design during implementation.', bridge: 'During development, module-user reviews and ticket-level UI checks feed back into the design. The focus is whether the agreed workflows and states survive implementation.' },
@@ -22,11 +27,36 @@ const NARRATIVES: Record<string, Chapter[]> = {
 };
 
 export function buildCaseStudyNarrative(projectId: string, original: Section[]) {
+  const narrative = buildFullNarrative(projectId, original);
+  const presentation = CASE_PRESENTATIONS[projectId];
+  if (!narrative || !presentation) return narrative;
+  const rank = new Map(presentation.order.map((id, index) => [id, index]));
+  const labels = new Map(presentation.navigation.map(item => [item.id, item.label]));
+  const sections = narrative.sections.map((section, index) => ({
+    ...section,
+    disclosure: !section.reference && isExplanatoryChapter(projectId, section.id),
+    ...(!section.reference ? { chapterLabel: labels.get(section.id) } : {}),
+    ...(presentation.bridges?.[section.id] ? { presentationBridge: presentation.bridges[section.id] } : {}),
+    presentationRank: section.reference ? 1000 + index : (rank.get(section.id) ?? 100 + index),
+  })).sort((a, b) => a.presentationRank - b.presentationRank);
+  return {
+    ...narrative,
+    highlightId: presentation.navigation[0].id,
+    sections,
+    toc: [
+      { id: 'case-overview', label: 'At a glance' },
+      ...presentation.navigation.filter(item => sections.some(section => section.id === item.id)),
+      ...(sections.some(section => section.reference) ? [{ id: 'reference-materials', label: 'Complete research & supporting material' }] : []),
+    ],
+  };
+}
+
+function buildFullNarrative(projectId: string, original: Section[]): Narrative | null {
   const chapters = NARRATIVES[projectId];
   if (!chapters) return buildPortfolioNarrative(projectId, original);
   const existing = new Map(original.map(section => [section.id, section]));
   const main = chapters.flatMap((chapter, index) => [{
-    ...(existing.get(chapter.id) ?? { id: chapter.id, type: chapter.id === 'case-context' ? 'case-context' : 'case-evidence' }),
+    ...(existing.get(chapter.id) ?? { id: chapter.id, type: chapter.type ?? (chapter.id === 'case-context' ? 'case-context' : 'case-evidence') }),
     title: chapter.title, bridge: chapter.bridge, chapterLabel: chapter.label, chapterNumber: index + 1,
   }, ...(chapter.supportingIds ?? []).map(id => {
     const section = existing.get(id);
@@ -51,7 +81,7 @@ export function buildCaseStudyNarrative(projectId: string, original: Section[]) 
   };
 }
 
-function buildPortfolioNarrative(projectId: string, original: Section[]) {
+function buildPortfolioNarrative(projectId: string, original: Section[]): Narrative | null {
   const story = PORTFOLIO_NARRATIVES[projectId];
   if (!story) return null;
   const existing = new Map(original.map(section => [section.id, section]));

@@ -16,7 +16,7 @@ import { PortfolioImage } from './ui/PortfolioImage';
 import { imageDescription } from './ui/imageDescription';
 import { useAccessibleDialog } from '../hooks/useAccessibleDialog';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { X, Shield, Menu, Maximize2, ChevronLeft, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, Database, Box, Layers, GitBranch, Play, CheckCircle, Lock, ArrowUpDown, ExternalLink } from 'lucide-react';
+import { X, Shield, Maximize2, ChevronLeft, ChevronDown, Smile, Edit, Cloud, Search, Users, Layout, WifiOff, TrendingUp, MessageCircle, Smartphone, Tablet, Check, Minus, Code, Target, Star, Eye, UserX, Zap, Activity, AlertCircle, HelpCircle, EyeOff, Sun, Home, Building2, Edit3, Grid, Info, FileText, ShoppingCart, User, Lightbulb, Plus, Archive, Mail, Database, Box, Layers, GitBranch, Play, CheckCircle, Lock, ArrowUpDown, ExternalLink } from 'lucide-react';
 
 import { ScrollytellingBlock } from './ScrollytellingBlock';
 import { Carousel3D } from './Carousel3D';
@@ -30,6 +30,12 @@ import { ProjectOverview } from './projects/ProjectOverview';
 import { CaseStudyContext, CaseStudyDecisions, SurfGuardResponsiveEvidence } from './projects/CaseStudyEvidence';
 import { PortfolioCaseContext, JoiningJourney } from './projects/PortfolioCaseContext';
 import { CaseStudyChapter } from './projects/CaseStudyChapter';
+import { CaseStudyOpening } from './projects/CaseStudyOpening';
+import { DeviceWalkthrough } from './projects/DeviceWalkthrough';
+import { SurfGuardComparisons } from './projects/SurfGuardComparisons';
+import { CourtCanvaStructure } from './projects/CourtCanvaStructure';
+import { CaseStudyNavigation } from './projects/CaseStudyNavigation';
+import { OriginalCaseIntroduction } from './projects/OriginalCaseIntroduction';
 import { buildCaseStudyNarrative } from '../data/case-study-narratives';
 import { StrategyRoadmap } from './projects/StrategyRoadmap';
 import dynamic from 'next/dynamic';
@@ -454,7 +460,7 @@ const SurveyTabsComponent = ({ tabs, caption, onLightboxChange }) => {
             <PortfolioImage
               src={img}
               alt={`${tabs[activeTab].label} survey ${idx + 1}`}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              className="w-full h-full object-contain"
             />
             {/* Hover overlay */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
@@ -588,7 +594,7 @@ const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }) => {
                   <PortfolioImage
                     src={item.src}
                     alt={item.caption}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 {/* Caption Overlay */}
@@ -632,7 +638,7 @@ const HubHighlightsTabsComponent = ({ tabs, onLightboxChange }) => {
                       <PortfolioImage
                         src={item.src}
                         alt={item.caption}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        className="w-full h-full object-contain"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -834,20 +840,19 @@ const BeforeAfterSlider = ({ section }) => {
       >
         {/* After Image (Base Layer) */}
         <div 
-          className="absolute inset-0 bg-slate-900 bg-cover bg-center"
+          className="absolute inset-0 bg-slate-900 bg-contain bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${currentComparison.afterImage})` }}
         />
         
         {/* Before Image (Clipped Layer) */}
         <div 
-          className="absolute top-0 left-0 h-full border-r-2 border-cyan-400"
+          className="absolute inset-0 bg-no-repeat"
           style={{ 
             backgroundColor: '#0f172a',
             backgroundImage: `url(${currentComparison.beforeImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'left center',
-            width: `${sliderPosition}%`,
-            filter: 'grayscale(0.8) contrast(1.2)'
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
           }}
         />
 
@@ -1043,13 +1048,13 @@ const ResponsiveDarkModeSection = () => {
                       <PortfolioImage
                         src="/slshub/Mobile Flow (Dark).png" 
                         alt="Mobile Flow Dark Mode"
-                        className="w-full h-auto min-h-full object-cover object-top scale-[1.15] origin-top"
+                        className="w-full h-full object-contain"
                       />
                     ) : (
                       <PortfolioImage
                         src="/slshub/Mobile Flow (Light).png" 
                         alt="Mobile Flow Light Mode"
-                        className="w-full h-auto min-h-full object-cover object-top scale-[1.15] origin-top"
+                        className="w-full h-full object-contain"
                       />
                     )}
                   </div>
@@ -1068,13 +1073,13 @@ const ResponsiveDarkModeSection = () => {
                       <PortfolioImage
                         src="/slshub/Desktop Dashboard(Dark).png" 
                         alt="Desktop Dashboard Dark Mode"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                       />
                     ) : (
                       <PortfolioImage
                         src="/slshub/Desktop Dashboard(Light).png" 
                         alt="Desktop Dashboard Light Mode"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                       />
                     )}
                   </div>
@@ -1101,13 +1106,13 @@ const ResponsiveDarkModeSection = () => {
                       <PortfolioImage
                         src="/slshub/Mobile Modal (Dark).png" 
                         alt="Mobile Modal Dark Mode"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                       />
                     ) : (
                       <PortfolioImage
                         src="/slshub/Mobile Modal (Light).png" 
                         alt="Mobile Modal Light Mode"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                       />
                     )}
                   </div>
@@ -1159,13 +1164,13 @@ const ResponsiveDarkModeSection = () => {
                       <PortfolioImage
                         src="/slshub/Mobile Form (Dark).png" 
                         alt="Mobile Form Dark Mode"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                       />
                     ) : (
                       <PortfolioImage
                         src="/slshub/Mobile Form (Light).png" 
                         alt="Mobile Form Light Mode"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain"
                       />
                     )}
                   </div>
@@ -1491,65 +1496,10 @@ const HighlightSection = ({ section }) => {
                 );
               }
 
-const VedioMulti = ({ section }) => {
-                        const [activeVideo, setActiveVideo] = useState(0);
-                        return (
-                          <div className="w-full my-8 flex flex-col items-center gap-6">
-                            {/* Tab switcher */}
-                            <div className="flex flex-wrap justify-center gap-2">
-                              {section.videoItems.map((v, idx) => (
-                                <button
-                                  key={idx}
-                                  onClick={() => setActiveVideo(idx)}
-                                  className={`px-5 py-2 rounded-full text-sm font-medium border transition-all ${
-                                    activeVideo === idx
-                                      ? 'bg-gradient-to-r from-pink-500/20 to-purple-600/10 border-pink-500 text-white shadow-lg shadow-pink-500/20'
-                                      : 'bg-slate-900/40 border-white/10 text-slate-400 hover:text-white hover:border-pink-500/50'
-                                  }`}
-                                >
-                                  {v.label}
-                                </button>
-                              ))}
-                            </div>
-                            {/* Active video */}
-                            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl inline-block max-w-xs w-full">
-                              <video
-                                key={section.videoItems[activeVideo].src}
-                                ref={(el) => {
-                                  if (el) {
-                                    const observer = new IntersectionObserver(
-                                      (entries) => {
-                                        entries.forEach((entry) => {
-                                          if (entry.isIntersecting) el.play().catch(() => {});
-                                          else el.pause();
-                                        });
-                                      },
-                                      { threshold: 0.5 }
-                                    );
-                                    observer.observe(el);
-                                  }
-                                }}
-                                src={section.videoItems[activeVideo].src}
-                                controls
-                                loop
-                                muted
-                                playsInline
-                                className="h-auto w-full"
-                              >
-                                Your browser does not support the video tag.
-                              </video>
-                            </div>
-                            {section.caption && (
-                              <p className="text-center text-slate-500 text-sm italic">{section.caption}</p>
-                            )}
-                          </div>
-                        );
-                      }
-
 export const ProjectModal = ({ project, onClose }) => {
   const dialogRef = useRef(null);
   const scrollContainerRef = useRef(null);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("case-overview");
   const [isAnyLightboxOpen, setIsAnyLightboxOpen] = useState(false);
   const [selectedScreensTab, setSelectedScreensTab] = useState('account-access');
   const [screenshotLightboxOpen, setScreenshotLightboxOpen] = useState(false);
@@ -1557,10 +1507,30 @@ export const ProjectModal = ({ project, onClose }) => {
   const narrative = useMemo(() => project ? buildCaseStudyNarrative(project.id, project.details.contentSections ?? []) : null, [project]);
   const contents = narrative?.toc ?? project?.details.toc;
   const contentSections = narrative?.sections ?? project?.details.contentSections;
+  const openingWalkthrough = project?.id === 'memberjoin'
+    ? contentSections?.find((section) => section.id === 'demo-video') : null;
   const inspectScreenshot = (src) => {
     setCurrentScreenshotImage(src);
     setScreenshotLightboxOpen(true);
     setIsAnyLightboxOpen(true);
+  };
+  const navigateToSection = (id) => {
+    const container = scrollContainerRef.current;
+    const section = dialogRef.current?.querySelector(`#${CSS.escape(id)}`);
+    if (!container || !section) return;
+    if (section.tagName === 'DETAILS') section.open = true;
+    const disclosure = section.querySelector(':scope > .case-chapter-disclosure');
+    if (disclosure) disclosure.open = true;
+    for (let ancestor = section.parentElement; ancestor && ancestor !== container; ancestor = ancestor.parentElement) {
+      if (ancestor.tagName === 'DETAILS') ancestor.open = true;
+    }
+    const offset = window.matchMedia('(max-width: 1023px)').matches ? 88 : 24;
+    container.scrollTo({
+      top: section.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - offset,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+    });
+    section.focus({ preventScroll: true });
+    setActiveSection(id);
   };
   useBodyScrollLock(true);
   useAccessibleDialog(dialogRef, !!project, () => { if (!isAnyLightboxOpen) onClose(); });
@@ -1574,15 +1544,17 @@ export const ProjectModal = ({ project, onClose }) => {
       
       const scrollPos = scrollContainerRef.current.scrollTop + 200;
       
+      let currentSection = contents[0].id;
       for (const item of contents) {
         const element = document.getElementById(item.id);
         const sectionTop = element && (narrative
           ? element.getBoundingClientRect().top - scrollContainerRef.current.getBoundingClientRect().top + scrollContainerRef.current.scrollTop
           : element.offsetTop);
         if (element && (!narrative || element.getClientRects().length) && sectionTop <= scrollPos) {
-          setActiveSection(item.id);
+          currentSection = item.id;
         }
       }
+      setActiveSection(currentSection);
     };
 
     const container = scrollContainerRef.current;
@@ -1649,202 +1621,25 @@ export const ProjectModal = ({ project, onClose }) => {
         {/* Scrollable Area */}
         <div ref={scrollContainerRef} className="project-detail-scroll overflow-y-auto overflow-x-hidden h-full scrollbar-thin scrollbar-thumb-slate-500/30 scrollbar-track-transparent">
           
-          {/* Header Hero */}
-          <div className={`project-detail-hero relative min-h-[20rem] w-full ${project.id === 'slshub' ? 'bg-gradient-to-r from-orange-700 to-orange-600' : `bg-gradient-to-br ${project.gradient}`} p-6 md:p-10 lg:p-14 flex flex-col justify-end`}>
-            {/* Background Image Layer */}
-            {project.backgroundImage && (
-              <>
-                <PortfolioImage
-                  src={project.backgroundImage} 
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover object-center brightness-[0.4]"
-                />
-              </>
-            )}
-            
-            {/* Foreground/Hero Image Layer */}
-            {project.image ? (
-              <>
-                <PortfolioImage
-                  src={project.image} 
-                  alt={project.title}
-                  className={`absolute inset-0 w-full h-full opacity-100 transition-all duration-700 ${
-                    project.id === 'jrfood'
-                      ? 'object-contain object-[left_70%] scale-110'
-                      : 'object-cover object-center'
-                  }`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
-              </>
-            ) : !project.backgroundImage ? (
-              <div className="absolute inset-0 bg-black/20" />
-            ) : null}
-            
-            {/* Ecosystem Diagram Overlay (only for HubX) */}
-            {project.id === 'hubx' && (
-              <div className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 w-64 h-64 opacity-60 hover:opacity-100 transition-opacity duration-500">
-                <div className="relative w-full h-full flex flex-col items-center justify-between">
-                  {/* Master Trader (Top) */}
-                  <div className="relative bg-slate-900/80 border border-white/20 backdrop-blur-md rounded-xl p-2 w-24 flex flex-col items-center gap-1 z-10 border-t-2 border-t-blue-500">
-                    <div className="relative w-8 h-8 rounded-full bg-white/10 border border-blue-500/40 flex items-center justify-center text-blue-400">
-                      <User size={16} />
-                    </div>
-                    <div className="text-[3px] font-bold uppercase tracking-wider text-blue-400 whitespace-nowrap">Master Trader</div>
-                  </div>
+          {narrative && <CaseStudyOpening key={project.id} project={project} onInspect={inspectScreenshot} onNavigate={navigateToSection}
+            leadingMedia={openingWalkthrough ? <div id="demo-video" tabIndex={-1}><DeviceWalkthrough section={openingWalkthrough} opening poster={project.image} /></div> : undefined} />}
 
-                  {/* HubX Core (Center) */}
-                  <div className="relative w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center z-10">
-                    <Grid size={24} className="text-emerald-500" />
-                    <div className="absolute inset-[-5px] rounded-full border border-emerald-500 opacity-0 animate-[ripple_2s_infinite]" />
-                  </div>
-
-                  {/* Investors (Bottom) */}
-                  <div className="flex gap-2 z-10">
-                    {['A', 'B', 'C'].map((label, idx) => (
-                      <div key={idx} className="relative bg-slate-900/80 border border-white/20 backdrop-blur-md rounded-xl p-2 w-20 flex flex-col items-center gap-1 border-b-2 border-b-cyan-500">
-                        <div className="w-6 h-6 rounded-full bg-white/10 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
-                          <User size={12} />
-                        </div>
-                        <div className="text-[2px] font-bold uppercase tracking-wider text-cyan-400 whitespace-nowrap">Investor {label}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* SVG Connections */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-                    <defs>
-                      <path id="hubx-path-down" d="M 128,48 L 128,105" />
-                      <path id="hubx-path-left" d="M 128,145 C 128,170 55,170 55,195" />
-                      <path id="hubx-path-mid" d="M 128,145 L 128,205" />
-                      <path id="hubx-path-right" d="M 128,145 C 128,170 201,170 201,195" />
-                    </defs>
-                    <use href="#hubx-path-down" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
-                    <use href="#hubx-path-left" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
-                    <use href="#hubx-path-mid" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
-                    <use href="#hubx-path-right" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
-                    
-                    <circle r="2" fill="#a9bfd8">
-                      <animateMotion dur="2s" repeatCount="indefinite"><mpath href="#hubx-path-down"/></animateMotion>
-                    </circle>
-                    <circle r="2" fill="#a5cabc">
-                      <animateMotion dur="2s" begin="0.5s" repeatCount="indefinite"><mpath href="#hubx-path-left"/></animateMotion>
-                    </circle>
-                    <circle r="2" fill="#a5cabc">
-                      <animateMotion dur="2s" begin="0.7s" repeatCount="indefinite"><mpath href="#hubx-path-mid"/></animateMotion>
-                    </circle>
-                    <circle r="2" fill="#a5cabc">
-                      <animateMotion dur="2s" begin="0.5s" repeatCount="indefinite"><mpath href="#hubx-path-right"/></animateMotion>
-                    </circle>
-                  </svg>
-                </div>
-              </div>
-            )}
-            
-            <div className="project-detail-heading relative z-10 space-y-4">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-white/55">
-                {project.subtitle}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-black/40 backdrop-blur rounded-full text-xs font-medium text-white/90 border border-white/10">
-                  {project.category}
-                </span>
-                <span className="px-3 py-1 bg-black/40 backdrop-blur rounded-full text-xs font-medium text-white/90 border border-white/10">
-                  {project.details.year}
-                </span>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-semibold text-white tracking-[-0.035em]">{project.title}</h2>
-              <p className="text-white/75 text-base md:text-lg leading-relaxed max-w-2xl">{project.summary}</p>
-            </div>
-          </div>
-
-          <div className="project-detail-layout flex flex-col md:flex-row bg-slate-950 relative">
-            
-            {/* STICKY TABLE OF CONTENTS (Desktop Only) */}
-            {contents && (
-              <div className="project-detail-toc hidden md:block w-64 bg-slate-900/50 border-r border-white/5 p-6 sticky top-0 h-full overflow-y-auto flex-shrink-0">
-                <h5 className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-6 flex items-center gap-2">
-                  <Menu size={14} /> Contents
-                </h5>
-                <ul className="space-y-4">
-                  {contents.map((item) => (
-                    <li key={item.id}>
-                      <a 
-                        href={`#${item.id}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          const el = document.getElementById(item.id);
-                          el?.scrollIntoView({ behavior: 'smooth' });
-                          setActiveSection(item.id);
-                        }}
-                        className={`text-sm transition-colors block border-l-2 pl-4 ${
-                          activeSection === item.id 
-                            ? 'border-white/70 text-white font-medium bg-white/[0.035]'
-                            : 'border-transparent text-slate-500 hover:text-slate-300'
-                        }`}
-                      >
-                        {item.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Main Content Body */}
-            <div className="project-detail-content flex-grow p-5 sm:p-8 md:p-12 lg:p-16 space-y-16">
-              
-              {/* Meta Grid */}
-              <div className="project-detail-meta grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 border-b border-white/10 pb-10">
-                <div>
-                  <h4 className="text-xs uppercase tracking-wider text-slate-500 mb-2">Role</h4>
-                  <p className="text-white font-medium">{project.details.role}</p>
-                </div>
-                <div>
-                  <h4 className="text-xs uppercase tracking-wider text-slate-500 mb-2">Platform</h4>
-                  <p className="text-white font-medium">{project.details.platform}</p>
-                </div>
-                <div>
-                  <h4 className="text-xs uppercase tracking-wider text-slate-500 mb-2">Tools</h4>
-                  <p className="text-white font-medium">{project.details.tools}</p>
-                </div>
-                <div className="flex items-end">
-                  <button 
-                    onClick={() => {
-                      // Different target sections for different projects
-                      let targetId = narrative?.highlightId || project.finalDesignLink || 'outcome'; // use finalDesignLink if available
-                      if (!narrative?.highlightId && !project.finalDesignLink) {
-                        if (project.id === 'surfcom') {
-                          targetId = 'design-highlights';
-                        } else if (project.id === 'courtcanva') {
-                          targetId = 'courtcanva2-intro';
-                        } else if (project.id === 'nootee') {
-                          targetId = 'final-ui';
-                        } else if (project.id === 'jrfood') {
-                          targetId = 'final-polish';
-                        }
-                      }
-                      const targetSection = document.getElementById(targetId);
-                      if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }
-                    }}
-                    className="project-detail-highlight w-full py-2.5 bg-white text-slate-950 hover:bg-slate-200 rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Eye size={16} /> View highlights
-                  </button>
-                </div>
-              </div>
+          <div className="project-detail-layout flex flex-col lg:flex-row bg-slate-950 relative">
+            {contents && <CaseStudyNavigation items={contents} active={activeSection} onNavigate={navigateToSection} />}
+            <div className="project-detail-content flex-grow space-y-16">
+              <OriginalCaseIntroduction project={project} />
 
               {!narrative && <ProjectOverview projectId={project.id} />}
 
               {/* CONDITIONAL RENDERING: FULL CASE STUDY OR STANDARD LAYOUT */}
               {project.isCaseStudy && contentSections ? (
                 <div className="flex flex-col max-w-6xl mx-auto">
-                  {contentSections.map((section) => (
+                  {contentSections.filter((section) => section !== openingWalkthrough).map((section) => (
                     <CaseStudyChapter key={section.id} section={section}>
                       {section.type === 'portfolio-context' && <PortfolioCaseContext project={project} onInspect={inspectScreenshot} />}
                       {section.type === 'joining-journey' && <JoiningJourney onInspect={inspectScreenshot} />}
                       {section.type === 'case-context' && <CaseStudyContext projectId={project.id} onInspect={inspectScreenshot} />}
+                      {section.type === 'surfguard-comparison' && <SurfGuardComparisons kind={section.id} onInspect={inspectScreenshot} />}
                       {section.type === 'case-evidence' && <CaseStudyDecisions projectId={project.id} onInspect={inspectScreenshot} />}
                       {project.id === 'surfguard' && section.id === 'responsive' && <SurfGuardResponsiveEvidence onInspect={inspectScreenshot} notes={section.content} checkItems={section.checkItems} />}
 
@@ -1991,10 +1786,10 @@ export const ProjectModal = ({ project, onClose }) => {
                           <PortfolioImage
                             src={img.src}
                             alt={img.caption || ''}
-                            className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+                            className="w-full h-auto"
                           />
                           {img.caption && (
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                            <div className="bg-slate-900 p-3">
                               <p className="text-slate-200 text-xs leading-relaxed">
                                 {img.caption}
                               </p>
@@ -2546,7 +2341,7 @@ export const ProjectModal = ({ project, onClose }) => {
                             <Tablet size={12}/> Tablet
                           </span>
                           <div className="rounded-xl border border-white/10 bg-slate-900/80 overflow-hidden shadow-xl aspect-[3/4]">
-                            <PortfolioImage src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover object-top" />
+                            <PortfolioImage src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-contain" />
                           </div>
                         </div>
                       )}
@@ -2556,7 +2351,7 @@ export const ProjectModal = ({ project, onClose }) => {
                             <Smartphone size={12}/> Mobile
                           </span>
                           <div className="rounded-xl border border-white/10 bg-slate-800/90 overflow-hidden shadow-xl aspect-[3/4]">
-                            <PortfolioImage src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover object-top" />
+                            <PortfolioImage src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-contain" />
                           </div>
                         </div>
                       )}
@@ -2566,7 +2361,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* Tablet */}
                       <div className="absolute right-4 top-0 w-[72%] h-[90%] rounded-2xl border border-white/10 bg-slate-900/80 overflow-hidden shadow-2xl">
                         {section.deviceImages?.tablet ? (
-                          <PortfolioImage src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-cover object-top" />
+                          <PortfolioImage src={section.deviceImages.tablet} alt="Tablet view" className="w-full h-full object-contain" />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-600">
                             <Tablet size={32} className="opacity-30" />
@@ -2577,7 +2372,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       {/* Phone */}
                       <div className="absolute left-0 bottom-4 w-[36%] h-[76%] rounded-2xl border border-white/15 bg-slate-800/90 overflow-hidden shadow-2xl z-10">
                         {section.deviceImages?.phone ? (
-                          <PortfolioImage src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-cover object-top" />
+                          <PortfolioImage src={section.deviceImages.phone} alt="Mobile view" className="w-full h-full object-contain" />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-slate-600">
                             <Smartphone size={24} className="opacity-30" />
@@ -2897,33 +2692,7 @@ export const ProjectModal = ({ project, onClose }) => {
               {/* Context Panel - Background & Target Users */}
               {section.type === 'context-panel' && (
                 <div className="w-full max-w-6xl mx-auto">
-                  <div className="grid lg:grid-cols-[1.2fr,1fr] gap-10 items-stretch">
-                    {/* Left: Project Background */}
-                    <div className="relative bg-slate-800/50 backdrop-blur-sm border border-white/10 rounded-3xl p-10 flex flex-col justify-between overflow-hidden">
-                      {/* Top accent line */}
-                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-blue-500" />
-                      
-                      <div>
-                        <div className="flex items-center gap-2 mb-6">
-                          <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/50" />
-                          <span className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Project Context</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-4 mb-6">
-                          <PortfolioImage
-                            src="/courtcanva/CC_Logo.png" 
-                            alt="CourtCanva Logo" 
-                            className="w-16 h-16 object-contain"
-                          />
-                          <h1 className="text-5xl font-extrabold text-white leading-tight">CourtCanva</h1>
-                        </div>
-                        
-                        <p className="text-slate-300 text-lg leading-relaxed mb-10">
-                          A client platform for court owners and facility managers to <strong className="text-white">configure custom court designs</strong>, review visual options and <strong className="text-white">request supplier quotes</strong>.
-                        </p>
-                      </div>
-                    </div>
-
+                  <div className="grid gap-10 items-stretch">
                     {/* Right: Target Users */}
                     <div className="flex flex-col gap-5">
                       <div className="mb-3">
@@ -3158,7 +2927,7 @@ export const ProjectModal = ({ project, onClose }) => {
                                               <PortfolioImage
                                                 src={screenshot.src}
                                                 alt={screenshot.caption}
-                                                className="w-full h-full object-cover"
+                                                className="w-full h-full object-contain"
                                                 onError={(e) => {
                                                   // Fallback for missing images
                                                   e.currentTarget.style.display = 'none';
@@ -4064,107 +3833,7 @@ export const ProjectModal = ({ project, onClose }) => {
                         </div>
                       )}
 
-                      {/* Structure Cards - Product Structure */}
-                      {section.type === 'structure-cards' && (
-                        <div className="w-full max-w-7xl mx-auto">
-                          <h3 className="case-study-heading text-3xl font-bold text-white mb-12 text-center flex items-center justify-center gap-3">
-                            <span className="w-8 h-[2px] bg-gradient-to-r from-pink-500 to-purple-500 inline-block"/> 
-                            {section.title}
-                          </h3>
-
-                          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-                            {/* Card 1: Homepage */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <PortfolioImage src="/courtcanva/landing webpage.png" alt="Homepage" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
-                                <Home size={20} />
-                              </div>
-                              <div className="relative z-10 p-6">
-                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Homepage</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                                  Eye-catching banner showcasing platform capabilities with clear CTAs for starting designs or exploring the gallery.
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Card 2: Design Interface */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <PortfolioImage src="/courtcanva/3D Preview Access Button.png" alt="Design Interface" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
-                                <Edit3 size={20} />
-                              </div>
-                              <div className="relative z-10 p-6">
-                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Design Interface</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                                  Drag-and-drop court builder with structured elements, customisation controls and a real-time 3D preview.
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Card 3: Quote Request */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <PortfolioImage src="/courtcanva/Order Generation Page.png" alt="Quote Request" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
-                                <FileText size={20} />
-                              </div>
-                              <div className="relative z-10 p-6">
-                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Quote Request</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                                  Submit custom designs with project details like location and materials. Quotes sent directly via email or platform messaging.
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Card 4: Templates */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <PortfolioImage src="/courtcanva/My Template Page.png" alt="Templates" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
-                                <Grid size={20} />
-                              </div>
-                              <div className="relative z-10 p-6">
-                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Templates</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                                  Diverse collection of user-created designs offering inspiration with social sharing options for favorite designs.
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Card 5: User Account */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <PortfolioImage src="/courtcanva/My Account.png" alt="User Account" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
-                                <User size={20} />
-                              </div>
-                              <div className="relative z-10 p-6">
-                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">User Account</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                                  Personal dashboard for managing saved designs, accessing quotes, and tracking project progress.
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Card 6: Place Order */}
-                            <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-[transform,border-color,box-shadow] duration-300 hover:scale-[1.02] border border-white/10 hover:border-emerald-500 flex flex-col justify-end h-[320px] hover:shadow-2xl hover:shadow-emerald-500/20 will-change-transform">
-                              <PortfolioImage src="/courtcanva/Order Placed Successful Page.png" alt="Place Order" className="absolute inset-0 w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-slate-900/95 transition-[background-image] duration-300 group-hover:from-slate-900/40 group-hover:to-slate-900/95" />
-                              <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-[opacity,transform] duration-300 z-10">
-                                <ShoppingCart size={20} />
-                              </div>
-                              <div className="relative z-10 p-6">
-                                <h3 className="text-xl font-bold text-white mb-3 transition-colors duration-200 group-hover:text-emerald-400 drop-shadow-lg">Place Order</h3>
-                                <p className="text-sm leading-relaxed text-white opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-32 transition-[opacity,max-height] duration-300 overflow-hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                                  Secure payment with detailed order summaries and real-time status updates from court builders.
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                      {section.type === 'structure-cards' && <CourtCanvaStructure title={section.title} onInspect={inspectScreenshot} />}
 
                       {/* Feature Showcase */}
                       {section.type === 'feature-showcase' && section.featureShowcase && (
@@ -4503,7 +4172,7 @@ export const ProjectModal = ({ project, onClose }) => {
                       )}
 
                       {/* Video Multi Block */}
-                      {section.type === 'video-multi' && section.videoItems && <VedioMulti section={section} />}
+                      {section.type === 'video-multi' && section.videoItems && <DeviceWalkthrough section={section} />}
 
                       {/* React Component */}
                       {section.type === 'react-component' && section.component === 'CourtCanva2' && (

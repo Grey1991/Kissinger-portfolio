@@ -19,6 +19,7 @@ import { ProjectModal } from './components/ProjectModal';
 // Styles
 import './styles/animations.css';
 import './styles/case-studies.css';
+import './styles/case-study-gallery.css';
 
 export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState(null);

@@ -2,6 +2,13 @@
 
 Version: 2.0.0
 
+## updated version 10/10/2026
+
+- Reordered case studies to show product interfaces and comparisons before supporting detail, preserving the original content.
+- Added SurfGuard dashboard, member search and member details comparisons, plus original form and duplicate-check prototype screens.
+- Expanded Member Join device walkthroughs and restored complete, centred project-card imagery.
+- Refined CourtCanva and NOOTEE presentation, case-study navigation, responsive layouts and keyboard-accessible image previews.
+
 ## Updated Resume - 9 October 2026
 
 - Replaced both current and legacy resume downloads with the approved two-page master resume.

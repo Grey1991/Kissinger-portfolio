@@ -1,9 +1,11 @@
 import { ArrowRight, Maximize2 } from 'lucide-react';
 import { PortfolioImage } from '../ui/PortfolioImage';
 import { CASE_EVIDENCE, type EvidenceProject } from '../../data/case-study-evidence';
+import type { CaseScreen } from '../../data/case-study-presentation';
+import { SURFGUARD_FORM_EVIDENCE } from '../../data/surfguard-form-evidence';
 
 type Props = { projectId: string; onInspect: (src: string) => void };
-type Screen = { src: string; alt: string; label: string; caption: string };
+type Screen = CaseScreen;
 const base = '/slshub/Selected Screens /';
 const applicationScreens: Screen[] = [
   { src: `${base}Submit a Form.png`, alt: 'Application setup: applicant, club, form type and eligibility guidance', label: '01 · Set the context', caption: 'Choose self or another member, establish the club, and see the rules for the selected form before continuing.' },
@@ -15,12 +17,15 @@ function ScreenFigure({ screen, onInspect, className = '', detail = false }: { s
   return <figure className={`min-w-0 ${className}`}>
     <p className="mb-3 text-xs font-medium tracking-wide text-slate-300">{screen.label}</p>
     <button type="button" onClick={() => onInspect(screen.src)} aria-label={`Enlarge: ${screen.alt}`} className="group relative block w-full overflow-hidden rounded-lg border border-white/10 bg-[#111827] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c6bbff]">
-      <div className={detail ? 'aspect-[16/7] overflow-hidden' : ''}>
-        <PortfolioImage src={screen.src} alt={screen.alt} original={detail} className={detail ? 'h-auto w-[120%] max-w-none -mt-[8%] -ml-[2%]' : 'h-auto w-full'} sizes="(min-width: 1024px) 45vw, 100vw" />
+      <div>
+        <PortfolioImage src={screen.src} alt={screen.alt} original={detail} className="h-auto w-full" sizes="(min-width: 1024px) 75vw, 100vw" />
       </div>
       <span aria-hidden="true" className="absolute right-3 bottom-3 rounded-md border border-white/15 bg-slate-950/85 p-2 text-white"><Maximize2 size={15} /></span>
     </button>
-    <figcaption className="mt-3 text-xs leading-relaxed text-slate-500">{screen.caption}</figcaption>
+    <figcaption className="mt-3 text-xs leading-relaxed text-slate-500">
+      {screen.caption}
+      {screen.source && <a href={screen.source.url} target="_blank" rel="noopener noreferrer" className="mt-2 block text-[#c6bbff] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-[#c6bbff]">{screen.source.label}</a>}
+    </figcaption>
   </figure>;
 }
 
@@ -29,13 +34,13 @@ export function CaseStudyContext({ projectId, onInspect }: Props) {
   const id = projectId as EvidenceProject;
   const evidence = CASE_EVIDENCE[id];
   const screen: Screen = id === 'slshub'
-    ? { src: '/slshub/Desktop Dashboard(Light).png', alt: 'SLS Hub dashboard showing member actions, memberships, awards and patrols', label: 'The member portal', caption: 'Product overview. The following chapters follow a specific application through eligibility, submission and review.' }
-    : { src: '/surfguard/SG Tablet screenshot.png', alt: 'SurfGuard member record with warning, club memberships and grouped details', label: 'The operational member record', caption: 'Product overview. The next chapter examines the relationships and actions inside this record.' };
+    ? { src: '/slshub/Desktop Dashboard(Light).png', alt: 'SLS Hub dashboard showing member actions, memberships, awards and patrols', label: 'The member portal', caption: 'Product overview. The application decisions connect eligibility, submission and review within this wider member portal.' }
+    : SURFGUARD_FORM_EVIDENCE.context;
   return <div className="space-y-7">
     <h3 className="case-study-heading text-2xl font-semibold text-white md:text-3xl">{id === 'slshub' ? 'A member portal with rules behind every task.' : 'Modernise the interface without losing the operation.'}</h3>
     <p className="max-w-3xl text-sm leading-relaxed text-slate-400">{evidence.intro}</p>
     <div className="grid items-start gap-8 lg:grid-cols-[1.1fr_1fr]">
-      <ScreenFigure detail={id === 'slshub'} screen={screen} onInspect={onInspect} />
+      <ScreenFigure screen={screen} onInspect={onInspect} />
       <div className="space-y-6">
         <div><h4 className="mb-2 text-base font-semibold text-white">The challenge</h4><p className="text-sm leading-relaxed text-slate-400">{evidence.comparison[0].text}</p></div>
         <div><h4 className="mb-2 text-base font-semibold text-white">My responsibility</h4><p className="text-sm leading-relaxed text-slate-400">I led UI/UX from workflow definition through interface design, prototyping, developer handoff and implementation QA, working with BAs, architecture, development, QA and senior stakeholders.</p></div>
@@ -57,7 +62,7 @@ export function SurfGuardResponsiveEvidence({ onInspect, notes, checkItems }: Pi
       <p className="mt-4 leading-relaxed">{notes}</p>
       <ul className="mt-4 list-disc space-y-2 pl-5">{checkItems?.map(item => <li key={item}>{item}</li>)}</ul>
     </details>
-    <p className="max-w-3xl text-sm leading-relaxed text-slate-400">The layout changes to fit the screen; the relationship between the person, their memberships and the available actions stays intact. These responsive rules then become part of the implementation handoff in the next chapter.</p>
+    <p className="max-w-3xl text-sm leading-relaxed text-slate-400">The layout changes to fit the screen; the relationship between the person, their memberships and the available actions stays intact. These responsive rules also become part of the implementation handoff.</p>
   </div>;
 }
 
@@ -84,21 +89,16 @@ export function CaseStudyDecisions({ projectId, onInspect }: Props) {
         </div>
       </div>
     </> : <>
+      <SurfGuardFormDecisions onInspect={onInspect} />
+      <details className="rounded-lg border border-white/10 p-5">
+        <summary className="cursor-pointer text-sm font-medium text-slate-300 focus-visible:outline-2 focus-visible:outline-[#c6bbff]">Member-record rationale · original example</summary>
+        <div className="mt-6 space-y-7">
       <div className="max-w-3xl">
         <p className="mb-3 text-xs uppercase tracking-widest text-slate-500">Information hierarchy</p>
         <h3 className="case-study-heading mb-4 text-2xl font-semibold text-white md:text-3xl">Separate the person from their memberships.</h3>
         <p className="text-sm leading-relaxed text-slate-400">A member can belong to several organisations. The record needs both person-level information and membership-specific status, season and rights. Tabs divide record categories; club cards establish the membership being reviewed; grouped details keep related fields and edit actions together.</p>
       </div>
-      <div className="grid items-start gap-8 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-lg border border-white/10 bg-slate-900">
-          <button type="button" onClick={() => onInspect('/surfguard/SG Tablet screenshot.png')} aria-label="Inspect SurfGuard membership context in the full record" className="block w-full overflow-hidden focus-visible:outline-2 focus-visible:outline-white">
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <PortfolioImage original src="/surfguard/SG Tablet screenshot.png" alt="Detail of SurfGuard compliance warning, record tabs, membership cards and editable membership fields" className="w-full" />
-              {['28%', '48%', '66%'].map((top, index) => <span key={top} aria-hidden="true" style={{ top }} className="absolute right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-[#5c438b] text-[11px] font-bold text-white">{index + 1}</span>)}
-            </div>
-            <span className="flex items-center gap-2 p-3 text-xs text-slate-300"><Maximize2 size={14} /> Inspect the full record</span>
-          </button>
-        </div>
+      <div>
         <ol className="space-y-6">
           {[
             ['Keep the exception visible', 'The working-with-children check warning sits above the record sections, with a direct Edit action. It remains visible in both supplied layouts.'],
@@ -110,6 +110,27 @@ export function CaseStudyDecisions({ projectId, onInspect }: Props) {
       <div className="flex flex-wrap items-center gap-3 border-l-2 border-[#c6bbff]/60 pl-5 text-sm text-slate-300">
         <span>Review warning</span><ArrowRight size={15} aria-hidden="true" /><span>Select membership</span><ArrowRight size={15} aria-hidden="true" /><span>Inspect details</span><ArrowRight size={15} aria-hidden="true" /><span>Use the section action</span>
       </div>
+        </div>
+      </details>
     </>}
+  </div>;
+}
+
+function SurfGuardFormDecisions({ onInspect }: Pick<Props, 'onInspect'>) {
+  return <div className="surfguard-form-evidence space-y-8">
+    <div className="max-w-3xl">
+      <h3 className="case-study-heading mb-4 text-2xl font-semibold text-white md:text-3xl">Guide the entry. Make the exception actionable.</h3>
+      <p className="text-sm leading-relaxed text-slate-400">Creating a member record starts with identity information. When a possible match is found, the administrator needs enough context to decide whether to inspect the existing record, transfer the membership or seek help.</p>
+    </div>
+    <ScreenFigure screen={SURFGUARD_FORM_EVIDENCE.entry} onInspect={onInspect} />
+    <ScreenFigure screen={SURFGUARD_FORM_EVIDENCE.exception} onInspect={onInspect} />
+    <div className="grid gap-6 sm:grid-cols-3">
+      {[
+        ['Stage the information', 'Start with the identity fields, mark what is required and make the current step visible.'],
+        ['Check before creating', 'Bring possible existing records into the workflow before the administrator continues creating another record.'],
+        ['Give a usable next step', 'Offer a context-specific route: inspect a record, transfer a member or seek help instead of showing only an error.'],
+      ].map(([title, text]) => <div key={title}><h4 className="mb-2 text-sm font-semibold text-white">{title}</h4><p className="text-sm leading-relaxed text-slate-400">{text}</p></div>)}
+    </div>
+    <p className="text-xs leading-relaxed text-slate-500">Original Figma prototype screens. Workflow reference: <a href={SURFGUARD_FORM_EVIDENCE.guide.url} target="_blank" rel="noopener noreferrer" className="text-[#c6bbff] underline underline-offset-4">official Add Member guide</a>.</p>
   </div>;
 }

@@ -33,7 +33,7 @@ export const ProjectCard = ({ project, onClick }: ProjectCardProps) => (
             src={project.image}
             sizes="(min-width: 768px) 50vw, 100vw"
             alt={project.title}
-            className="absolute inset-0 w-full h-full opacity-95 object-contain object-center"
+            className="project-cover-image absolute inset-0 w-full h-full opacity-95 object-contain object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
         </>
